@@ -130,24 +130,24 @@
             </li>
 
             <!-- Layouts -->
-             <!-- Transactions -->
+            <!-- Transactions -->
 
-                <li class="menu-item active">
-                  <a href="transactions.html" class="menu-link">
-                    <i class='menu-icon tf-icons bx bx-wallet'></i>
-                    <div data-i18n="Container">Transactions</div>
-                  </a>
-                </li>
-                <li class="menu-item d-none">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div data-i18n="Blank">Blank</div>
-                  </a>
-                </li>
+            <li class="menu-item active">
+              <a href="transactions.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="Container">Transactions</div>
+              </a>
+            </li>
+            <li class="menu-item d-none">
+              <a href="layouts-blank.html" class="menu-link">
+                <div data-i18n="Blank">Blank</div>
+              </a>
+            </li>
 
             <!-- Loans and Mortgages -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-credit-card-alt'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
               </a>
 
@@ -181,13 +181,13 @@
             </li>
             <li class="menu-item">
               <a href="card.html" class="menu-link">
-                <i class='menu-icon tf-icons bx bx-credit-card'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bxs-bank' ></i>
+                <i class="menu-icon tf-icons bx bxs-bank"></i>
                 <div data-i18n="Layouts">Accounts</div>
               </a>
               <ul class="menu-sub">
@@ -212,7 +212,7 @@
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-help-circle'></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Misc">Support</div>
               </a>
               <ul class="menu-sub">
@@ -343,83 +343,105 @@
                 </nav>
               </div>
               <div class="row">
-                  <div class="card">
-                    <h5 class="card-header">Confirmed Transactions</h5>
-                      <div class="table-responsive text-nowrap">
-                          <table class="table table-hover">
-                              <caption class="ms-4">
-                                Transaction Summary: Debit: <span class="text-danger">$5,750.00</span> | Credit: <span class="text-success">$3,200.00</span> | Total: $2,550.00
-                              </caption>
-                                <thead>
-        <tr>
-          <th>Transaction ID</th>
-          <th>Date <i class='bx bx-sort'></i></th>
-          <th>Sender </th>
-          <th>Receiver <i class='bx bx-sort'></i></th>
-          <th>Amount </th>
-          <th>Balance <i class='bx bx-sort'></i></th>
-          <th>Actions</th>
-        </tr>
-                                </thead>
-                                  <tbody>
-                                    <tr>
-          <td>
-            <i class="bx bx-transfer text-danger me-3"></i>
-            <span class="fw-medium">TRX-001</span>
-          </td>
-          <td>2023-07-01</td>
-          <td>Habeeb Bright</td>
-          <td>John Paul</td>
-          <td>$5,000</td>
-          <td>$39,000.00</td>
-          <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-low-vision bx-flip-horizontal' ></i> View</a
-              >
-              </div>
-            </div>
-          </td>
-                                    </tr>
-
-                                  </tbody>
-                          </table>
-                          <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm">
-                              <li class="page-item prev">
-                                <a class="page-link" href="javascript:void(0);"
-                                  ><i class="tf-icon bx bx-chevrons-left"></i
-                                ></a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">1</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">2</a>
-                              </li>
-                              <li class="page-item active">
-                                <a class="page-link" href="javascript:void(0);">3</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">4</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">5</a>
-                              </li>
-                              <li class="page-item next">
-                                <a class="page-link" href="javascript:void(0);"
-                                  ><i class="tf-icon bx bx-chevrons-right"></i
-                                ></a>
-                              </li>
-                            </ul>
-                          </nav>
-                      </div>
+                <div class="card">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title card-header mb-0">Transaction Details</h5>
+                    <div class="dropdown">
+                      <button
+                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        id="sortDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Sort by
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                        <li><a class="dropdown-item" href="#">Date</a></li>
+                        <li><a class="dropdown-item" href="#">Amount</a></li>
+                        <li><a class="dropdown-item" href="#">Balance</a></li>
+                      </ul>
+                    </div>
                   </div>
-
+                  <div class="table-responsive text-nowrap">
+                    <table class="table table-hover">
+                      <caption class="ms-4">
+                        Transaction Summary: Debit:
+                        <span class="text-danger">$5,750.00</span>
+                        | Credit:
+                        <span class="text-success">$3,200.00</span>
+                        | Total: $2,550.00
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th>Transaction ID</th>
+                          <th>Date <i class="bx bx-sort"></i></th>
+                          <th>Sender</th>
+                          <th>Receiver <i class="bx bx-sort"></i></th>
+                          <th>Amount</th>
+                          <th>Balance <i class="bx bx-sort"></i></th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <i class="bx bx-transfer text-danger me-3"></i>
+                            <span class="fw-medium">TRX-001</span>
+                          </td>
+                          <td>2023-07-01</td>
+                          <td>Habeeb Bright</td>
+                          <td>John Paul</td>
+                          <td>$5,000</td>
+                          <td>$39,000.00</td>
+                          <td>
+                            <div class="dropdown">
+                              <button
+                                type="button"
+                                class="btn p-0 dropdown-toggle hide-arrow"
+                                data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                              <div class="dropdown-menu">
+                                <a class="dropdown-item" href="confirmed.html"
+                                  ><i class="bx bx-low-vision bx-flip-horizontal"></i> View</a
+                                >
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination pagination-sm">
+                        <li class="page-item prev">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevrons-left"></i
+                          ></a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">1</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">2</a>
+                        </li>
+                        <li class="page-item active">
+                          <a class="page-link" href="javascript:void(0);">3</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">4</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">5</a>
+                        </li>
+                        <li class="page-item next">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevrons-right"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
 
                 <!--/ Transactions -->
               </div>
@@ -448,12 +470,7 @@
     <!-- / Layout wrapper -->
 
     <div class="cont-sup">
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-danger btn-cont-sup"
-        >Support?</a
-      >
+      <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
 
     <!-- Core JS -->

@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Banker's Bank | Manager</title>
+    <title>Transactions</title>
 
     <meta name="description" content="" />
 
@@ -114,14 +114,14 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboards -->
-            <li class="menu-item active open">
+            <li class="menu-item open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Dashboards">Dashboards</div>
                 <div class="badge bg-danger rounded-pill ms-auto">5</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item">
                   <a href="index.html" class="menu-link">
                     <div data-i18n="Analytics">Account Overview</div>
                   </a>
@@ -132,7 +132,7 @@
             <!-- Layouts -->
             <!-- Transactions -->
 
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="transactions.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-wallet"></i>
                 <div data-i18n="Container">Transactions</div>
@@ -179,14 +179,12 @@
                 </li>
               </ul>
             </li>
-            <!-- card -->
             <li class="menu-item">
               <a href="card.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
-            <!-- Account -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bxs-bank"></i>
@@ -207,7 +205,7 @@
             </li>
             <!-- Settings -->
             <li class="menu-item">
-              <a href="accountmanagement.html" class="menu-link">
+              <a href="layouts-container.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Container">Account Management</div>
               </a>
@@ -279,7 +277,6 @@
                           <div class="flex-grow-1">
                             <span class="fw-medium d-block">Habeeb Bright</span>
                             <small class="text-muted">Acct No: 1234567890</small>
-                            <br />
                             <small class="text-muted">Level: Gold</small>
                           </div>
                         </div>
@@ -332,147 +329,69 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a href="index.html">Overview</a>
-                  </li>
-                  <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Accounts</a>
-                  </li>
-                  <li class="breadcrumb-item active">
-                    <a href="investment.html">Investment</a>
-                  </li>
-                </ol>
-              </nav>
-              <div class="mb-3"></div>
-              <div class="card">
-                <h5 class="card-header">Clients Investments</h5>
-                <div class="table-responsive text-nowrap">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Account Number</th>
-                        <th>Account Holder</th>
-                        <th>Balance</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td>
-                          <i class="bx bx-hash bx-sm text-dark me-3"></i>
-                          <span class="fw-medium">0123456789</span>
-                        </td>
-                        <td>Albert Bright</td>
-                        <td>
-                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
-                          <span>300,000</span>
-                        </td>
-                        <td><span class="badge bg-label-primary me-1">Active</span></td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="myinvestment.html"
-                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-envelope me-1"></i> Contact</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="bx bx-hash bx-sm text-dark me-3"></i> <span class="fw-medium">0123456789</span>
-                        </td>
-                        <td>Barry Bright</td>
-                        <td>
-                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
-                          <span>300,000</span>
-                        </td>
-                        <td><span class="badge bg-label-success me-1">Completed</span></td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-1"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="bx bx-hash bx-sm text-dark me-3"></i>
-                          <span class="fw-medium">0123456789</span>
-                        </td>
-                        <td>Trevor Habeeb</td>
-                        <td>
-                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
-                          <span>300,000</span>
-                        </td>
-                        <td><span class="badge bg-label-info me-1">Scheduled</span></td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-1"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="bx bx-hash bx-sm text-dark me-3"></i>
-                          <span class="fw-medium">0123456789</span>
-                        </td>
-                        <td>Jerry Bright</td>
-                        <td>
-                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
-                          <span>300,000</span>
-                        </td>
-                        <td><span class="badge bg-label-warning me-1">Pending</span></td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-1"></i> Contact</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-1"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+              <div>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="index.html">Overview</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="javascript:void(0);">Transactions</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="confirmedtransactions.html">Confirmed Transactions</a>
+                    </li>
+                    <li class="breadcrumb-item active">TRX-100</li>
+                  </ol>
+                </nav>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title mb-0">Transaction Details</h5>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 col-lg-3 mb-3">
+                          <strong>Transaction ID:</strong>
+                          <div><i class="bx bx-transfer text-danger me-2"></i>TRX-001</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                          <strong>Date:</strong>
+                          <div>2023-07-01</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                          <strong>Account:</strong>
+                          <div>Habeeb Bright</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                          <strong>Amount:</strong>
+                          <div>$3,000.00</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                          <strong>Description:</strong>
+                          <div>House Rental</div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-3">
+                          <strong>Balance:</strong>
+                          <div>$39,000.00</div>
+                        </div>
+                      </div>
+                      <div class="text-end">
+                        <button class="btn btn-secondary btn-sm me-2" type="button">
+                          <i class="bx bx-printer me-1"></i>Print Receipt
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="button">
+                          <i class="bx bx-envelope me-1"></i>Send Receipt
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                </div>
+
+                <!--/ Transactions -->
               </div>
             </div>
             <!-- / Content -->

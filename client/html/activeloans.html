@@ -512,7 +512,13 @@
                               <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0">$250,000</h6>
                                 <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
+                                <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#loanDetail">
+                                  Details
+                                </button>
                               </div>
                             </div>
                           </li>
@@ -528,7 +534,13 @@
                               <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0">$35,000</h6>
                                 <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
+                                <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#loanDetail">
+                                  Details
+                                </button>
                               </div>
                             </div>
                           </li>
@@ -544,7 +556,13 @@
                               <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0">$15,000</h6>
                                 <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
+                                <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#loanDetail">
+                                  Details
+                                </button>
                               </div>
                             </div>
                           </li>
@@ -563,7 +581,13 @@
                               <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0">$75,000</h6>
                                 <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
+                                <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#loanDetail">
+                                  Details
+                                </button>
                               </div>
                             </div>
                           </li>
@@ -579,7 +603,13 @@
                               <div class="user-progress d-flex align-items-center gap-1">
                                 <h6 class="mb-0">$50,000</h6>
                                 <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
+                                <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#loanDetail">
+                                  Details
+                                </button>
                               </div>
                             </div>
                           </li>
@@ -620,6 +650,43 @@
     <div class="cont-sup">
       <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
+
+    <!-- Loan Modal -->
+
+    <div class="modal fade" id="loanDetail" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Loan Information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col mb-3">
+                <label for="nameWithTitle" class="form-label">Name</label>
+                <input type="text" id="nameWithTitle" class="form-control" placeholder="Enter Name" />
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col mb-0">
+                <label for="emailWithTitle" class="form-label">Email</label>
+                <input type="email" id="emailWithTitle" class="form-control" placeholder="xxxx@xxx.xx" />
+              </div>
+              <div class="col mb-0">
+                <label for="dobWithTitle" class="form-label">DOB</label>
+                <input type="date" id="dobWithTitle" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary disabled">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- / Loan Modal -->
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
