@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Banker's | House Mortgage</title>
+    <title>Banker's Bank | Manager</title>
 
     <meta name="description" content="" />
 
@@ -114,14 +114,14 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboards -->
-            <li class="menu-item open">
+            <li class="menu-item active open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Dashboards">Dashboards</div>
                 <div class="badge bg-danger rounded-pill ms-auto">5</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item active">
                   <a href="index.html" class="menu-link">
                     <div data-i18n="Analytics">Account Overview</div>
                   </a>
@@ -130,24 +130,24 @@
             </li>
 
             <!-- Layouts -->
-             <!-- Transactions -->
+            <!-- Transactions -->
 
-                <li class="menu-item">
-                  <a href="transactions.html" class="menu-link">
-                    <i class='menu-icon tf-icons bx bx-wallet'></i>
-                    <div data-i18n="Container">Transactions</div>
-                  </a>
-                </li>
-                <li class="menu-item d-none">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div data-i18n="Blank">Blank</div>
-                  </a>
-                </li>
+            <li class="menu-item">
+              <a href="transactions.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="Container">Transactions</div>
+              </a>
+            </li>
+            <li class="menu-item d-none">
+              <a href="layouts-blank.html" class="menu-link">
+                <div data-i18n="Blank">Blank</div>
+              </a>
+            </li>
 
             <!-- Loans and Mortgages -->
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-credit-card-alt'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
               </a>
 
@@ -157,7 +157,7 @@
                     <div data-i18n="Container">Active Loans</div>
                   </a>
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item">
                   <a href="loans.html" class="menu-link">
                     <div data-i18n="Container">House Mortgage</div>
                   </a>
@@ -179,20 +179,19 @@
                 </li>
               </ul>
             </li>
-<!-- card -->
+            <!-- card -->
             <li class="menu-item">
               <a href="card.html" class="menu-link">
-                <i class='menu-icon tf-icons bx bx-credit-card'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
-<!-- Account -->
+            <!-- Account -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bxs-bank' ></i>
+                <i class="menu-icon tf-icons bx bxs-bank"></i>
                 <div data-i18n="Layouts">Accounts</div>
               </a>
-
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="investment.html" class="menu-link">
@@ -208,14 +207,14 @@
             </li>
             <!-- Settings -->
             <li class="menu-item">
-              <a href="layouts-container.html" class="menu-link">
+              <a href="accountmanagement.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Container">Account Management</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-help-circle'></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Misc">Support</div>
               </a>
               <ul class="menu-sub">
@@ -280,6 +279,7 @@
                           <div class="flex-grow-1">
                             <span class="fw-medium d-block">Habeeb Bright</span>
                             <small class="text-muted">Acct No: 1234567890</small>
+                            <br />
                             <small class="text-muted">Level: Gold</small>
                           </div>
                         </div>
@@ -332,210 +332,137 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="col-lg-12 col-md-12 order-1">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/home.png" alt="home" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                  <a class="dropdown-item" href="javascript:void(0);">Make Payment</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Refinance Options</a>
-                                </div>
-                              </div>
+              <div class="mb-3">
+                <button class="btn btn-primary">Add Mortgage</button>
+              </div>
+              <div class="card">
+                <h5 class="card-header">Client Mortgages</h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Account Number</th>
+                        <th>Account Holder</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      <tr>
+                        <td>
+                          <i class="bx bx-hash bx-sm text-dark me-3"></i>
+                          <span class="fw-medium">0123456789</span>
+                        </td>
+                        <td>Albert Bright</td>
+                        <td>
+                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
+                          <span>300,000</span>
+                        </td>
+                        <td><span class="badge bg-label-primary me-1">Active</span></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="mortgage.html"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-envelope me-1"></i> Contact</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
                             </div>
-                            <span class="fw-medium d-block mb-1">Mortgage Balance</span>
-                            <h3 class="card-title mb-2">$320,628.89</h3>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/wallet-info.png" alt="Credit Card" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                  <a class="dropdown-item" href="javascript:void(0);">Payment Schedule</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Extra Payment</a>
-                                </div>
-                              </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <i class="bx bx-hash bx-sm text-dark me-3"></i> <span class="fw-medium">0123456789</span>
+                        </td>
+                        <td>Barry Bright</td>
+                        <td>
+                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
+                          <span>300,000</span>
+                        </td>
+                        <td><span class="badge bg-label-success me-1">Completed</span></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
                             </div>
-                            <span>Monthly Payment</span>
-                            <h3 class="card-title text-nowrap mb-1">$1,845.67</h3>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-12 col-lg-12 order-3 order-md-2">
-                    <div class="row">
-                      <div class="col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                  <a class="dropdown-item" href="javascript:void(0);">Interest Details</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Amortization Schedule</a>
-                                </div>
-                              </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <i class="bx bx-hash bx-sm text-dark me-3"></i>
+                          <span class="fw-medium">0123456789</span>
+                        </td>
+                        <td>Trevor Habeeb</td>
+                        <td>
+                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
+                          <span>300,000</span>
+                        </td>
+                        <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
                             </div>
-                            <span class="fw-medium d-block mb-1">Interest Rate</span>
-                            <h3 class="card-title mb-2">3.75%</h3>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/calendar.png" alt="Calendar" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                                  <a class="dropdown-item" href="javascript:void(0);">Loan Details</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Modify Terms</a>
-                                </div>
-                              </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <i class="bx bx-hash bx-sm text-dark me-3"></i>
+                          <span class="fw-medium">0123456789</span>
+                        </td>
+                        <td>Jerry Bright</td>
+                        <td>
+                          <i class="bx bx-dollar bx-sm text-dark me-1"></i>
+                          <span>300,000</span>
+                        </td>
+                        <td><span class="badge bg-label-warning me-1">Pending</span></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-trash me-1"></i> Contact</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
                             </div>
-                            <span class="d-block mb-1">Remaining Term</span>
-                            <h3 class="card-title text-nowrap mb-2">28 Years</h3>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <!-- Mortgage Details -->
-                <div class="col-md-6">
-                  <div class="col-md-12 col-lg-12 order-2 mb-4">
-                    <div class="card h-100">
-                      <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="card-title m-0 me-2">Mortgage Details</h5>
-                        <div class="dropdown">
-                          <button class="btn p-0" type="button" id="mortgageDetails" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="mortgageDetails">
-                            <a class="dropdown-item" href="javascript:void(0);">Full Statement</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Property Valuation</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Tax Information</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <ul class="p-0 m-0 list-group">
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/home-value.png" alt="Property Value" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Property Value</small>
-                                <h6 class="mb-0">Current Estimate</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$450,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/equity.png" alt="Home Equity" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Home Equity</small>
-                                <h6 class="mb-0">Available Equity</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$129,371.11</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/calendar-check.png" alt="Next Payment" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Next Payment</small>
-                                <h6 class="mb-0">Due Date</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">August 1, 2024</h6>
-                                <button class="btn btn-primary">Pay Now</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/escrow.png" alt="Escrow" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Escrow</small>
-                                <h6 class="mb-0">Balance</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$5,234.78</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/insurance.png" alt="Insurance" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Homeowners Insurance</small>
-                                <h6 class="mb-0">Annual Premium</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$1,200.00</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                        <p class="text-muted text-center"><a href="mortgage_details.html" class="link-primary">View Full Mortgage Details</a></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--/ Mortgage Details -->
               </div>
             </div>
             <!-- / Content -->
@@ -562,12 +489,7 @@
     <!-- / Layout wrapper -->
 
     <div class="cont-sup">
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-danger btn-cont-sup"
-        >Support?</a
-      >
+      <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
 
     <!-- Core JS -->

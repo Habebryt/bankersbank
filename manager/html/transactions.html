@@ -329,9 +329,22 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
+              <div>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="index.html">Overview</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="javascript:void(0);">Transaction</a>
+                    </li>
+                    <li class="breadcrumb-item active">All Transactions</li>
+                  </ol>
+                </nav>
+              </div>
               <div class="row">
                   <div class="card">
-                    <h5 class="card-header">Transaction History</h5>
+                    <h5 class="card-header">My Transaction History</h5>
                       <div class="table-responsive text-nowrap">
                           <table class="table table-hover">
                               <caption class="ms-4">
@@ -341,9 +354,9 @@
         <tr>
           <th>Transaction ID</th>
           <th>Date <i class='bx bx-sort'></i></th>
-          <th>Description</th>
-          <th>Debit <i class='bx bx-sort'></i></th>
-          <th>Credit <i class='bx bx-sort'></i></th>
+          <th>Account </th>
+          <th>Amount <i class='bx bx-sort'></i></th>
+          <th>Description </th>
           <th>Balance <i class='bx bx-sort'></i></th>
           <th>Actions</th>
         </tr>
@@ -355,10 +368,10 @@
             <span class="fw-medium">TRX-001</span>
           </td>
           <td>2023-07-01</td>
-          <td>Salary Deposit</td>
-          <td></td>
+          <td>Habeeb Bright</td>
           <td>$3,000.00</td>
-          <td>$3,000.00</td>
+          <td>House Rental</td>
+          <td>$39,000.00</td>
           <td>
             <div class="dropdown">
               <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -368,91 +381,11 @@
                 <a class="dropdown-item" href="javascript:void(0);"
                 ><i class='bx bx-low-vision bx-flip-horizontal' ></i> View</a
               >
-              <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-question-mark'></i> Dispute</a
-              >
               </div>
             </div>
           </td>
                                     </tr>
-                                    <tr>
-          <td>
-            <i class="bx bx-shopping-bag text-info me-3"></i>
-            <span class="fw-medium">TRX-002</span>
-          </td>
-          <td>2023-07-02</td>
-          <td>Grocery Shopping</td>
-          <td>$150.00</td>
-          <td></td>
-          <td>$2,850.00</td>
-          <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-low-vision bx-flip-horizontal' ></i> View</a
-              >
-              <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-question-mark'></i> Dispute</a
-              >
-              </div>
-            </div>
-          </td>
-                                    </tr>
-                                    <tr>
-          <td>
-            <i class="bx bx-home text-success me-3"></i>
-            <span class="fw-medium">TRX-003</span>
-          </td>
-          <td>2023-07-05</td>
-          <td>Rent Payment</td>
-          <td>$1,200.00</td>
-          <td></td>
-          <td>$1,650.00</td>
-          <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-low-vision bx-flip-horizontal' ></i> View</a
-              >
-              <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-question-mark'></i> Dispute</a
-              >
-              </div>
-            </div>
-          </td>
-                                    </tr>
-                                    <tr>
-          <td>
-            <i class="bx bx-credit-card text-primary me-3"></i>
-            <span class="fw-medium">TRX-004</span>
-          </td>
-          <td>2023-07-10</td>
-          <td>Credit Card Payment</td>
-          <td>$400.00</td>
-          <td></td>
-          <td>$1,250.00</td>
-          <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-low-vision bx-flip-horizontal' ></i> View</a
-              >
-              <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-question-mark'></i> Dispute</a
-              >
-              </div>
-            </div>
-          </td>
-                                    </tr>
+
                                   </tbody>
                           </table>
                           <nav aria-label="Page navigation">

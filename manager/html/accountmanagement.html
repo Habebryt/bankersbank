@@ -130,24 +130,24 @@
             </li>
 
             <!-- Layouts -->
-             <!-- Transactions -->
+            <!-- Transactions -->
 
-                <li class="menu-item">
-                  <a href="transactions.html" class="menu-link">
-                    <i class='menu-icon tf-icons bx bx-wallet'></i>
-                    <div data-i18n="Container">Transactions</div>
-                  </a>
-                </li>
-                <li class="menu-item d-none">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div data-i18n="Blank">Blank</div>
-                  </a>
-                </li>
+            <li class="menu-item">
+              <a href="transactions.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="Container">Transactions</div>
+              </a>
+            </li>
+            <li class="menu-item d-none">
+              <a href="layouts-blank.html" class="menu-link">
+                <div data-i18n="Blank">Blank</div>
+              </a>
+            </li>
 
             <!-- Loans and Mortgages -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-credit-card-alt'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
               </a>
 
@@ -179,17 +179,17 @@
                 </li>
               </ul>
             </li>
-<!-- card -->
+            <!-- card -->
             <li class="menu-item">
               <a href="card.html" class="menu-link">
-                <i class='menu-icon tf-icons bx bx-credit-card'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
-<!-- Account -->
+            <!-- Account -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bxs-bank' ></i>
+                <i class="menu-icon tf-icons bx bxs-bank"></i>
                 <div data-i18n="Layouts">Accounts</div>
               </a>
 
@@ -215,7 +215,7 @@
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-help-circle'></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Misc">Support</div>
               </a>
               <ul class="menu-sub">
@@ -337,20 +337,81 @@
                   <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
                       <h5 class="mb-0">Personal Profile</h5>
-                      <small class="text-muted float-end"><span class="text-danger">*</span>Contact Support for Updates <a href="support.html">Here</a></small>
+                      <small class="text-muted float-end"
+                        ><span class="text-danger">*</span>Contact Support for Updates
+                        <a href="support.html">Here</a></small
+                      >
+                    </div>
+                    <div>
+                      <div class="card-body">
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                          <img
+                            src="../assets/img/avatars/1.png"
+                            alt="user-avatar"
+                            class="d-block rounded"
+                            height="100"
+                            width="100"
+                            id="uploadedAvatar" />
+                          <div class="button-wrapper">
+                            <form action="">
+                              <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                <span class="d-none d-sm-block">Upload new photo</span>
+                                <i class="bx bx-upload d-block d-sm-none"></i>
+                                <input
+                                  type="file"
+                                  id="upload"
+                                  class="account-file-input"
+                                  hidden
+                                  accept="image/png, image/jpeg" />
+                              </label>
+                              <button type="submit" class="btn btn-success account-image-upload mb-4">Upload</button>
+                              <button type="reset" class="btn btn-outline-secondary account-image-reset mb-4">
+                                <i class="bx bx-reset d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Reset</span>
+                              </button>
+
+                              <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="my-0" />
                     </div>
                     <div class="card-body">
-                      <form>
-                        <div class="row">
-                          <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <form action="">
                             <fieldset>
                               <legend>Personal Data</legend>
 
-                              <div class="mb-3">
-                                <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
-                                <div class="input-group input-group-merge">
-                                  <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                  <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" />
+                              <div class="mb-3 d-block">
+                                <div class="mb-3 col-md-12">
+                                  <label for="firstName" class="form-label">First Name</label>
+                                  <input
+                                    class="form-control"
+                                    type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    value="Habeeb"
+                                    autofocus />
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                  <label for="lastName" class="form-label">Last Name</label>
+                                  <input
+                                    class="form-control"
+                                    type="text"
+                                    name="lastName"
+                                    id="lastName"
+                                    value="Bright" />
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                  <label for="otherName" class="form-label">Other Name</label>
+                                  <input
+                                    class="form-control"
+                                    type="text"
+                                    name="otherName"
+                                    id="otherName"
+                                    value="Bright" />
                                 </div>
                               </div>
 
@@ -362,25 +423,60 @@
                                 </div>
                               </div>
 
-                              <div class="mb-3">
-                                <label class="form-label" for="basic-icon-default-nationality">Nationality</label>
-                                <div class="input-group input-group-merge">
-                                  <span class="input-group-text"><i class="bx bx-flag"></i></span>
-                                  <input type="text" class="form-control" id="basic-icon-default-nationality" placeholder="Italian" />
-                                </div>
+                              <div class="mb-3 col-md-12">
+                                <label class="form-label" for="country">Country of Nationality</label>
+                                <select id="country" class="select2 form-select">
+                                  <option value="">Select</option>
+                                  <option value="Australia">Australia</option>
+                                  <option value="Bangladesh">Bangladesh</option>
+                                  <option value="Belarus">Belarus</option>
+                                  <option value="Brazil">Brazil</option>
+                                  <option value="Canada">Canada</option>
+                                  <option value="China">China</option>
+                                  <option value="France">France</option>
+                                  <option value="Germany">Germany</option>
+                                  <option value="India">India</option>
+                                  <option value="Indonesia">Indonesia</option>
+                                  <option value="Israel">Israel</option>
+                                  <option value="Italy">Italy</option>
+                                  <option value="Japan">Japan</option>
+                                  <option value="Korea">Korea, Republic of</option>
+                                  <option value="Mexico">Mexico</option>
+                                  <option value="Philippines">Philippines</option>
+                                  <option value="Russia">Russian Federation</option>
+                                  <option value="South Africa">South Africa</option>
+                                  <option value="Thailand">Thailand</option>
+                                  <option value="Turkey">Turkey</option>
+                                  <option value="Ukraine">Ukraine</option>
+                                  <option value="United Arab Emirates">United Arab Emirates</option>
+                                  <option value="United Kingdom">United Kingdom</option>
+                                  <option value="United States">United States</option>
+                                </select>
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label" for="basic-icon-default-id">National ID / Passport Number</label>
+                                <label class="form-label" for="basic-icon-default-id"
+                                  >National ID / Passport Number</label
+                                >
                                 <div class="input-group input-group-merge">
                                   <span class="input-group-text"><i class="bx bx-id-card"></i></span>
-                                  <input type="text" class="form-control" id="basic-icon-default-id" placeholder="AB123456" />
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="basic-icon-default-id"
+                                    placeholder="AB123456" />
                                 </div>
                               </div>
                             </fieldset>
-                          </div>
+                            <div class="mt-2">
+                              <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                              <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                            </div>
+                          </form>
+                        </div>
 
-                          <div class="col-md-6">
+                        <div class="col-md-6">
+                          <form action="">
                             <fieldset>
                               <legend>Bank Data</legend>
 
@@ -388,104 +484,251 @@
                                 <label class="form-label" for="basic-icon-default-hash">Account Number</label>
                                 <div class="input-group input-group-merge">
                                   <span class="input-group-text"><i class="bx bx-hash"></i></span>
-                                  <input type="number" id="basic-icon-default-hash" class="form-control" placeholder="0123456789" />
+                                  <input
+                                    type="number"
+                                    id="basic-icon-default-hash"
+                                    class="form-control"
+                                    placeholder="0123456789" />
                                 </div>
                               </div>
 
                               <div class="mb-3">
                                 <label class="form-label" for="basic-icon-default-income">Annual Income</label>
                                 <div class="input-group input-group-merge">
-                                  <span class="input-group-text"><i class="bx bx-euro"></i></span>
-                                  <input type="number" id="basic-icon-default-income" class="form-control" placeholder="50000" />
+                                  <span class="input-group-text"><i class="bx bx-dollar"></i></span>
+                                  <input
+                                    type="number"
+                                    id="basic-icon-default-income"
+                                    class="form-control"
+                                    placeholder="50000" />
                                 </div>
                               </div>
 
-                              <div class="mb-3">
-                                <label class="form-label" for="countryDataList">Country of Residence</label>
-                                <input class="form-control" list="countries" id="countryDataList" placeholder="Type to search..." />
-                                <datalist id="countries">
-                                  <option value="France"></option>
-                                  <option value="Germany"></option>
-                                  <option value="Italy"></option>
-                                  <option value="Spain"></option>
-                                  <option value="Netherlands"></option>
-                                </datalist>
+                              <div class="mb-3 col-md-12">
+                                <label class="form-label" for="country">Country of Residence</label>
+                                <select id="country" class="select2 form-select">
+                                  <option value="">Select</option>
+                                  <option value="Australia">Australia</option>
+                                  <option value="Bangladesh">Bangladesh</option>
+                                  <option value="Belarus">Belarus</option>
+                                  <option value="Brazil">Brazil</option>
+                                  <option value="Canada">Canada</option>
+                                  <option value="China">China</option>
+                                  <option value="France">France</option>
+                                  <option value="Germany">Germany</option>
+                                  <option value="India">India</option>
+                                  <option value="Indonesia">Indonesia</option>
+                                  <option value="Israel">Israel</option>
+                                  <option value="Italy">Italy</option>
+                                  <option value="Japan">Japan</option>
+                                  <option value="Korea">Korea, Republic of</option>
+                                  <option value="Mexico">Mexico</option>
+                                  <option value="Philippines">Philippines</option>
+                                  <option value="Russia">Russian Federation</option>
+                                  <option value="South Africa">South Africa</option>
+                                  <option value="Thailand">Thailand</option>
+                                  <option value="Turkey">Turkey</option>
+                                  <option value="Ukraine">Ukraine</option>
+                                  <option value="United Arab Emirates">United Arab Emirates</option>
+                                  <option value="United Kingdom">United Kingdom</option>
+                                  <option value="United States">United States</option>
+                                </select>
+                              </div>
+
+                              <div class="mb-3 col-md-12">
+                                <label class="form-label" for="state">State of Residence</label>
+                                <select id="state" class="select2 form-select">
+                                  <option value="">Select</option>
+                                  <option value="Australia">Australia</option>
+                                  <option value="Bangladesh">Bangladesh</option>
+                                  <option value="Belarus">Belarus</option>
+                                  <option value="Brazil">Brazil</option>
+                                  <option value="Canada">Canada</option>
+                                  <option value="China">China</option>
+                                  <option value="France">France</option>
+                                  <option value="Germany">Germany</option>
+                                  <option value="India">India</option>
+                                  <option value="Indonesia">Indonesia</option>
+                                  <option value="Israel">Israel</option>
+                                  <option value="Italy">Italy</option>
+                                  <option value="Japan">Japan</option>
+                                  <option value="Korea">Korea, Republic of</option>
+                                  <option value="Mexico">Mexico</option>
+                                  <option value="Philippines">Philippines</option>
+                                  <option value="Russia">Russian Federation</option>
+                                  <option value="South Africa">South Africa</option>
+                                  <option value="Thailand">Thailand</option>
+                                  <option value="Turkey">Turkey</option>
+                                  <option value="Ukraine">Ukraine</option>
+                                  <option value="United Arab Emirates">United Arab Emirates</option>
+                                  <option value="United Kingdom">United Kingdom</option>
+                                  <option value="United States">United States</option>
+                                </select>
+                              </div>
+
+                              <div class="mb-3 col-md-12">
+                                <label class="form-label" for="country">Tax Residence</label>
+                                <select id="taxResidence" class="select2 form-select">
+                                  <option value="">Select</option>
+                                  <option value="Australia">Australia</option>
+                                  <option value="Bangladesh">Bangladesh</option>
+                                  <option value="Belarus">Belarus</option>
+                                  <option value="Brazil">Brazil</option>
+                                  <option value="Canada">Canada</option>
+                                  <option value="China">China</option>
+                                  <option value="France">France</option>
+                                  <option value="Germany">Germany</option>
+                                  <option value="India">India</option>
+                                  <option value="Indonesia">Indonesia</option>
+                                  <option value="Israel">Israel</option>
+                                  <option value="Italy">Italy</option>
+                                  <option value="Japan">Japan</option>
+                                  <option value="Korea">Korea, Republic of</option>
+                                  <option value="Mexico">Mexico</option>
+                                  <option value="Philippines">Philippines</option>
+                                  <option value="Russia">Russian Federation</option>
+                                  <option value="South Africa">South Africa</option>
+                                  <option value="Thailand">Thailand</option>
+                                  <option value="Turkey">Turkey</option>
+                                  <option value="Ukraine">Ukraine</option>
+                                  <option value="United Arab Emirates">United Arab Emirates</option>
+                                  <option value="United Kingdom">United Kingdom</option>
+                                  <option value="United States">United States</option>
+                                </select>
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label" for="taxResidenceDataList">Tax Residence</label>
-                                <input class="form-control" list="taxResidences" id="taxResidenceDataList" placeholder="Type to search..." />
-                                <datalist id="taxResidences">
-                                  <option value="France"></option>
-                                  <option value="Germany"></option>
-                                  <option value="Italy"></option>
-                                  <option value="Spain"></option>
-                                  <option value="Netherlands"></option>
-                                </datalist>
-                              </div>
-
-                              <div class="mb-3">
-                                <label class="form-label" for="basic-icon-default-tax-id">Tax Identification Number</label>
+                                <label class="form-label" for="basic-icon-default-tax-id"
+                                  >Tax Identification Number</label
+                                >
                                 <div class="input-group input-group-merge">
                                   <span class="input-group-text"><i class="bx bx-file"></i></span>
-                                  <input type="text" id="basic-icon-default-tax-id" class="form-control" placeholder="123456789" />
+                                  <input
+                                    type="text"
+                                    id="basic-icon-default-tax-id"
+                                    class="form-control"
+                                    placeholder="123456789" />
                                 </div>
                               </div>
                             </fieldset>
-                          </div>
+                            <div class="mt-2">
+                              <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                              <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                            </div>
+                          </form>
                         </div>
+                      </div>
 
-                        <div class="row mt-4">
-                          <div class="col-md-12">
+                      <div class="row mt-4">
+                        <div class="col-md-12">
+                          <form action="">
                             <fieldset>
                               <legend>Bio Data</legend>
 
                               <div class="row">
                                 <div class="col-md-6">
                                   <div class="mb-3">
-                                    <label class="form-label" for="basic-icon-default-address">Residential Address</label>
+                                    <label class="form-label" for="basic-icon-default-address"
+                                      >Residential Address</label
+                                    >
                                     <div class="input-group input-group-merge">
                                       <span class="input-group-text"><i class="bx bx-home"></i></span>
-                                      <input type="text" class="form-control" id="basic-icon-default-address" placeholder="123 Main St, 12345 City" />
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="basic-icon-default-address"
+                                        placeholder="123 Main St, 12345 City" />
                                     </div>
+                                  </div>
+
+                                  <div class="mb-3 col-md-12">
+                                    <label for="timeZones" class="form-label">Timezone</label>
+                                    <select id="timeZones" class="select2 form-select">
+                                      <option value="">Select Timezone</option>
+                                      <option value="-12">(GMT-12:00) International Date Line West</option>
+                                      <option value="-11">(GMT-11:00) Midway Island, Samoa</option>
+                                      <option value="-10">(GMT-10:00) Hawaii</option>
+                                      <option value="-9">(GMT-09:00) Alaska</option>
+                                      <option value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
+                                      <option value="-8">(GMT-08:00) Tijuana, Baja California</option>
+                                      <option value="-7">(GMT-07:00) Arizona</option>
+                                      <option value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+                                      <option value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
+                                      <option value="-6">(GMT-06:00) Central America</option>
+                                      <option value="-6">(GMT-06:00) Central Time (US & Canada)</option>
+                                      <option value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                                      <option value="-6">(GMT-06:00) Saskatchewan</option>
+                                      <option value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+                                      <option value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
+                                      <option value="-5">(GMT-05:00) Indiana (East)</option>
+                                      <option value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
+                                      <option value="-4">(GMT-04:00) Caracas, La Paz</option>
+                                    </select>
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label" for="basic-icon-default-email">Email</label>
                                     <div class="input-group input-group-merge">
                                       <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                      <input type="email" id="basic-icon-default-email" class="form-control" placeholder="john.doe@example.com" />
+                                      <input
+                                        type="email"
+                                        id="basic-icon-default-email"
+                                        class="form-control"
+                                        placeholder="john.doe@example.com" />
                                     </div>
                                   </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                  <div class="mb-3">
-                                    <label class="form-label" for="basic-icon-default-phone">Phone Number</label>
+                                  <div class="mb-3 col-md-12">
+                                    <label class="form-label" for="phoneNumber">Phone Number</label>
                                     <div class="input-group input-group-merge">
-                                      <span class="input-group-text"><i class="bx bx-phone"></i></span>
-                                      <input type="tel" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="+39 123 456 7890" />
+                                      <span class="input-group-text">US (+1)</span>
+                                      <input
+                                        type="text"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        class="form-control"
+                                        placeholder="202 555 0111" />
                                     </div>
+                                  </div>
+
+                                  <div class="mb-3 col-md-12">
+                                    <label for="zipCode" class="form-label">Zip Code</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="zipCode"
+                                      name="zipCode"
+                                      placeholder="231465"
+                                      maxlength="6" />
                                   </div>
 
                                   <div class="mb-3">
                                     <label class="form-label" for="basic-icon-default-occupation">Occupation</label>
                                     <div class="input-group input-group-merge">
                                       <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
-                                      <input type="text" id="basic-icon-default-occupation" class="form-control" placeholder="Software Engineer" />
+                                      <input
+                                        type="text"
+                                        id="basic-icon-default-occupation"
+                                        class="form-control"
+                                        placeholder="Software Engineer" />
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </fieldset>
-                          </div>
+                            <div class="mt-2">
+                              <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                              <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                            </div>
+                          </form>
                         </div>
-                      </form>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4">
-
                   <form action="">
                     <div class="form-password-toggle">
                       <h5 class="mb-4">Change Password</h5>
@@ -559,12 +802,7 @@
     <!-- / Layout wrapper -->
 
     <div class="cont-sup">
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-danger btn-cont-sup"
-        >Support?</a
-      >
+      <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
 
     <!-- Core JS -->

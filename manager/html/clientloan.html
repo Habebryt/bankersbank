@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Banker's Bank | Admin </title>
+    <title>Banker's | Active Loans</title>
 
     <meta name="description" content="" />
 
@@ -114,14 +114,14 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboards -->
-            <li class="menu-item active open">
+            <li class="menu-item open">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Dashboards">Dashboards</div>
                 <div class="badge bg-danger rounded-pill ms-auto">5</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item">
                   <a href="index.html" class="menu-link">
                     <div data-i18n="Analytics">Account Overview</div>
                   </a>
@@ -130,29 +130,29 @@
             </li>
 
             <!-- Layouts -->
-             <!-- Transactions -->
+            <!-- Transactions -->
 
-                <li class="menu-item">
-                  <a href="transactions.html" class="menu-link">
-                    <i class='menu-icon tf-icons bx bx-wallet'></i>
-                    <div data-i18n="Container">Transactions</div>
-                  </a>
-                </li>
-                <li class="menu-item d-none">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div data-i18n="Blank">Blank</div>
-                  </a>
-                </li>
+            <li class="menu-item">
+              <a href="transactions.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="Container">Transactions</div>
+              </a>
+            </li>
+            <li class="menu-item d-none">
+              <a href="layouts-blank.html" class="menu-link">
+                <div data-i18n="Blank">Blank</div>
+              </a>
+            </li>
 
             <!-- Loans and Mortgages -->
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-credit-card-alt'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
               </a>
 
               <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item active">
                   <a href="activeloans.html" class="menu-link">
                     <div data-i18n="Container">Active Loans</div>
                   </a>
@@ -179,19 +179,20 @@
                 </li>
               </ul>
             </li>
-<!-- card -->
+            <!-- card -->
             <li class="menu-item">
               <a href="card.html" class="menu-link">
-                <i class='menu-icon tf-icons bx bx-credit-card'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
-<!-- Account -->
+            <!-- Account -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bxs-bank' ></i>
+                <i class="menu-icon tf-icons bx bxs-bank"></i>
                 <div data-i18n="Layouts">Accounts</div>
               </a>
+
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="investment.html" class="menu-link">
@@ -207,14 +208,14 @@
             </li>
             <!-- Settings -->
             <li class="menu-item">
-              <a href="accountmanagement.html" class="menu-link">
+              <a href="layouts-container.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Container">Account Management</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-help-circle'></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Misc">Support</div>
               </a>
               <ul class="menu-sub">
@@ -278,10 +279,8 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-medium d-block">Habeeb Bright</span>
-
                             <small class="text-muted">Acct No: 1234567890</small>
-                            <br>
-                            <small class="text-muted">Super Admin</small>
+                            <small class="text-muted">Level: Gold</small>
                           </div>
                         </div>
                       </a>
@@ -305,7 +304,7 @@
                       <a class="dropdown-item" href="#">
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle ms-1">Add Acct</span>
+                          <span class="flex-grow-1 align-middle ms-1">Subscription</span>
                           <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
                         </span>
                       </a>
@@ -333,262 +332,266 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="index.html">Overview</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="javascript:void(0);">Payments</a>
+                  </li>
+                  <li class="breadcrumb-item active">Active Loans</li>
+                </ol>
+              </nav>
               <div class="row">
-                <div class="col-lg-12 col-md-12 order-1">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
+                <div class="col-md-6">
+                  <div class="col-lg-12 col-md-12 order-1">
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <img
+                                  src="../assets/img/icons/unicons/chart-success.png"
+                                  alt="chart success"
+                                  class="rounded" />
+                              </div>
+                              <div class="dropdown">
+                                <button
+                                  class="btn p-0"
+                                  type="button"
+                                  id="cardOpt3"
+                                  data-bs-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                  <a class="dropdown-item" href="javascript:void(0);">Make Payment</a>
+                                  <a class="dropdown-item" href="javascript:void(0);">View Details</a>
+                                </div>
+                              </div>
+                            </div>
+                            <span class="fw-medium d-block mb-1">Total Loan Balance</span>
+                            <h3 class="card-title mb-2">$120,628.89</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <img
+                                  src="../assets/img/icons/unicons/wallet-info.png"
+                                  alt="Credit Card"
+                                  class="rounded" />
+                              </div>
+                              <div class="dropdown">
+                                <button
+                                  class="btn p-0"
+                                  type="button"
+                                  id="cardOpt6"
+                                  data-bs-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                                  <a class="dropdown-item" href="javascript:void(0);">View Statement</a>
+                                  <a class="dropdown-item" href="javascript:void(0);">Payment History</a>
+                                </div>
+                              </div>
+                            </div>
+                            <span>Next Payment Due</span>
+                            <h3 class="card-title text-nowrap text-danger mb-1">$2,345.67</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-12 col-lg-12 order-3 order-md-2">
+                    <div class="row">
+                      <div class="col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <img
+                                  src="../assets/img/icons/unicons/cc-primary.png"
+                                  alt="Credit Card"
+                                  class="rounded" />
+                              </div>
+                              <div class="dropdown">
+                                <button
+                                  class="btn p-0"
+                                  type="button"
+                                  id="cardOpt1"
+                                  data-bs-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="cardOpt1">
+                                  <a class="dropdown-item" href="javascript:void(0);">View Details</a>
+                                  <a class="dropdown-item" href="javascript:void(0);">Refinance</a>
+                                </div>
+                              </div>
+                            </div>
+                            <span class="fw-medium d-block mb-1">Interest Rate</span>
+                            <h3 class="card-title mb-2">4.5%</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                              <div class="avatar flex-shrink-0">
+                                <img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
+                              </div>
+                              <div class="dropdown">
+                                <button
+                                  class="btn p-0"
+                                  type="button"
+                                  id="cardOpt4"
+                                  data-bs-toggle="dropdown"
+                                  aria-haspopup="true"
+                                  aria-expanded="false">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+                                  <a class="dropdown-item" href="javascript:void(0);">View Schedule</a>
+                                  <a class="dropdown-item" href="javascript:void(0);">Modify Terms</a>
+                                </div>
+                              </div>
+                            </div>
+                            <span class="d-block mb-1">Loan Term</span>
+                            <h3 class="card-title text-nowrap mb-2">15 Years</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Active Loans -->
+                <div class="col-md-6">
+                  <div class="col-md-12 col-lg-12 order-2 mb-4">
+                    <div class="card h-100">
+                      <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="card-title m-0 me-2">Active Loans</h5>
+                        <div class="dropdown">
+                          <button
+                            class="btn p-0"
+                            type="button"
+                            id="transactionID"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+                            <a class="dropdown-item" href="javascript:void(0);">Sort by Amount</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Sort by Date</a>
+                            <a class="dropdown-item" href="javascript:void(0);">Sort by Type</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <ul class="p-0 m-0 list-group">
+                          <li class="d-flex mb-4 pb-1 list-group-item">
+                            <div class="avatar flex-shrink-0 me-3">
+                              <img src="../assets/img/icons/unicons/home.png" alt="Home Loan" class="rounded" />
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                              <div class="me-2">
+                                <small class="text-muted d-block mb-1">Home Loan</small>
+                                <h6 class="mb-0">Mortgage</h6>
+                              </div>
+                              <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0">$250,000</h6>
+                                <span class="text-muted">USD</span>
+                                <button class="btn btn-primary">Details</button>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="d-flex mb-4 pb-1 list-group-item">
+                            <div class="avatar flex-shrink-0 me-3">
+                              <img src="../assets/img/icons/unicons/car.png" alt="Auto Loan" class="rounded" />
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                              <div class="me-2">
+                                <small class="text-muted d-block mb-1">Auto Loan</small>
+                                <h6 class="mb-0">Vehicle Finance</h6>
+                              </div>
+                              <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0">$35,000</h6>
+                                <span class="text-muted">USD</span>
+                                <button class="btn btn-primary">Details</button>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="d-flex mb-4 pb-1 list-group-item">
+                            <div class="avatar flex-shrink-0 me-3">
+                              <img src="../assets/img/icons/unicons/chart.png" alt="Personal Loan" class="rounded" />
+                            </div>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                              <div class="me-2">
+                                <small class="text-muted d-block mb-1">Personal Loan</small>
+                                <h6 class="mb-0">Debt Consolidation</h6>
+                              </div>
+                              <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0">$15,000</h6>
+                                <span class="text-muted">USD</span>
+                                <button class="btn btn-primary">Details</button>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="d-flex mb-4 pb-1 list-group-item">
+                            <div class="avatar flex-shrink-0 me-3">
                               <img
-                                src="../assets/img/icons/unicons/chart-success.png"
-                                alt="chart success"
+                                src="../assets/img/icons/unicons/cc-success.png"
+                                alt="Business Loan"
                                 class="rounded" />
                             </div>
-                            <div class="dropdown">
-                              <button
-                                class="btn p-0"
-                                type="button"
-                                id="cardOpt3"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                <a class="dropdown-item" href="javascript:void(0);">Transfer</a>
-                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                              <div class="me-2">
+                                <small class="text-muted d-block mb-1">Business Loan</small>
+                                <h6 class="mb-0">Equipment Finance</h6>
+                              </div>
+                              <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0">$75,000</h6>
+                                <span class="text-muted">USD</span>
+                                <button class="btn btn-primary">Details</button>
                               </div>
                             </div>
-                          </div>
-                          <span class="fw-medium d-block mb-1">Balance</span>
-                          <h3 class="card-title mb-2">$12,628</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img
-                                src="../assets/img/icons/unicons/wallet-info.png"
-                                alt="Credit Card"
-                                class="rounded" />
+                          </li>
+                          <li class="d-flex mb-4 pb-1 list-group-item">
+                            <div class="avatar flex-shrink-0 me-3">
+                              <img src="../assets/img/icons/unicons/wallet.png" alt="Education Loan" class="rounded" />
                             </div>
-                            <div class="dropdown">
-                              <button
-                                class="btn p-0"
-                                type="button"
-                                id="cardOpt6"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                <a class="dropdown-item" href="javascript:void(0);">Quick Credit</a>
-                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                              <div class="me-2">
+                                <small class="text-muted d-block mb-1">Education Loan</small>
+                                <h6 class="mb-0">Student Finance</h6>
+                              </div>
+                              <div class="user-progress d-flex align-items-center gap-1">
+                                <h6 class="mb-0">$50,000</h6>
+                                <span class="text-muted">USD</span>
+                                <button class="btn btn-primary">Details</button>
                               </div>
                             </div>
-                          </div>
-                          <span>Business Account</span>
-                          <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-
-                        </div>
+                          </li>
+                        </ul>
+                        <p class="text-muted text-center">
+                          <a href="loans.html" class="link-primary">View All Loans</a>
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <div class="col-12 col-md-8 col-lg-6 order-3 order-md-2">
-                  <div class="row">
-                    <div class="col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
-                            </div>
-                            <div class="dropdown">
-                              <button
-                                class="btn p-0"
-                                type="button"
-                                id="cardOpt1"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                              </div>
-                            </div>
-                          </div>
-                          <span class="fw-medium d-block mb-1">Business Savings</span>
-                          <h3 class="card-title mb-2">$14,857</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
-                            </div>
-                            <div class="dropdown">
-                              <button
-                                class="btn p-0"
-                                type="button"
-                                id="cardOpt4"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                              </div>
-                            </div>
-                          </div>
-                          <span class="d-block mb-1">Expense</span>
-                          <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-                 <!-- Transactions -->
-                 <div class="col-md-6 col-lg-6 order-2 mb-4">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Recent Transactions</h5>
-                      <div class="dropdown">
-                        <button
-                          class="btn p-0"
-                          type="button"
-                          id="transactionID"
-                          data-bs-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="bx bx-dots-vertical-rounded"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                          <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                          <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <ul class="p-0 m-0 list-group">
-                        <li class="d-flex mb-4 pb-1 list-group-item">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Paypal</small>
-                              <h6 class="mb-0">Sent money</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0"><span class="text-danger">-2,456</span></h6>
-                              <span class="text-muted">USD</span>
-                              <button class="btn btn-primary">View</button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1 list-group-item">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wire Deposit</small>
-                              <h6 class="mb-0">Habeeb Bright</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0"><span class="text-success">+14,857</span></h6>
-                              <span class="text-muted">USD</span>
-                              <button class="btn btn-primary">View</button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1 list-group-item">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="../assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Transfer</small>
-                              <h6 class="mb-0">Refund</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0"><span class="text-success">+637.91</span></h6>
-                              <span class="text-muted">USD</span>
-                              <button class="btn btn-primary">View</button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1 list-group-item">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Credit Card</small>
-                              <h6 class="mb-0">Ordered Food</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0"><span class="text-danger">-838.71</span></h6>
-                              <span class="text-muted">USD</span>
-                              <button class="btn btn-primary">View</button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1 list-group-item">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wallet</small>
-                              <h6 class="mb-0">Starbucks</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0"><span class="text-danger">-203.33</span></h6>
-                              <span class="text-muted">USD</span>
-                              <button class="btn btn-primary">View</button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex list-group-item">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Mastercard</small>
-                              <h6 class="mb-0">Ordered Food</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0"><span class="text-danger">-92.45</span></h6>
-                              <span class="text-muted">USD</span>
-                              <button class="btn btn-primary">View</button>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                      <p class="text-muted text-center"><a href="transactions.html" class="link-primary">View More</a></p>
-                    </div>
-                  </div>
-                </div>
-                <!--/ Transactions -->
+                <!--/ Active Loans -->
               </div>
             </div>
             <!-- / Content -->
@@ -615,12 +618,7 @@
     <!-- / Layout wrapper -->
 
     <div class="cont-sup">
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-danger btn-cont-sup"
-        >Support?</a
-      >
+      <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
 
     <!-- Core JS -->
