@@ -49,7 +49,6 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="index.html" class="app-brand-link">
@@ -234,7 +233,6 @@
           </ul>
         </aside>
         <!-- / Menu -->
-
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
@@ -246,7 +244,6 @@
                 <i class="bx bx-menu bx-sm"></i>
               </a>
             </div>
-
             <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
               <!-- Search -->
               <div class="navbar-nav align-items-center">
@@ -324,13 +321,10 @@
               </ul>
             </div>
           </nav>
-
           <!-- / Navbar -->
-
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-
             <div class="container-xxl flex-grow-1 container-p-y">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -340,7 +334,10 @@
                   <li class="breadcrumb-item">
                     <a href="javascript:void(0);">Payments</a>
                   </li>
-                  <li class="breadcrumb-item active">Quick Cash</li>
+                  <li class="breadcrumb-item">
+                    <a href="cash.html">Quick Cash</a>
+                  </li>
+                  <li class="breadcrumb-item active">Client Name</li>
                 </ol>
               </nav>
               <div class="row">
@@ -352,11 +349,11 @@
                         <div class="card-body">
                           <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                              <img src="../assets/img/icons/unicons/wallet.png" alt="wallet" class="rounded" />
+                              <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
                             </div>
                             <div class="dropdown">
                               <button
-                                class="btn p-0"
+                                class="btn p-0 disabled"
                                 type="button"
                                 id="cardOpt3"
                                 data-bs-toggle="dropdown"
@@ -380,11 +377,11 @@
                         <div class="card-body">
                           <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                              <img src="../assets/img/icons/unicons/cc-warning.png" alt="Credit Card" class="rounded" />
+                              <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
                             </div>
                             <div class="dropdown">
                               <button
-                                class="btn p-0"
+                                class="btn p-0 disabled"
                                 type="button"
                                 id="cardOpt6"
                                 data-bs-toggle="dropdown"
@@ -410,11 +407,11 @@
                         <div class="card-body">
                           <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                              <img src="../assets/img/icons/unicons/paypal.png" alt="Paypal" class="rounded" />
+                              <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
                             </div>
                             <div class="dropdown">
                               <button
-                                class="btn p-0"
+                                class="btn p-0 disabled"
                                 type="button"
                                 id="cardOpt4"
                                 data-bs-toggle="dropdown"
@@ -438,11 +435,11 @@
                         <div class="card-body">
                           <div class="card-title d-flex align-items-start justify-content-between">
                             <div class="avatar flex-shrink-0">
-                              <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
+                              <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
                             </div>
                             <div class="dropdown">
                               <button
-                                class="btn p-0"
+                                class="btn p-0 disabled"
                                 type="button"
                                 id="cardOpt1"
                                 data-bs-toggle="dropdown"
@@ -491,7 +488,6 @@
                           <thead class="table-light">
                             <tr>
                               <th scope="col" class="text-nowrap">Option</th>
-                              <th scope="col">Description</th>
                               <th scope="col">Amount</th>
                               <th scope="col" class="text-center">Action</th>
                             </tr>
@@ -508,9 +504,11 @@
                                   <span class="fw-semibold">Instant Cash</span>
                                 </div>
                               </td>
-                              <td>Same Day Transfer</td>
+
                               <td>Up to $1,000</td>
-                              <td class="text-center"><button class="btn btn-sm btn-primary">Apply Now</button></td>
+                              <td class="text-center">
+                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
+                              </td>
                             </tr>
                             <tr>
                               <td>
@@ -523,9 +521,11 @@
                                   <span class="fw-semibold">Flex Loan</span>
                                 </div>
                               </td>
-                              <td>Customizable Terms</td>
+
                               <td>$1,000 - $5,000</td>
-                              <td class="text-center"><button class="btn btn-sm btn-primary">Apply Now</button></td>
+                              <td class="text-center">
+                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
+                              </td>
                             </tr>
                             <tr>
                               <td>
@@ -538,9 +538,11 @@
                                   <span class="fw-semibold">Cash Advance</span>
                                 </div>
                               </td>
-                              <td>Short-term Solution</td>
+
                               <td>Up to $500</td>
-                              <td class="text-center"><button class="btn btn-sm btn-primary">Apply Now</button></td>
+                              <td class="text-center">
+                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
+                              </td>
                             </tr>
                             <tr>
                               <td>
@@ -553,9 +555,11 @@
                                   <span class="fw-semibold">Line of Credit</span>
                                 </div>
                               </td>
-                              <td>Revolving Credit</td>
+
                               <td>Up to $10,000</td>
-                              <td class="text-center"><button class="btn btn-sm btn-primary">Apply Now</button></td>
+                              <td class="text-center">
+                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
+                              </td>
                             </tr>
                             <tr>
                               <td>
@@ -568,15 +572,17 @@
                                   <span class="fw-semibold">Business Loan</span>
                                 </div>
                               </td>
-                              <td>For Entrepreneurs</td>
+
                               <td>$5,000 - $50,000</td>
-                              <td class="text-center"><button class="btn btn-sm btn-primary">Apply Now</button></td>
+                              <td class="text-center">
+                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
                       <p class="text-muted text-center mt-3">
-                        <a href="loan_calculator.html" class="link-primary">Use Our Loan Calculator</a>
+                        <a href="javascript:void(0);" class="link-primary">Use Our Loan Calculator</a>
                       </p>
                     </div>
                   </div>

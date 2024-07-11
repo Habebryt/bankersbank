@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Banker's | House Mortgage</title>
+    <title>Banker's | Account Management</title>
 
     <meta name="description" content="" />
 
@@ -145,7 +145,7 @@
             </li>
 
             <!-- Loans and Mortgages -->
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
@@ -157,7 +157,7 @@
                     <div data-i18n="Container">Active Loans</div>
                   </a>
                 </li>
-                <li class="menu-item active">
+                <li class="menu-item">
                   <a href="loans.html" class="menu-link">
                     <div data-i18n="Container">House Mortgage</div>
                   </a>
@@ -207,8 +207,8 @@
               </ul>
             </li>
             <!-- Settings -->
-            <li class="menu-item">
-              <a href="layouts-container.html" class="menu-link">
+            <li class="menu-item active">
+              <a href="accountmanagement.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Container">Account Management</div>
               </a>
@@ -338,256 +338,97 @@
                     <a href="index.html">Overview</a>
                   </li>
                   <li class="breadcrumb-item">
-                    <a href="javascript:void(0);">Payments</a>
+                    <a href="javascript:void(0);">Support</a>
                   </li>
                   <li class="breadcrumb-item">
-                    <a href="loans.html">House Mortgage</a>
+                    <a href="clientrequest.html">Support Messages</a>
                   </li>
                   <li class="breadcrumb-item active">Client Name</li>
                 </ol>
               </nav>
               <div class="row">
-                <div class="col-md-6">
-                  <div class="col-lg-12 col-md-12 order-1">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
-                              </div>
-                              <div class="dropdown">
-                                <button
-                                  class="btn p-0 disabled"
-                                  type="button"
-                                  id="cardOpt3"
-                                  data-bs-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                  <a class="dropdown-item" href="javascript:void(0);">Make Payment</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Refinance Options</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span class="fw-medium d-block mb-1">Mortgage Balance</span>
-                            <h3 class="card-title mb-2">$320,628.89</h3>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
-                              </div>
-                              <div class="dropdown">
-                                <button
-                                  class="btn p-0 disabled"
-                                  type="button"
-                                  id="cardOpt6"
-                                  data-bs-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                  <a class="dropdown-item" href="javascript:void(0);">Payment Schedule</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Extra Payment</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span>Monthly Payment</span>
-                            <h3 class="card-title text-nowrap mb-1">$1,845.67</h3>
-                          </div>
-                        </div>
-                      </div>
+                <div class="col-xxl">
+                  <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0">Client Name</h5>
                     </div>
-                  </div>
-                  <div class="col-12 col-md-12 col-lg-12 order-3 order-md-2">
-                    <div class="row">
-                      <div class="col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
-                              </div>
-                              <div class="dropdown">
-                                <button
-                                  class="btn p-0 disabled"
-                                  type="button"
-                                  id="cardOpt1"
-                                  data-bs-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                  <a class="dropdown-item" href="javascript:void(0);">Interest Details</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Amortization Schedule</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span class="fw-medium d-block mb-1">Interest Rate</span>
-                            <h3 class="card-title mb-2">3.75%</h3>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
+                        <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                            <input
+                              type="text"
+                              id="basic-icon-default-email"
+                              class="form-control"
+                              placeholder="john.doe"
+                              aria-label="john.doe"
+                              aria-describedby="basic-icon-default-email2"  disabled/>
+
                           </div>
                         </div>
                       </div>
-                      <div class="col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <button class="btn btn-sm btn-primary"><i class="bx bx-edit"></i></button>
-                              </div>
-                              <div class="dropdown">
-                                <button
-                                  class="btn p-0 disabled"
-                                  type="button"
-                                  id="cardOpt4"
-                                  data-bs-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                                  <a class="dropdown-item" href="javascript:void(0);">Loan Details</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Modify Terms</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span class="d-block mb-1">Remaining Term</span>
-                            <h3 class="card-title text-nowrap mb-2">28 Years</h3>
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-subject disabled">Subject</label>
+                        <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-subject" class="input-group-text"
+                              ><i class="bx bx-message"></i
+                            ></span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="basic-icon-default-subject"
+                              placeholder="Enter Subject"
+                              aria-label="Enter Subject"
+                              aria-describedby="basic-icon-default-subject" disabled />
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Mortgage Details -->
-                <div class="col-md-6">
-                  <div class="col-md-12 col-lg-12 order-2 mb-4">
-                    <div class="card h-100">
-                      <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="card-title m-0 me-2">Mortgage Details</h5>
-                        <div class="dropdown">
-                          <button
-                            class="btn p-0"
-                            type="button"
-                            id="mortgageDetails"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="bx bx-dots-vertical-rounded"></i>
+                      <div class="row mb-3">
+                        <label class="col-sm-2 form-label" for="basic-icon-default-message">Message</label>
+                        <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-message2" class="input-group-text"
+                              ><i class="bx bx-comment"></i
+                            ></span>
+                            <textarea
+                              id="basic-icon-default-message"
+                              class="form-control textarea"
+                              placeholder="Hi, Do you have a moment to talk Joe?"
+                              aria-label="Hi, Do you have a moment to talk Joe?"
+                              rows="5"
+                              aria-describedby="basic-icon-default-message2" disabled></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row justify-content-end">
+                        <div class="col-sm-10 d-flex">
+                          <button type="submit" class="btn btn-primary">
+                            Send Mail <i class="bx bx-envelope ms-2"></i>
                           </button>
-                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="mortgageDetails">
-                            <a class="dropdown-item" href="javascript:void(0);">Full Statement</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Property Valuation</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Tax Information</a>
+                         <div class="col-md-6 ms-2">
+                          <form action="">
+                            <div class="input-group">
+                                <select
+                                  class="form-select"
+                                  id="inputGroupSelect04"
+                                  aria-label="Select with button addon">
+                                  <option hidden>Choose...</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary">Update</button>
+                              </form>
+                         </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="card-body">
-                        <ul class="p-0 m-0 list-group">
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img
-                                src="../assets/img/icons/unicons/home-value.png"
-                                alt="Property Value"
-                                class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Property Value</small>
-                                <h6 class="mb-0">P Value</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$450,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/equity.png" alt="Home Equity" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Home Equity</small>
-                                <h6 class="mb-0">Available</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$129,371.11</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img
-                                src="../assets/img/icons/unicons/calendar-check.png"
-                                alt="Next Payment"
-                                class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Next Payment</small>
-                                <h6 class="mb-0">Due Date</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">August 1, 2024</h6>
-                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/escrow.png" alt="Escrow" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Escrow</small>
-                                <h6 class="mb-0">Balance</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$5,234.78</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/insurance.png" alt="Insurance" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Home Insurance</small>
-                                <h6 class="mb-0">Annual</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$1,200.00</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-sm btn-primary">Edit <i class="bx bx-edit"></i></button>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                        <p class="text-muted text-center">
-                          <a href="mortgage_details.html" class="link-primary">View Full Mortgage Details</a>
-                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!--/ Mortgage Details -->
               </div>
             </div>
             <!-- / Content -->
