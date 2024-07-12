@@ -49,7 +49,6 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="index.html" class="app-brand-link">
@@ -130,24 +129,41 @@
             </li>
 
             <!-- Layouts -->
-             <!-- Transactions -->
+            <!-- Transactions -->
 
-                <li class="menu-item active">
+            <li class="menu-item active">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="transaction">Transactions</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
                   <a href="transactions.html" class="menu-link">
-                    <i class='menu-icon tf-icons bx bx-wallet'></i>
-                    <div data-i18n="Container">Transactions</div>
+                    <div data-i18n="transaction">My Transactions</div>
                   </a>
                 </li>
-                <li class="menu-item d-none">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div data-i18n="Blank">Blank</div>
+                <li class="menu-item">
+                  <a href="confirmedtransactions.html" class="menu-link">
+                    <div data-i18n="transaction">Confirmed</div>
                   </a>
                 </li>
+                <li class="menu-item active">
+                  <a href="pendingtransactions.html" class="menu-link">
+                    <div data-i18n="transaction">Pending</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="declinedtransactions.html" class="menu-link">
+                    <div data-i18n="transaction">Declined</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
 
             <!-- Loans and Mortgages -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-credit-card-alt'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
               </a>
 
@@ -179,15 +195,25 @@
                 </li>
               </ul>
             </li>
+            <!-- card -->
             <li class="menu-item">
               <a href="card.html" class="menu-link">
-                <i class='menu-icon tf-icons bx bx-credit-card'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
+
+            <!-- client -->
+            <li class="menu-item">
+              <a href="accounts.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Container">Clients</div>
+              </a>
+            </li>
+            <!-- Account -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bxs-bank' ></i>
+                <i class="menu-icon tf-icons bx bxs-bank"></i>
                 <div data-i18n="Layouts">Accounts</div>
               </a>
               <ul class="menu-sub">
@@ -205,25 +231,36 @@
             </li>
             <!-- Settings -->
             <li class="menu-item">
-              <a href="layouts-container.html" class="menu-link">
+              <a href="myaccount.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Container">Account Management</div>
+                <div data-i18n="Container">My Profile</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="mysubscription.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Container">My Subscription</div>
               </a>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-help-circle'></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Misc">Support</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="pages-misc-error.html" class="menu-link">
+                  <a href="messagesupport.html" class="menu-link">
                     <div data-i18n="Error">Message Support</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="pages-misc-under-maintenance.html" class="menu-link">
-                    <div data-i18n="Under Maintenance">View Past Requests</div>
+                  <a href="clientrequest.html" class="menu-link">
+                    <div data-i18n="Under Maintenance">Client Requests</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="pastrequest.html" class="menu-link">
+                    <div data-i18n="Under Maintenance">Previous Requests</div>
                   </a>
                 </li>
               </ul>
@@ -343,83 +380,88 @@
                 </nav>
               </div>
               <div class="row">
-                  <div class="card">
-                    <h5 class="card-header">Pending Transactions</h5>
-                      <div class="table-responsive text-nowrap">
-                          <table class="table table-hover">
-                              <caption class="ms-4">
-                                Transaction Summary: Debit: <span class="text-danger">$5,750.00</span> | Credit: <span class="text-success">$3,200.00</span> | Total: $2,550.00
-                              </caption>
-                                <thead>
-        <tr>
-          <th>Transaction ID</th>
-          <th>Date <i class='bx bx-sort'></i></th>
-          <th>Sender </th>
-          <th>Receiver <i class='bx bx-sort'></i></th>
-          <th>Amount </th>
-          <th>Balance <i class='bx bx-sort'></i></th>
-          <th>Actions</th>
-        </tr>
-                                </thead>
-                                  <tbody>
-                                    <tr>
-          <td>
-            <i class="bx bx-transfer text-danger me-3"></i>
-            <span class="fw-medium">TRX-001</span>
-          </td>
-          <td>2023-07-01</td>
-          <td>Habeeb Bright</td>
-          <td>John Paul</td>
-          <td>$5,000</td>
-          <td>$39,000.00</td>
-          <td>
-            <div class="dropdown">
-              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                <i class="bx bx-dots-vertical-rounded"></i>
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="javascript:void(0);"
-                ><i class='bx bx-low-vision bx-flip-horizontal' ></i> View</a
-              >
-              </div>
-            </div>
-          </td>
-                                    </tr>
-
-                                  </tbody>
-                          </table>
-                          <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-sm">
-                              <li class="page-item prev">
-                                <a class="page-link" href="javascript:void(0);"
-                                  ><i class="tf-icon bx bx-chevrons-left"></i
-                                ></a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">1</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">2</a>
-                              </li>
-                              <li class="page-item active">
-                                <a class="page-link" href="javascript:void(0);">3</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">4</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="javascript:void(0);">5</a>
-                              </li>
-                              <li class="page-item next">
-                                <a class="page-link" href="javascript:void(0);"
-                                  ><i class="tf-icon bx bx-chevrons-right"></i
-                                ></a>
-                              </li>
-                            </ul>
-                          </nav>
-                      </div>
+                <div class="card">
+                  <h5 class="card-header">Pending Transactions</h5>
+                  <div class="table-responsive text-nowrap">
+                    <table class="table table-hover">
+                      <caption class="ms-4">
+                        Transaction Summary: Debit:
+                        <span class="text-danger">$5,750.00</span>
+                        | Credit:
+                        <span class="text-success">$3,200.00</span>
+                        | Total: $2,550.00
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th>Transaction ID</th>
+                          <th>Date <i class="bx bx-sort"></i></th>
+                          <th>Sender</th>
+                          <th>Receiver <i class="bx bx-sort"></i></th>
+                          <th>Amount</th>
+                          <th>Balance <i class="bx bx-sort"></i></th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <i class="bx bx-transfer text-danger me-3"></i>
+                            <span class="fw-medium">TRX-001</span>
+                          </td>
+                          <td>2023-07-01</td>
+                          <td>Habeeb Bright</td>
+                          <td>John Paul</td>
+                          <td>$5,000</td>
+                          <td>$39,000.00</td>
+                          <td>
+                            <div class="dropdown">
+                              <button
+                                type="button"
+                                class="btn p-0 dropdown-toggle hide-arrow"
+                                data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                              <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void(0);"
+                                  ><i class="bx bx-low-vision bx-flip-horizontal"></i> View</a
+                                >
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination pagination-sm">
+                        <li class="page-item prev">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevrons-left"></i
+                          ></a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">1</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">2</a>
+                        </li>
+                        <li class="page-item active">
+                          <a class="page-link" href="javascript:void(0);">3</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">4</a>
+                        </li>
+                        <li class="page-item">
+                          <a class="page-link" href="javascript:void(0);">5</a>
+                        </li>
+                        <li class="page-item next">
+                          <a class="page-link" href="javascript:void(0);"
+                            ><i class="tf-icon bx bx-chevrons-right"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
-
+                </div>
 
                 <!--/ Transactions -->
               </div>
@@ -448,12 +490,7 @@
     <!-- / Layout wrapper -->
 
     <div class="cont-sup">
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-danger btn-cont-sup"
-        >Support?</a
-      >
+      <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
 
     <!-- Core JS -->
