@@ -13,7 +13,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Banker's | Active Loans</title>
+    <title>Banker's | Account Management</title>
 
     <meta name="description" content="" />
 
@@ -49,7 +49,6 @@
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <!-- Menu -->
-
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="index.html" class="app-brand-link">
@@ -130,29 +129,46 @@
             </li>
 
             <!-- Layouts -->
-             <!-- Transactions -->
+            <!-- Transactions -->
 
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="transaction">Transactions</div>
+              </a>
+              <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="transactions.html" class="menu-link">
-                    <i class='menu-icon tf-icons bx bx-wallet'></i>
-                    <div data-i18n="Container">Transactions</div>
+                    <div data-i18n="transaction">My Transactions</div>
                   </a>
                 </li>
-                <li class="menu-item d-none">
-                  <a href="layouts-blank.html" class="menu-link">
-                    <div data-i18n="Blank">Blank</div>
+                <li class="menu-item">
+                  <a href="confirmedtransactions.html" class="menu-link">
+                    <div data-i18n="transaction">Confirmed</div>
                   </a>
                 </li>
+                <li class="menu-item">
+                  <a href="pendingtransactions.html" class="menu-link">
+                    <div data-i18n="transaction">Pending</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="declinedtransactions.html" class="menu-link">
+                    <div data-i18n="transaction">Declined</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
 
             <!-- Loans and Mortgages -->
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-credit-card-alt'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
                 <div data-i18n="Layouts">Payments</div>
               </a>
 
               <ul class="menu-sub">
-                <li class="menu-item active">
+                <li class="menu-item">
                   <a href="activeloans.html" class="menu-link">
                     <div data-i18n="Container">Active Loans</div>
                   </a>
@@ -179,20 +195,27 @@
                 </li>
               </ul>
             </li>
-<!-- card -->
+            <!-- card -->
             <li class="menu-item">
               <a href="card.html" class="menu-link">
-                <i class='menu-icon tf-icons bx bx-credit-card'></i>
+                <i class="menu-icon tf-icons bx bx-credit-card"></i>
                 <div data-i18n="Container">Cards</div>
               </a>
             </li>
-<!-- Account -->
+
+            <!-- client -->
+            <li class="menu-item">
+              <a href="accounts.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Container">Clients</div>
+              </a>
+            </li>
+            <!-- Account -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bxs-bank' ></i>
+                <i class="menu-icon tf-icons bx bxs-bank"></i>
                 <div data-i18n="Layouts">Accounts</div>
               </a>
-
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="investment.html" class="menu-link">
@@ -208,25 +231,36 @@
             </li>
             <!-- Settings -->
             <li class="menu-item">
-              <a href="layouts-container.html" class="menu-link">
+              <a href="myaccount.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Container">Account Management</div>
+                <div data-i18n="Container">My Profile</div>
               </a>
             </li>
             <li class="menu-item">
+              <a href="mysubscription.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Container">My Subscription</div>
+              </a>
+            </li>
+            <li class="menu-item active">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class='menu-icon tf-icons bx bx-help-circle'></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Misc">Support</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="pages-misc-error.html" class="menu-link">
+                  <a href="messagesupport.html" class="menu-link">
                     <div data-i18n="Error">Message Support</div>
                   </a>
                 </li>
+                <li class="menu-item active">
+                  <a href="clientrequest.html" class="menu-link">
+                    <div data-i18n="Under Maintenance">Client Requests</div>
+                  </a>
+                </li>
                 <li class="menu-item">
-                  <a href="pages-misc-under-maintenance.html" class="menu-link">
-                    <div data-i18n="Under Maintenance">View Past Requests</div>
+                  <a href="pastrequest.html" class="menu-link">
+                    <div data-i18n="Under Maintenance">Previous Requests</div>
                   </a>
                 </li>
               </ul>
@@ -332,211 +366,103 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="index.html">Overview</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="javascript:void(0);">Support</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="clientrequest.html">Support Messages</a>
+                  </li>
+                  <li class="breadcrumb-item active">Client Name</li>
+                </ol>
+              </nav>
               <div class="row">
-                <div class="col-md-6">
-                  <div class="col-lg-12 col-md-12 order-1">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/chart-success.png" alt="chart success" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                  <a class="dropdown-item" href="javascript:void(0);">Make Payment</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">View Details</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span class="fw-medium d-block mb-1">Total Loan Balance</span>
-                            <h3 class="card-title mb-2">$120,628.89</h3>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/wallet-info.png" alt="Credit Card" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                  <a class="dropdown-item" href="javascript:void(0);">View Statement</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Payment History</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span>Next Payment Due</span>
-                            <h3 class="card-title text-nowrap text-danger mb-1">$2,345.67</h3>
-                          </div>
-                        </div>
-                      </div>
+                <div class="col-xxl">
+                  <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0">Client Name</h5>
                     </div>
-                  </div>
-                  <div class="col-12 col-md-12 col-lg-12 order-3 order-md-2">
-                    <div class="row">
-                      <div class="col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                  <a class="dropdown-item" href="javascript:void(0);">View Details</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Refinance</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span class="fw-medium d-block mb-1">Interest Rate</span>
-                            <h3 class="card-title mb-2">4.5%</h3>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
+                        <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                            <input
+                              type="text"
+                              id="basic-icon-default-email"
+                              class="form-control"
+                              placeholder="john.doe"
+                              aria-label="john.doe"
+                              aria-describedby="basic-icon-default-email2"  disabled/>
+
                           </div>
                         </div>
                       </div>
-                      <div class="col-6 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                              <div class="avatar flex-shrink-0">
-                                <img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
-                              </div>
-                              <div class="dropdown">
-                                <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                                  <a class="dropdown-item" href="javascript:void(0);">View Schedule</a>
-                                  <a class="dropdown-item" href="javascript:void(0);">Modify Terms</a>
-                                </div>
-                              </div>
-                            </div>
-                            <span class="d-block mb-1">Loan Term</span>
-                            <h3 class="card-title text-nowrap mb-2">15 Years</h3>
+                      <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-subject disabled">Subject</label>
+                        <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-subject" class="input-group-text"
+                              ><i class="bx bx-message"></i
+                            ></span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="basic-icon-default-subject"
+                              placeholder="Enter Subject"
+                              aria-label="Enter Subject"
+                              aria-describedby="basic-icon-default-subject" disabled />
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Active Loans -->
-                <div class="col-md-6">
-                  <div class="col-md-12 col-lg-12 order-2 mb-4">
-                    <div class="card h-100">
-                      <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="card-title m-0 me-2">Active Loans</h5>
-                        <div class="dropdown">
-                          <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="bx bx-dots-vertical-rounded"></i>
+                      <div class="row mb-3">
+                        <label class="col-sm-2 form-label" for="basic-icon-default-message">Message</label>
+                        <div class="col-sm-10">
+                          <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-message2" class="input-group-text"
+                              ><i class="bx bx-comment"></i
+                            ></span>
+                            <textarea
+                              id="basic-icon-default-message"
+                              class="form-control textarea"
+                              placeholder="Hi, Do you have a moment to talk Joe?"
+                              aria-label="Hi, Do you have a moment to talk Joe?"
+                              rows="5"
+                              aria-describedby="basic-icon-default-message2" disabled></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row justify-content-end">
+                        <div class="col-sm-10 d-flex">
+                          <button type="submit" class="btn btn-primary">
+                            Send Mail <i class="bx bx-envelope ms-2"></i>
                           </button>
-                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                            <a class="dropdown-item" href="javascript:void(0);">Sort by Amount</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Sort by Date</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Sort by Type</a>
+                         <div class="col-md-6 ms-2">
+                          <form action="">
+                            <div class="input-group">
+                                <select
+                                  class="form-select"
+                                  id="inputGroupSelect04"
+                                  aria-label="Select with button addon">
+                                  <option hidden>Choose...</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary">Update</button>
+                              </form>
+                         </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="card-body">
-                        <ul class="p-0 m-0 list-group">
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/home.png" alt="Home Loan" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Home Loan</small>
-                                <h6 class="mb-0">Mortgage</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$250,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/car.png" alt="Auto Loan" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Auto Loan</small>
-                                <h6 class="mb-0">Vehicle Finance</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$35,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/chart.png" alt="Personal Loan" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Personal Loan</small>
-                                <h6 class="mb-0">Debt Consolidation</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$15,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/cc-success.png" alt="Business Loan" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Business Loan</small>
-                                <h6 class="mb-0">Equipment Finance</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$75,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="d-flex mb-4 pb-1 list-group-item">
-                            <div class="avatar flex-shrink-0 me-3">
-                              <img src="../assets/img/icons/unicons/wallet.png" alt="Education Loan" class="rounded" />
-                            </div>
-                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                              <div class="me-2">
-                                <small class="text-muted d-block mb-1">Education Loan</small>
-                                <h6 class="mb-0">Student Finance</h6>
-                              </div>
-                              <div class="user-progress d-flex align-items-center gap-1">
-                                <h6 class="mb-0">$50,000</h6>
-                                <span class="text-muted">USD</span>
-                                <button class="btn btn-primary">Details</button>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                        <p class="text-muted text-center"><a href="loans.html" class="link-primary">View All Loans</a></p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!--/ Active Loans -->
               </div>
             </div>
             <!-- / Content -->
@@ -563,12 +489,7 @@
     <!-- / Layout wrapper -->
 
     <div class="cont-sup">
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-danger btn-cont-sup"
-        >Support?</a
-      >
+      <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
     </div>
 
     <!-- Core JS -->
