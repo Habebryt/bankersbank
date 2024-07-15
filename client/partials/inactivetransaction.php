@@ -1,5 +1,5 @@
 <li class="menu-item">
-  <a href="transactions.html" class="menu-link">
+  <a href="transactions.php" class="menu-link">
     <i class="menu-icon tf-icons bx bx-wallet"></i>
     <div data-i18n="Container">Transactions</div>
   </a>

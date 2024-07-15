@@ -24,7 +24,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="accountmanagement.php">
               <div class="d-flex">
                 <div class="flex-shrink-0 me-3">
                   <div class="avatar avatar-online">
@@ -44,7 +44,7 @@
             <div class="dropdown-divider"></div>
           </li>
           <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="accountmanagement.php">
               <i class="bx bx-user me-2"></i>
               <span class="align-middle">My Profile</span>
             </a>
@@ -60,7 +60,7 @@
               <span class="d-flex align-items-center align-middle">
                 <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                 <span class="flex-grow-1 align-middle ms-1">Account Type: Current</span>
-                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                <span class="flex-shrink-0 badge badge-center rounded-pill bg-primary w-px-20 h-px-20"> <i class="bx bx-check"></i></span>
               </span>
             </a>
           </li>

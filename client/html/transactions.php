@@ -16,7 +16,6 @@ require_once "../partials/hstart.php";
 
 <!-- Layouts -->
 <!-- Transactions -->
-
 <li class="menu-item active">
   <a href="transactions.html" class="menu-link">
     <i class="menu-icon tf-icons bx bx-wallet"></i>
@@ -28,7 +27,6 @@ require_once "../partials/hstart.php";
     <div data-i18n="Blank">Blank</div>
   </a>
 </li>
-
 <!-- Loans and Mortgages -->
 <?php require_once "../partials/inactiveloans.php"; ?>
 <!-- card -->
@@ -39,7 +37,6 @@ require_once "../partials/hstart.php";
 <?php require_once "../partials/inactivesettings.php"; ?>
 <!-- Support -->
 <?php require_once "../partials/inactivesupport.php"; ?>
-</aside>
 <!-- / Menu -->
 </aside>
 <!-- / Menu -->

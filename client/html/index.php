@@ -2,20 +2,15 @@
 $name = "John Paul";
 ?>
 <?php
-
 require_once "../partials/hstart.php";
-
 ?>
 <title>Banker's Bank</title>
-
 <?php require_once "../partials/hbottom.php";
 ?>
-
 <!-- Dashboards -->
 <?php require_once "../partials/activedash.php"; ?>
 <!-- Transactions -->
 <?php require_once "../partials/inactivetransaction.php"; ?>
-
 <!-- Loans and Mortgages -->
 <?php require_once "../partials/inactiveloans.php"; ?>
 <!-- card -->
@@ -25,17 +20,14 @@ require_once "../partials/hstart.php";
 <!-- Settings -->
 <?php require_once "../partials/inactivesettings.php"; ?>
 <!-- Support -->
-<?php require_once "../partials/inactivesupport.php"; ?>
-</aside>
-<!-- / Menu -->
+<?php require_once "../partials/activesupportmenu1.php"; ?>
 
+<!-- / Menu -->
 <!-- Layout container -->
 <div class="layout-page">
   <!-- Navbar MENU -->
   <?php require_once "../partials/menunav.php"; ?>
-
   <!-- / Navbar MENU ENDS -->
-
   <!-- Content wrapper -->
   <div class="content-wrapper">
     <!-- Content -->

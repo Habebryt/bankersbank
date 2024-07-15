@@ -6,7 +6,7 @@
   </a>
   <ul class="menu-sub">
     <li class="menu-item">
-      <a href="index.html" class="menu-link">
+      <a href="index.php" class="menu-link">
         <div data-i18n="Analytics">Account Overview</div>
       </a>
     </li>

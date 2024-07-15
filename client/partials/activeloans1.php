@@ -1,11 +1,11 @@
-<li class="menu-item">
+<li class="menu-item active">
   <a href="javascript:void(0);" class="menu-link menu-toggle">
     <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
     <div data-i18n="Layouts">Payments</div>
   </a>
 
   <ul class="menu-sub">
-    <li class="menu-item">
+    <li class="menu-item active">
       <a href="activeloans.php" class="menu-link">
         <div data-i18n="Container">Active Loans</div>
       </a>

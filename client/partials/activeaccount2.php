@@ -1,4 +1,4 @@
-<li class="menu-item">
+<li class="menu-item active">
   <a href="javascript:void(0);" class="menu-link menu-toggle">
     <i class="menu-icon tf-icons bx bxs-bank"></i>
     <div data-i18n="Layouts">Accounts</div>
@@ -9,7 +9,7 @@
         <div data-i18n="Container">Investment</div>
       </a>
     </li>
-    <li class="menu-item">
+    <li class="menu-item active">
       <a href="business.php" class="menu-link">
         <div data-i18n="Container">Business</div>
       </a>

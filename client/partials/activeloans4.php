@@ -1,4 +1,4 @@
-<li class="menu-item">
+<li class="menu-item active">
   <a href="javascript:void(0);" class="menu-link menu-toggle">
     <i class="menu-icon tf-icons bx bx-credit-card-alt"></i>
     <div data-i18n="Layouts">Payments</div>
@@ -20,7 +20,7 @@
         <div data-i18n="Container">Quick Cash</div>
       </a>
     </li>
-    <li class="menu-item">
+    <li class="menu-item active">
       <a href="businessloan.php" class="menu-link">
         <div data-i18n="Container">Credit Facility</div>
       </a>

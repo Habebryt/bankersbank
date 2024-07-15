@@ -60,7 +60,9 @@
   // Extension: npm
   "npm.packageManager": "yarn",
   "cSpell.words": [
+    "activecard",
     "activedash",
+    "activesupportmenu",
     "endbuild",
     "inactiveaccount",
     "inactivecard",
