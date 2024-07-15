@@ -4,7 +4,6 @@
       <i class="bx bx-menu bx-sm"></i>
     </a>
   </div>
-
   <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
     <!-- Search -->
     <div class="navbar-nav align-items-center">
@@ -60,7 +59,7 @@
               <span class="d-flex align-items-center align-middle">
                 <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                 <span class="flex-grow-1 align-middle ms-1">Account Type: Current</span>
-                <span class="flex-shrink-0 badge badge-center rounded-pill bg-primary w-px-20 h-px-20"> <i class="bx bx-check"></i></span>
+                <span class="flex-shrink-0 badge badge-center rounded-pill bg-primary w-px-20 h-px-20 ms-2"> <i class="bx bx-check"></i></span>
               </span>
             </a>
           </li>
