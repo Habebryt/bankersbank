@@ -63,6 +63,7 @@
     "activecard",
     "activedash",
     "activesupportmenu",
+    "bankersbank",
     "endbuild",
     "inactiveaccount",
     "inactivecard",
@@ -72,6 +73,9 @@
     "inactivesupport",
     "inactivetransaction",
     "menunav",
+    "Userby",
+    "userdetail",
+    "userroles",
     "zindex"
   ],
 }

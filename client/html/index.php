@@ -1,5 +1,29 @@
 <?php
-$name = "John Paul";
+ini_set("display_errors", "1");
+session_start();
+require_once "../classes/Utilities.php";
+require_once "../classes/Account.php";
+
+$activeUser = ($_SESSION['useronline']);
+$firstname = $activeUser['firstName'];
+$lastname = $activeUser['lastName'];
+$fullname = $firstname . ' ' . $lastname;
+
+$userId = $activeUser['id'];
+
+$getAcct = new Account;
+$userAccount = $getAcct->getAccount($userId);
+
+// echo "<pre>";
+// print_r($userAccount);
+// echo "</pre>";
+
+$accountNumber = $userAccount['account_number'];
+$accountType = $userAccount['account_type'];
+$accountStatus = $userAccount['status'];
+$accountLevel = $userAccount['Level'];
+$accountBalance = $userAccount['balance'];
+
 ?>
 <?php
 require_once "../partials/hstart.php";
@@ -102,7 +126,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </div>
                   <span class="fw-medium d-block mb-1">Balance</span>
-                  <h3 class="card-title mb-2">$12,628</h3>
+                  <h3 class="card-title mb-2">$<?php echo number_format($accountBalance); ?></h3>
                 </div>
               </div>
             </div>

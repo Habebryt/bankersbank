@@ -31,10 +31,10 @@
                   </div>
                 </div>
                 <div class="flex-grow-1">
-                  <span class="fw-medium d-block"><?php echo $name; ?></span>
-                  <small class="text-muted">Acct No: 1234567890</small>
+                  <span class="fw-medium d-block"><?php echo $fullname; ?></span>
+                  <small class="text-muted">Acct No: <?php echo $accountNumber; ?></small>
                   <br />
-                  <small class="text-muted">Level: Tier 3</small>
+                  <small class="text-muted">Level: <?php echo ucfirst($accountLevel); ?></small>
                 </div>
               </div>
             </a>
@@ -58,7 +58,7 @@
             <a class="dropdown-item" href="#">
               <span class="d-flex align-items-center align-middle">
                 <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                <span class="flex-grow-1 align-middle ms-1">Account Type: Current</span>
+                <span class="flex-grow-1 align-middle ms-1">Account Type: <?php echo ucfirst($accountType); ?></span>
                 <span class="flex-shrink-0 badge badge-center rounded-pill bg-primary w-px-20 h-px-20 ms-2"> <i class="bx bx-check"></i></span>
               </span>
             </a>
