@@ -10,6 +10,16 @@ class Utilities
     return $cleanFirstName;
   }
 
+  public static function convertToCurrency($amount)
+  {
+    if (!is_numeric($amount)) {
+      return "Invalid amount";
+    }
+    $formattedAmount = number_format((float)$amount, 2, '.', ',');
+    return $formattedAmount;
+  }
+
+
   public static function lastName($lastName)
   {
     $cleanLastName = trim($lastName);

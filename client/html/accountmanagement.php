@@ -1,6 +1,39 @@
 <?php
-$name = "John Paul";
+ini_set("display_errors", "1");
+session_start();
+require_once "../classes/Utilities.php";
+require_once "../classes/User.php";
+
+$activeUser = ($_SESSION['useronline']);
+$firstname = $activeUser['firstName'];
+$lastname = $activeUser['lastName'];
+$fullname = $firstname . ' ' . $lastname;
+$activeUser = ($_SESSION['useronline']);
+
+
+$userId = $activeUser['id'];
+
+$getAcct = new User;
+$userInfo = $getAcct->getUser($userId);
+
+$fullname = $userInfo['first_name'] . ' ' . $userInfo['last_name'];
+$dob = $userInfo['date_of_birth'];
+$address = $userInfo['address_line1'] . ' ' . $userInfo['address_line2'];
+$city = $userInfo['city'];
+$state = $userInfo['state_name'];
+$country = $userInfo['country_name'];
+$email = $userInfo['email'];
+$income = $userInfo['annual_income'];
+$nationality = $userInfo['nationality'];
+$idnumber = $userInfo['id_number'];
+$accountnum = $userInfo['account_number'];
+$taxid = $userInfo['taxid'];
+$phone = $userInfo['phone'];
+$occupation = $userInfo['occupation'];
+$currency = $userInfo['currency'];
+
 ?>
+
 <?php
 
 require_once "../partials/hstart.php";
@@ -58,7 +91,7 @@ require_once "../partials/hstart.php";
                         <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-user"></i></span>
-                          <input type="text" class="form-control" id="basic-icon-default-fullname" placeholder="John Doe" />
+                          <input type="text" class="form-control" id="basic-icon-default-fullname" value="<?php echo $fullname ?>" disabled />
                         </div>
                       </div>
 
@@ -66,7 +99,7 @@ require_once "../partials/hstart.php";
                         <label class="form-label" for="basic-icon-default-dob">Date of Birth</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                          <input type="date" class="form-control" id="basic-icon-default-dob" />
+                          <input type="date" class="form-control" id="basic-icon-default-dob" value="<?php echo $dob ?>" disabled />
                         </div>
                       </div>
 
@@ -74,7 +107,7 @@ require_once "../partials/hstart.php";
                         <label class="form-label" for="basic-icon-default-nationality">Nationality</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-flag"></i></span>
-                          <input type="text" class="form-control" id="basic-icon-default-nationality" placeholder="Italian" />
+                          <input type="text" class="form-control" id="basic-icon-default-nationality" placeholder="Italian" value="<?php echo $nationality ?>" disabled />
                         </div>
                       </div>
 
@@ -82,7 +115,7 @@ require_once "../partials/hstart.php";
                         <label class="form-label" for="basic-icon-default-id">National ID / Passport Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-id-card"></i></span>
-                          <input type="text" class="form-control" id="basic-icon-default-id" placeholder="AB123456" />
+                          <input type="text" class="form-control" id="basic-icon-default-id" value="<?php echo $idnumber ?>" disabled />
                         </div>
                       </div>
                     </fieldset>
@@ -96,47 +129,37 @@ require_once "../partials/hstart.php";
                         <label class="form-label" for="basic-icon-default-hash">Account Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-hash"></i></span>
-                          <input type="number" id="basic-icon-default-hash" class="form-control" placeholder="0123456789" />
+                          <input type="number" id="basic-icon-default-hash" class="form-control" value="<?php echo $accountnum ?>" disabled />
                         </div>
                       </div>
 
                       <div class="mb-3">
                         <label class="form-label" for="basic-icon-default-income">Annual Income</label>
                         <div class="input-group input-group-merge">
-                          <span class="input-group-text"><i class="bx bx-euro"></i></span>
-                          <input type="number" id="basic-icon-default-income" class="form-control" placeholder="50000" />
+                          <span class="input-group-text"><?php if ($currency === 'USD') { ?>
+                              <i class="bx bx-dollar"></i>
+                            <?php } else if ($currency === 'EURO') { ?>
+                              <i class="bx bx-euro"></i>
+                            <?php } ?> </span>
+                          <input type="number" id="basic-icon-default-income" class="form-control" value="<?php echo $income ?>" disabled />
                         </div>
                       </div>
 
                       <div class="mb-3">
                         <label class="form-label" for="countryDataList">Country of Residence</label>
-                        <input class="form-control" list="countries" id="countryDataList" placeholder="Type to search..." />
-                        <datalist id="countries">
-                          <option value="France"></option>
-                          <option value="Germany"></option>
-                          <option value="Italy"></option>
-                          <option value="Spain"></option>
-                          <option value="Netherlands"></option>
-                        </datalist>
+                        <input class="form-control" list="countries" id="countryDataList" value="<?php echo $country ?>" disabled />
                       </div>
 
                       <div class="mb-3">
                         <label class="form-label" for="taxResidenceDataList">Tax Residence</label>
-                        <input class="form-control" list="taxResidences" id="taxResidenceDataList" placeholder="Type to search..." />
-                        <datalist id="taxResidences">
-                          <option value="France"></option>
-                          <option value="Germany"></option>
-                          <option value="Italy"></option>
-                          <option value="Spain"></option>
-                          <option value="Netherlands"></option>
-                        </datalist>
+                        <input class="form-control" list="taxResidences" id="taxResidenceDataList" value="<?php echo $country ?>" disabled />
                       </div>
 
                       <div class="mb-3">
                         <label class="form-label" for="basic-icon-default-tax-id">Tax Identification Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-file"></i></span>
-                          <input type="text" id="basic-icon-default-tax-id" class="form-control" placeholder="123456789" />
+                          <input type="text" id="basic-icon-default-tax-id" class="form-control" value="<?php echo $taxid ?>" disabled />
                         </div>
                       </div>
                     </fieldset>
@@ -154,7 +177,7 @@ require_once "../partials/hstart.php";
                             <label class="form-label" for="basic-icon-default-address">Residential Address</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-home"></i></span>
-                              <input type="text" class="form-control" id="basic-icon-default-address" placeholder="123 Main St, 12345 City" />
+                              <input type="text" class="form-control" id="basic-icon-default-address" value="<?php echo $address . ', ' . $city ?>" disabled />
                             </div>
                           </div>
 
@@ -162,7 +185,7 @@ require_once "../partials/hstart.php";
                             <label class="form-label" for="basic-icon-default-email">Email</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                              <input type="email" id="basic-icon-default-email" class="form-control" placeholder="john.doe@example.com" />
+                              <input type="email" id="basic-icon-default-email" class="form-control" value="<?php echo $email ?>" disabled />
                             </div>
                           </div>
                         </div>
@@ -172,7 +195,7 @@ require_once "../partials/hstart.php";
                             <label class="form-label" for="basic-icon-default-phone">Phone Number</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-phone"></i></span>
-                              <input type="tel" id="basic-icon-default-phone" class="form-control phone-mask" placeholder="+39 123 456 7890" />
+                              <input type="tel" id="basic-icon-default-phone" class="form-control phone-mask" value="<?php echo $phone ?>" disabled />
                             </div>
                           </div>
 
@@ -180,7 +203,7 @@ require_once "../partials/hstart.php";
                             <label class="form-label" for="basic-icon-default-occupation">Occupation</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
-                              <input type="text" id="basic-icon-default-occupation" class="form-control" placeholder="Software Engineer" />
+                              <input type="text" id="basic-icon-default-occupation" class="form-control" value="<?php echo $occupation ?>" disabled />
                             </div>
                           </div>
                         </div>
@@ -189,12 +212,13 @@ require_once "../partials/hstart.php";
                   </div>
                 </div>
               </form>
+
             </div>
           </div>
         </div>
         <div class="col-md-4">
 
-          <form action="">
+          <form>
             <div class="form-password-toggle">
               <h5 class="mb-4">Change Password</h5>
               <label class="form-label" for="basic-default-password12">Old Password</label>

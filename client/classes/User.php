@@ -14,12 +14,18 @@ class User extends Db
     $this->dbconn = $this->connect();
   }
 
-  public function getUser($user)
+  public function getUser($userId)
   {
-    if ($user) {
-      if (is_array($user)) {
-        $user = $user['id'];
-      }
-    }
+    $sql = "SELECT *
+FROM client_profiles
+JOIN users ON client_profiles.user_id = users.id
+JOIN client_accounts ON client_profiles.user_id = client_accounts.user_id
+JOIN country ON client_profiles.country = country.idcountry
+JOIN state ON client_profiles.state = state.idstate
+WHERE client_profiles.user_id = ?";
+    $stmt = $this->dbconn->prepare($sql);
+    $stmt->execute([$userId]);
+    $account = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $account;
   }
 }
