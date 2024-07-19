@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 16, 2024 at 04:40 PM
+-- Generation Time: Jul 19, 2024 at 09:08 AM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -24,444 +24,4747 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Account`
+-- Table structure for table `account_managers`
 --
 
-CREATE TABLE `Account` (
-  `AccountID` int(11) NOT NULL,
-  `ClientID` int(11) DEFAULT NULL,
-  `AccountType` varchar(50) NOT NULL,
-  `Balance` decimal(15,2) NOT NULL,
-  `Currency` varchar(3) NOT NULL,
-  `IBAN` varchar(34) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `account_managers` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `department` varchar(50) DEFAULT NULL,
+  `hire_date` date DEFAULT NULL,
+  `subscription_status` enum('active','inactive') NOT NULL DEFAULT 'inactive',
+  `subscription_start_date` date DEFAULT NULL,
+  `subscription_end_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `account_managers`
+--
+
+INSERT INTO `account_managers` (`id`, `user_id`, `full_name`, `phone`, `department`, `hire_date`, `subscription_status`, `subscription_start_date`, `subscription_end_date`) VALUES
+(1, 2, 'Habeeb Bright', NULL, NULL, NULL, 'inactive', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_manager_messages`
+--
+
+CREATE TABLE `account_manager_messages` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `account_manager_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `AccountManager`
+-- Table structure for table `account_manager_subscriptions`
 --
 
-CREATE TABLE `AccountManager` (
-  `AccountManagerID` int(11) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `PasswordHash` varchar(255) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `FirstName` varchar(50) NOT NULL,
-  `LastName` varchar(50) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CreatedByAdminID` int(11) DEFAULT NULL
+CREATE TABLE `account_manager_subscriptions` (
+  `id` int(11) NOT NULL,
+  `account_manager_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `status` enum('active','expired','cancelled') NOT NULL DEFAULT 'active',
+  `last_payment_date` date NOT NULL,
+  `next_payment_date` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Admin`
+-- Table structure for table `account_manager_support_requests`
 --
 
-CREATE TABLE `Admin` (
-  `AdminID` int(11) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `PasswordHash` varchar(255) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `FirstName` varchar(50) NOT NULL,
-  `LastName` varchar(50) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `account_manager_support_requests` (
+  `id` int(11) NOT NULL,
+  `account_manager_id` int(11) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `status` enum('open','in_progress','resolved','closed') NOT NULL DEFAULT 'open',
+  `priority` enum('low','medium','high','urgent') NOT NULL DEFAULT 'medium',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `resolved_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Client`
+-- Table structure for table `account_manager_support_responses`
 --
 
-CREATE TABLE `Client` (
-  `ClientID` int(11) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `PasswordHash` varchar(255) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `FirstName` varchar(50) NOT NULL,
-  `LastName` varchar(50) NOT NULL,
-  `DateOfBirth` date NOT NULL,
-  `Address` varchar(255) NOT NULL,
-  `PhoneNumber` varchar(20) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `AccountManagerID` int(11) DEFAULT NULL
+CREATE TABLE `account_manager_support_responses` (
+  `id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL,
+  `responder_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Country`
+-- Table structure for table `audit_log`
 --
 
-CREATE TABLE `Country` (
-  `CountryID` int(11) NOT NULL,
-  `CountryName` varchar(100) NOT NULL,
-  `CountryCode` varchar(2) NOT NULL
+CREATE TABLE `audit_log` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `action` varchar(100) NOT NULL,
+  `details` text,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `CreditCard`
+-- Table structure for table `businesses`
 --
 
-CREATE TABLE `CreditCard` (
-  `CardID` int(11) NOT NULL,
-  `ClientID` int(11) DEFAULT NULL,
-  `CardNumber` varchar(16) NOT NULL,
-  `ExpirationDate` date NOT NULL,
-  `CVV` varchar(3) NOT NULL,
-  `CreditLimit` decimal(15,2) NOT NULL,
-  `Balance` decimal(15,2) NOT NULL
+CREATE TABLE `businesses` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `business_balance` decimal(15,2) NOT NULL,
+  `business_credit` decimal(15,2) NOT NULL,
+  `business_debit` decimal(15,2) NOT NULL,
+  `pending` decimal(15,2) NOT NULL,
+  `expense` decimal(15,2) NOT NULL,
+  `business_name` varchar(100) NOT NULL,
+  `business_address` text NOT NULL,
+  `business_contact` varchar(15) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `businesses`
+--
+
+INSERT INTO `businesses` (`id`, `account_number`, `business_balance`, `business_credit`, `business_debit`, `pending`, `expense`, `business_name`, `business_address`, `business_contact`, `created_at`, `updated_at`) VALUES
+(1, '0123456789', '200000.00', '20000.00', '100.00', '1200.00', '3000.00', 'Bankers Bank', '11 Onadeko', '09067023823', '2024-07-19 08:41:04', '2024-07-19 08:41:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cards`
+--
+
+CREATE TABLE `cards` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `card_number` varchar(20) NOT NULL,
+  `cvv` varchar(4) NOT NULL,
+  `issued_date` date NOT NULL,
+  `expiration_date` date NOT NULL,
+  `card_balance` decimal(15,2) NOT NULL,
+  `card_type` enum('Credit','Debit') NOT NULL,
+  `status` enum('Active','Inactive','Blocked') NOT NULL,
+  `cardholder_name` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `cards`
+--
+
+INSERT INTO `cards` (`id`, `account_number`, `card_number`, `cvv`, `issued_date`, `expiration_date`, `card_balance`, `card_type`, `status`, `cardholder_name`, `created_at`, `updated_at`) VALUES
+(1, '0123456789', '123456789012345', '334', '2024-07-02', '2027-07-07', '34555.00', 'Credit', 'Active', 'John Doe', '2024-07-19 08:43:31', '2024-07-19 08:43:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `card_transactions`
+--
+
+CREATE TABLE `card_transactions` (
+  `id` int(11) NOT NULL,
+  `card_number` varchar(20) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `transaction_type` enum('Purchase','Withdrawal','Deposit','Transfer') NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `transaction_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `transaction_status` enum('Pending','Completed','Failed') NOT NULL,
+  `description` text,
+  `merchant_name` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `card_transactions`
+--
+
+INSERT INTO `card_transactions` (`id`, `card_number`, `account_number`, `transaction_type`, `amount`, `transaction_date`, `transaction_status`, `description`, `merchant_name`, `created_at`, `updated_at`) VALUES
+(1, '123456789012345', '0123456789', 'Deposit', '1000.00', '2024-07-19 08:44:20', 'Pending', 'Deposit of Cash', 'PayPal', '2024-07-19 08:44:20', '2024-07-19 08:44:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cash_loans`
+--
+
+CREATE TABLE `cash_loans` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `available_credit` decimal(10,2) NOT NULL,
+  `current_apr` decimal(5,2) NOT NULL,
+  `repayment_method` enum('Monthly','Quarterly','Yearly') NOT NULL,
+  `loan_options` text NOT NULL,
+  `amount` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `cash_loans`
+--
+
+INSERT INTO `cash_loans` (`id`, `account_number`, `available_credit`, `current_apr`, `repayment_method`, `loan_options`, `amount`) VALUES
+(1, '0123456789', '2000.00', '33.30', 'Quarterly', 'Quick Cash', '1000.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_accounts`
+--
+
+CREATE TABLE `client_accounts` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `account_manager_id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `balance` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `account_type` enum('savings','checking','investment') NOT NULL,
+  `Level` enum('Tier 1','Tier 2','Tier 3') DEFAULT NULL,
+  `currency` varchar(3) NOT NULL DEFAULT 'USD',
+  `interest_rate` decimal(5,2) DEFAULT '0.00',
+  `status` enum('active','inactive','suspended','closed') NOT NULL DEFAULT 'active',
+  `opening_date` date NOT NULL,
+  `last_activity_date` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `client_accounts`
+--
+
+INSERT INTO `client_accounts` (`id`, `user_id`, `account_manager_id`, `account_number`, `balance`, `account_type`, `Level`, `currency`, `interest_rate`, `status`, `opening_date`, `last_activity_date`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '0123456789', '12000.50', 'savings', 'Tier 2', 'USD', '2.00', 'active', '2024-07-01', '2024-07-09', '2024-07-18 20:17:47', '2024-07-18 22:31:48'),
+(2, 4, 1, '0123456781', '0.00', 'checking', 'Tier 2', 'USD', '0.00', 'active', '2024-07-19', NULL, '2024-07-19 08:53:36', '2024-07-19 08:53:36');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_profiles`
+--
+
+CREATE TABLE `client_profiles` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `account_manager_id` int(11) NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `gender` enum('Male','Female','Other') NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `address_line1` varchar(100) NOT NULL,
+  `address_line2` varchar(100) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `postal_code` varchar(20) DEFAULT NULL,
+  `country` int(11) DEFAULT NULL,
+  `nationality` int(11) DEFAULT NULL,
+  `id_type` enum('Passport','National ID','Driver''s License') NOT NULL,
+  `id_number` varchar(50) NOT NULL,
+  `occupation` varchar(100) DEFAULT NULL,
+  `employer` varchar(100) DEFAULT NULL,
+  `annual_income` decimal(15,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `client_profiles`
+--
+
+INSERT INTO `client_profiles` (`id`, `user_id`, `account_manager_id`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone`, `address_line1`, `address_line2`, `city`, `state`, `postal_code`, `country`, `nationality`, `id_type`, `id_number`, `occupation`, `employer`, `annual_income`) VALUES
+(1, 1, 1, 'John', 'Doe', '2024-07-03', 'Male', '09067023823', '11, Onadeko', NULL, 'Lawanson', 1953, NULL, 163, 163, 'Passport', 'A349023', 'Software Developer', 'Bankers Bank', '30000.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_support_requests`
+--
+
+CREATE TABLE `client_support_requests` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `account_manager_id` int(11) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `status` enum('open','in_progress','resolved','closed') NOT NULL DEFAULT 'open',
+  `priority` enum('low','medium','high','urgent') NOT NULL DEFAULT 'medium',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `resolved_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `client_support_requests`
+--
+
+INSERT INTO `client_support_requests` (`id`, `client_id`, `account_manager_id`, `subject`, `message`, `status`, `priority`, `created_at`, `updated_at`, `resolved_at`) VALUES
+(1, 1, 1, 'Checker', 'Text filler', 'open', 'medium', '2024-07-19 09:05:44', '2024-07-19 09:05:44', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_support_responses`
+--
+
+CREATE TABLE `client_support_responses` (
+  `id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL,
+  `responder_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `CreditCardTransaction`
+-- Table structure for table `country`
 --
 
-CREATE TABLE `CreditCardTransaction` (
-  `CreditCardTransactionID` int(11) NOT NULL,
-  `CardID` int(11) DEFAULT NULL,
-  `Amount` decimal(15,2) NOT NULL,
-  `MerchantName` varchar(100) NOT NULL,
-  `TransactionDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `country` (
+  `idcountry` int(11) NOT NULL,
+  `code2` varchar(10) DEFAULT NULL,
+  `code3` varchar(10) DEFAULT NULL,
+  `country_name` varchar(45) NOT NULL,
+  `capital` varchar(50) DEFAULT NULL,
+  `region` varchar(50) DEFAULT NULL,
+  `subregion` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`idcountry`, `code2`, `code3`, `country_name`, `capital`, `region`, `subregion`) VALUES
+(1, 'AF', 'AFG', 'Afghanistan', 'Kabul', 'Asia', 'Southern Asia'),
+(2, 'AX', 'ALA', 'Åland Islands', 'Mariehamn', 'Europe', 'Northern Europe'),
+(3, 'AL', 'ALB', 'Albania', 'Tirana', 'Europe', 'Southern Europe'),
+(4, 'DZ', 'DZA', 'Algeria', 'Algiers', 'Africa', 'Northern Africa'),
+(5, 'AS', 'ASM', 'American Samoa', 'Pago Pago', 'Oceania', 'Polynesia'),
+(6, 'AD', 'AND', 'Andorra', 'Andorra la Vella', 'Europe', 'Southern Europe'),
+(7, 'AO', 'AGO', 'Angola', 'Luanda', 'Africa', 'Middle Africa'),
+(8, 'AI', 'AIA', 'Anguilla', 'The Valley', 'Americas', 'Caribbean'),
+(9, 'AQ', 'ATA', 'Antarctica', '', 'Polar', ''),
+(10, 'AG', 'ATG', 'Antigua and Barbuda', 'Saint John\'s', 'Americas', 'Caribbean'),
+(11, 'AR', 'ARG', 'Argentina', 'Buenos Aires', 'Americas', 'South America'),
+(12, 'AM', 'ARM', 'Armenia', 'Yerevan', 'Asia', 'Western Asia'),
+(13, 'AW', 'ABW', 'Aruba', 'Oranjestad', 'Americas', 'Caribbean'),
+(14, 'AU', 'AUS', 'Australia', 'Canberra', 'Oceania', 'Australia and New Zealand'),
+(15, 'AT', 'AUT', 'Austria', 'Vienna', 'Europe', 'Western Europe'),
+(16, 'AZ', 'AZE', 'Azerbaijan', 'Baku', 'Asia', 'Western Asia'),
+(17, 'BS', 'BHS', 'The Bahamas', 'Nassau', 'Americas', 'Caribbean'),
+(18, 'BH', 'BHR', 'Bahrain', 'Manama', 'Asia', 'Western Asia'),
+(19, 'BD', 'BGD', 'Bangladesh', 'Dhaka', 'Asia', 'Southern Asia'),
+(20, 'BB', 'BRB', 'Barbados', 'Bridgetown', 'Americas', 'Caribbean'),
+(21, 'BY', 'BLR', 'Belarus', 'Minsk', 'Europe', 'Eastern Europe'),
+(22, 'BE', 'BEL', 'Belgium', 'Brussels', 'Europe', 'Western Europe'),
+(23, 'BZ', 'BLZ', 'Belize', 'Belmopan', 'Americas', 'Central America'),
+(24, 'BJ', 'BEN', 'Benin', 'Porto-Novo', 'Africa', 'Western Africa'),
+(25, 'BM', 'BMU', 'Bermuda', 'Hamilton', 'Americas', 'Northern America'),
+(26, 'BT', 'BTN', 'Bhutan', 'Thimphu', 'Asia', 'Southern Asia'),
+(27, 'BO', 'BOL', 'Bolivia', 'Sucre', 'Americas', 'South America'),
+(28, 'BQ', 'BES', 'Bonaire', 'Kralendijk', 'Americas', 'Caribbean'),
+(29, 'BA', 'BIH', 'Bosnia and Herzegovina', 'Sarajevo', 'Europe', 'Southern Europe'),
+(30, 'BW', 'BWA', 'Botswana', 'Gaborone', 'Africa', 'Southern Africa'),
+(31, 'BV', 'BVT', 'Bouvet Island', '', '', ''),
+(32, 'BR', 'BRA', 'Brazil', 'Brasília', 'Americas', 'South America'),
+(33, 'IO', 'IOT', 'British Indian Ocean Territory', 'Diego Garcia', 'Africa', 'Eastern Africa'),
+(34, 'UM', 'UMI', 'United States Minor Outlying Islands', '', 'Americas', 'Northern America'),
+(35, 'VG', 'VGB', 'Virgin Islands (British)', 'Road Town', 'Americas', 'Caribbean'),
+(36, 'VI', 'VIR', 'Virgin Islands (U.S.)', 'Charlotte Amalie', 'Americas', 'Caribbean'),
+(37, 'BN', 'BRN', 'Brunei', 'Bandar Seri Begawan', 'Asia', 'South-Eastern Asia'),
+(38, 'BG', 'BGR', 'Bulgaria', 'Sofia', 'Europe', 'Eastern Europe'),
+(39, 'BF', 'BFA', 'Burkina Faso', 'Ouagadougou', 'Africa', 'Western Africa'),
+(40, 'BI', 'BDI', 'Burundi', 'Bujumbura', 'Africa', 'Eastern Africa'),
+(41, 'KH', 'KHM', 'Cambodia', 'Phnom Penh', 'Asia', 'South-Eastern Asia'),
+(42, 'CM', 'CMR', 'Cameroon', 'Yaoundé', 'Africa', 'Middle Africa'),
+(43, 'CA', 'CAN', 'Canada', 'Ottawa', 'Americas', 'Northern America'),
+(44, 'CV', 'CPV', 'Cape Verde', 'Praia', 'Africa', 'Western Africa'),
+(45, 'KY', 'CYM', 'Cayman Islands', 'George Town', 'Americas', 'Caribbean'),
+(46, 'CF', 'CAF', 'Central African Republic', 'Bangui', 'Africa', 'Middle Africa'),
+(47, 'TD', 'TCD', 'Chad', 'N\'Djamena', 'Africa', 'Middle Africa'),
+(48, 'CL', 'CHL', 'Chile', 'Santiago', 'Americas', 'South America'),
+(49, 'CN', 'CHN', 'China', 'Beijing', 'Asia', 'Eastern Asia'),
+(50, 'CX', 'CXR', 'Christmas Island', 'Flying Fish Cove', 'Oceania', 'Australia and New Zealand'),
+(51, 'CC', 'CCK', 'Cocos (Keeling) Islands', 'West Island', 'Oceania', 'Australia and New Zealand'),
+(52, 'CO', 'COL', 'Colombia', 'Bogotá', 'Americas', 'South America'),
+(53, 'KM', 'COM', 'Comoros', 'Moroni', 'Africa', 'Eastern Africa'),
+(54, 'CG', 'COG', 'Republic of the Congo', 'Brazzaville', 'Africa', 'Middle Africa'),
+(55, 'CD', 'COD', 'Democratic Republic of the Congo', 'Kinshasa', 'Africa', 'Middle Africa'),
+(56, 'CK', 'COK', 'Cook Islands', 'Avarua', 'Oceania', 'Polynesia'),
+(57, 'CR', 'CRI', 'Costa Rica', 'San José', 'Americas', 'Central America'),
+(58, 'HR', 'HRV', 'Croatia', 'Zagreb', 'Europe', 'Southern Europe'),
+(59, 'CU', 'CUB', 'Cuba', 'Havana', 'Americas', 'Caribbean'),
+(60, 'CW', 'CUW', 'Curaçao', 'Willemstad', 'Americas', 'Caribbean'),
+(61, 'CY', 'CYP', 'Cyprus', 'Nicosia', 'Europe', 'Southern Europe'),
+(62, 'CZ', 'CZE', 'Czech Republic', 'Prague', 'Europe', 'Eastern Europe'),
+(63, 'DK', 'DNK', 'Denmark', 'Copenhagen', 'Europe', 'Northern Europe'),
+(64, 'DJ', 'DJI', 'Djibouti', 'Djibouti', 'Africa', 'Eastern Africa'),
+(65, 'DM', 'DMA', 'Dominica', 'Roseau', 'Americas', 'Caribbean'),
+(66, 'DO', 'DOM', 'Dominican Republic', 'Santo Domingo', 'Americas', 'Caribbean'),
+(67, 'EC', 'ECU', 'Ecuador', 'Quito', 'Americas', 'South America'),
+(68, 'EG', 'EGY', 'Egypt', 'Cairo', 'Africa', 'Northern Africa'),
+(69, 'SV', 'SLV', 'El Salvador', 'San Salvador', 'Americas', 'Central America'),
+(70, 'GQ', 'GNQ', 'Equatorial Guinea', 'Malabo', 'Africa', 'Middle Africa'),
+(71, 'ER', 'ERI', 'Eritrea', 'Asmara', 'Africa', 'Eastern Africa'),
+(72, 'EE', 'EST', 'Estonia', 'Tallinn', 'Europe', 'Northern Europe'),
+(73, 'ET', 'ETH', 'Ethiopia', 'Addis Ababa', 'Africa', 'Eastern Africa'),
+(74, 'FK', 'FLK', 'Falkland Islands', 'Stanley', 'Americas', 'South America'),
+(75, 'FO', 'FRO', 'Faroe Islands', 'Tórshavn', 'Europe', 'Northern Europe'),
+(76, 'FJ', 'FJI', 'Fiji', 'Suva', 'Oceania', 'Melanesia'),
+(77, 'FI', 'FIN', 'Finland', 'Helsinki', 'Europe', 'Northern Europe'),
+(78, 'FR', 'FRA', 'France', 'Paris', 'Europe', 'Western Europe'),
+(79, 'GF', 'GUF', 'French Guiana', 'Cayenne', 'Americas', 'South America'),
+(80, 'PF', 'PYF', 'French Polynesia', 'Papeetē', 'Oceania', 'Polynesia'),
+(81, 'TF', 'ATF', 'French Southern and Antarctic Lands', 'Port-aux-Français', 'Africa', 'Southern Africa'),
+(82, 'GA', 'GAB', 'Gabon', 'Libreville', 'Africa', 'Middle Africa'),
+(83, 'GM', 'GMB', 'The Gambia', 'Banjul', 'Africa', 'Western Africa'),
+(84, 'GE', 'GEO', 'Georgia', 'Tbilisi', 'Asia', 'Western Asia'),
+(85, 'DE', 'DEU', 'Germany', 'Berlin', 'Europe', 'Western Europe'),
+(86, 'GH', 'GHA', 'Ghana', 'Accra', 'Africa', 'Western Africa'),
+(87, 'GI', 'GIB', 'Gibraltar', 'Gibraltar', 'Europe', 'Southern Europe'),
+(88, 'GR', 'GRC', 'Greece', 'Athens', 'Europe', 'Southern Europe'),
+(89, 'GL', 'GRL', 'Greenland', 'Nuuk', 'Americas', 'Northern America'),
+(90, 'GD', 'GRD', 'Grenada', 'St. George\'s', 'Americas', 'Caribbean'),
+(91, 'GP', 'GLP', 'Guadeloupe', 'Basse-Terre', 'Americas', 'Caribbean'),
+(92, 'GU', 'GUM', 'Guam', 'Hagåtña', 'Oceania', 'Micronesia'),
+(93, 'GT', 'GTM', 'Guatemala', 'Guatemala City', 'Americas', 'Central America'),
+(94, 'GG', 'GGY', 'Guernsey', 'St. Peter Port', 'Europe', 'Northern Europe'),
+(95, 'GN', 'GIN', 'Guinea', 'Conakry', 'Africa', 'Western Africa'),
+(96, 'GW', 'GNB', 'Guinea-Bissau', 'Bissau', 'Africa', 'Western Africa'),
+(97, 'GY', 'GUY', 'Guyana', 'Georgetown', 'Americas', 'South America'),
+(98, 'HT', 'HTI', 'Haiti', 'Port-au-Prince', 'Americas', 'Caribbean'),
+(99, 'HM', 'HMD', 'Heard Island and McDonald Islands', '', '', ''),
+(100, 'VA', 'VAT', 'Holy See', 'Rome', 'Europe', 'Southern Europe'),
+(101, 'HN', 'HND', 'Honduras', 'Tegucigalpa', 'Americas', 'Central America'),
+(102, 'HK', 'HKG', 'Hong Kong', 'City of Victoria', 'Asia', 'Eastern Asia'),
+(103, 'HU', 'HUN', 'Hungary', 'Budapest', 'Europe', 'Eastern Europe'),
+(104, 'IS', 'ISL', 'Iceland', 'Reykjavík', 'Europe', 'Northern Europe'),
+(105, 'IN', 'IND', 'India', 'New Delhi', 'Asia', 'Southern Asia'),
+(106, 'ID', 'IDN', 'Indonesia', 'Jakarta', 'Asia', 'South-Eastern Asia'),
+(107, 'CI', 'CIV', 'Ivory Coast', 'Yamoussoukro', 'Africa', 'Western Africa'),
+(108, 'IR', 'IRN', 'Iran', 'Tehran', 'Asia', 'Southern Asia'),
+(109, 'IQ', 'IRQ', 'Iraq', 'Baghdad', 'Asia', 'Western Asia'),
+(110, 'IE', 'IRL', 'Republic of Ireland', 'Dublin', 'Europe', 'Northern Europe'),
+(111, 'IM', 'IMN', 'Isle of Man', 'Douglas', 'Europe', 'Northern Europe'),
+(112, 'IL', 'ISR', 'Israel', 'Jerusalem', 'Asia', 'Western Asia'),
+(113, 'IT', 'ITA', 'Italy', 'Rome', 'Europe', 'Southern Europe'),
+(114, 'JM', 'JAM', 'Jamaica', 'Kingston', 'Americas', 'Caribbean'),
+(115, 'JP', 'JPN', 'Japan', 'Tokyo', 'Asia', 'Eastern Asia'),
+(116, 'JE', 'JEY', 'Jersey', 'Saint Helier', 'Europe', 'Northern Europe'),
+(117, 'JO', 'JOR', 'Jordan', 'Amman', 'Asia', 'Western Asia'),
+(118, 'KZ', 'KAZ', 'Kazakhstan', 'Astana', 'Asia', 'Central Asia'),
+(119, 'KE', 'KEN', 'Kenya', 'Nairobi', 'Africa', 'Eastern Africa'),
+(120, 'KI', 'KIR', 'Kiribati', 'South Tarawa', 'Oceania', 'Micronesia'),
+(121, 'KW', 'KWT', 'Kuwait', 'Kuwait City', 'Asia', 'Western Asia'),
+(122, 'KG', 'KGZ', 'Kyrgyzstan', 'Bishkek', 'Asia', 'Central Asia'),
+(123, 'LA', 'LAO', 'Laos', 'Vientiane', 'Asia', 'South-Eastern Asia'),
+(124, 'LV', 'LVA', 'Latvia', 'Riga', 'Europe', 'Northern Europe'),
+(125, 'LB', 'LBN', 'Lebanon', 'Beirut', 'Asia', 'Western Asia'),
+(126, 'LS', 'LSO', 'Lesotho', 'Maseru', 'Africa', 'Southern Africa'),
+(127, 'LR', 'LBR', 'Liberia', 'Monrovia', 'Africa', 'Western Africa'),
+(128, 'LY', 'LBY', 'Libya', 'Tripoli', 'Africa', 'Northern Africa'),
+(129, 'LI', 'LIE', 'Liechtenstein', 'Vaduz', 'Europe', 'Western Europe'),
+(130, 'LT', 'LTU', 'Lithuania', 'Vilnius', 'Europe', 'Northern Europe'),
+(131, 'LU', 'LUX', 'Luxembourg', 'Luxembourg', 'Europe', 'Western Europe'),
+(132, 'MO', 'MAC', 'Macau', '', 'Asia', 'Eastern Asia'),
+(133, 'MK', 'MKD', 'Republic of Macedonia', 'Skopje', 'Europe', 'Southern Europe'),
+(134, 'MG', 'MDG', 'Madagascar', 'Antananarivo', 'Africa', 'Eastern Africa'),
+(135, 'MW', 'MWI', 'Malawi', 'Lilongwe', 'Africa', 'Eastern Africa'),
+(136, 'MY', 'MYS', 'Malaysia', 'Kuala Lumpur', 'Asia', 'South-Eastern Asia'),
+(137, 'MV', 'MDV', 'Maldives', 'Malé', 'Asia', 'Southern Asia'),
+(138, 'ML', 'MLI', 'Mali', 'Bamako', 'Africa', 'Western Africa'),
+(139, 'MT', 'MLT', 'Malta', 'Valletta', 'Europe', 'Southern Europe'),
+(140, 'MH', 'MHL', 'Marshall Islands', 'Majuro', 'Oceania', 'Micronesia'),
+(141, 'MQ', 'MTQ', 'Martinique', 'Fort-de-France', 'Americas', 'Caribbean'),
+(142, 'MR', 'MRT', 'Mauritania', 'Nouakchott', 'Africa', 'Western Africa'),
+(143, 'MU', 'MUS', 'Mauritius', 'Port Louis', 'Africa', 'Eastern Africa'),
+(144, 'YT', 'MYT', 'Mayotte', 'Mamoudzou', 'Africa', 'Eastern Africa'),
+(145, 'MX', 'MEX', 'Mexico', 'Mexico City', 'Americas', 'Central America'),
+(146, 'FM', 'FSM', 'Federated States of Micronesia', 'Palikir', 'Oceania', 'Micronesia'),
+(147, 'MD', 'MDA', 'Moldova', 'Chișinău', 'Europe', 'Eastern Europe'),
+(148, 'MC', 'MCO', 'Monaco', 'Monaco', 'Europe', 'Western Europe'),
+(149, 'MN', 'MNG', 'Mongolia', 'Ulan Bator', 'Asia', 'Eastern Asia'),
+(150, 'ME', 'MNE', 'Montenegro', 'Podgorica', 'Europe', 'Southern Europe'),
+(151, 'MS', 'MSR', 'Montserrat', 'Plymouth', 'Americas', 'Caribbean'),
+(152, 'MA', 'MAR', 'Morocco', 'Rabat', 'Africa', 'Northern Africa'),
+(153, 'MZ', 'MOZ', 'Mozambique', 'Maputo', 'Africa', 'Eastern Africa'),
+(154, 'MM', 'MMR', 'Myanmar', 'Naypyidaw', 'Asia', 'South-Eastern Asia'),
+(155, 'NA', 'NAM', 'Namibia', 'Windhoek', 'Africa', 'Southern Africa'),
+(156, 'NR', 'NRU', 'Nauru', 'Yaren', 'Oceania', 'Micronesia'),
+(157, 'NP', 'NPL', 'Nepal', 'Kathmandu', 'Asia', 'Southern Asia'),
+(158, 'NL', 'NLD', 'Netherlands', 'Amsterdam', 'Europe', 'Western Europe'),
+(159, 'NC', 'NCL', 'New Caledonia', 'Nouméa', 'Oceania', 'Melanesia'),
+(160, 'NZ', 'NZL', 'New Zealand', 'Wellington', 'Oceania', 'Australia and New Zealand'),
+(161, 'NI', 'NIC', 'Nicaragua', 'Managua', 'Americas', 'Central America'),
+(162, 'NE', 'NER', 'Niger', 'Niamey', 'Africa', 'Western Africa'),
+(163, 'NG', 'NGA', 'Nigeria', 'Abuja', 'Africa', 'Western Africa'),
+(164, 'NU', 'NIU', 'Niue', 'Alofi', 'Oceania', 'Polynesia'),
+(165, 'NF', 'NFK', 'Norfolk Island', 'Kingston', 'Oceania', 'Australia and New Zealand'),
+(166, 'KP', 'PRK', 'North Korea', 'Pyongyang', 'Asia', 'Eastern Asia'),
+(167, 'MP', 'MNP', 'Northern Mariana Islands', 'Saipan', 'Oceania', 'Micronesia'),
+(168, 'NO', 'NOR', 'Norway', 'Oslo', 'Europe', 'Northern Europe'),
+(169, 'OM', 'OMN', 'Oman', 'Muscat', 'Asia', 'Western Asia'),
+(170, 'PK', 'PAK', 'Pakistan', 'Islamabad', 'Asia', 'Southern Asia'),
+(171, 'PW', 'PLW', 'Palau', 'Ngerulmud', 'Oceania', 'Micronesia'),
+(172, 'PS', 'PSE', 'Palestine', 'Ramallah', 'Asia', 'Western Asia'),
+(173, 'PA', 'PAN', 'Panama', 'Panama City', 'Americas', 'Central America'),
+(174, 'PG', 'PNG', 'Papua New Guinea', 'Port Moresby', 'Oceania', 'Melanesia'),
+(175, 'PY', 'PRY', 'Paraguay', 'Asunción', 'Americas', 'South America'),
+(176, 'PE', 'PER', 'Peru', 'Lima', 'Americas', 'South America'),
+(177, 'PH', 'PHL', 'Philippines', 'Manila', 'Asia', 'South-Eastern Asia'),
+(178, 'PN', 'PCN', 'Pitcairn Islands', 'Adamstown', 'Oceania', 'Polynesia'),
+(179, 'PL', 'POL', 'Poland', 'Warsaw', 'Europe', 'Eastern Europe'),
+(180, 'PT', 'PRT', 'Portugal', 'Lisbon', 'Europe', 'Southern Europe'),
+(181, 'PR', 'PRI', 'Puerto Rico', 'San Juan', 'Americas', 'Caribbean'),
+(182, 'QA', 'QAT', 'Qatar', 'Doha', 'Asia', 'Western Asia'),
+(183, 'XK', 'KOS', 'Republic of Kosovo', 'Pristina', 'Europe', 'Eastern Europe'),
+(184, 'RE', 'REU', 'Réunion', 'Saint-Denis', 'Africa', 'Eastern Africa'),
+(185, 'RO', 'ROU', 'Romania', 'Bucharest', 'Europe', 'Eastern Europe'),
+(186, 'RU', 'RUS', 'Russia', 'Moscow', 'Europe', 'Eastern Europe'),
+(187, 'RW', 'RWA', 'Rwanda', 'Kigali', 'Africa', 'Eastern Africa'),
+(188, 'BL', 'BLM', 'Saint Barthélemy', 'Gustavia', 'Americas', 'Caribbean'),
+(189, 'SH', 'SHN', 'Saint Helena', 'Jamestown', 'Africa', 'Western Africa'),
+(190, 'KN', 'KNA', 'Saint Kitts and Nevis', 'Basseterre', 'Americas', 'Caribbean'),
+(191, 'LC', 'LCA', 'Saint Lucia', 'Castries', 'Americas', 'Caribbean'),
+(192, 'MF', 'MAF', 'Saint Martin', 'Marigot', 'Americas', 'Caribbean'),
+(193, 'PM', 'SPM', 'Saint Pierre and Miquelon', 'Saint-Pierre', 'Americas', 'Northern America'),
+(194, 'VC', 'VCT', 'Saint Vincent and the Grenadines', 'Kingstown', 'Americas', 'Caribbean'),
+(195, 'WS', 'WSM', 'Samoa', 'Apia', 'Oceania', 'Polynesia'),
+(196, 'SM', 'SMR', 'San Marino', 'City of San Marino', 'Europe', 'Southern Europe'),
+(197, 'ST', 'STP', 'São Tomé and Príncipe', 'São Tomé', 'Africa', 'Middle Africa'),
+(198, 'SA', 'SAU', 'Saudi Arabia', 'Riyadh', 'Asia', 'Western Asia'),
+(199, 'SN', 'SEN', 'Senegal', 'Dakar', 'Africa', 'Western Africa'),
+(200, 'RS', 'SRB', 'Serbia', 'Belgrade', 'Europe', 'Southern Europe'),
+(201, 'SC', 'SYC', 'Seychelles', 'Victoria', 'Africa', 'Eastern Africa'),
+(202, 'SL', 'SLE', 'Sierra Leone', 'Freetown', 'Africa', 'Western Africa'),
+(203, 'SG', 'SGP', 'Singapore', 'Singapore', 'Asia', 'South-Eastern Asia'),
+(204, 'SX', 'SXM', 'Sint Maarten', 'Philipsburg', 'Americas', 'Caribbean'),
+(205, 'SK', 'SVK', 'Slovakia', 'Bratislava', 'Europe', 'Eastern Europe'),
+(206, 'SI', 'SVN', 'Slovenia', 'Ljubljana', 'Europe', 'Southern Europe'),
+(207, 'SB', 'SLB', 'Solomon Islands', 'Honiara', 'Oceania', 'Melanesia'),
+(208, 'SO', 'SOM', 'Somalia', 'Mogadishu', 'Africa', 'Eastern Africa'),
+(209, 'ZA', 'ZAF', 'South Africa', 'Pretoria', 'Africa', 'Southern Africa'),
+(210, 'GS', 'SGS', 'South Georgia', 'King Edward Point', 'Americas', 'South America'),
+(211, 'KR', 'KOR', 'South Korea', 'Seoul', 'Asia', 'Eastern Asia'),
+(212, 'SS', 'SSD', 'South Sudan', 'Juba', 'Africa', 'Middle Africa'),
+(213, 'ES', 'ESP', 'Spain', 'Madrid', 'Europe', 'Southern Europe'),
+(214, 'LK', 'LKA', 'Sri Lanka', 'Colombo', 'Asia', 'Southern Asia'),
+(215, 'SD', 'SDN', 'Sudan', 'Khartoum', 'Africa', 'Northern Africa'),
+(216, 'SR', 'SUR', 'Suriname', 'Paramaribo', 'Americas', 'South America'),
+(217, 'SJ', 'SJM', 'Svalbard and Jan Mayen', 'Longyearbyen', 'Europe', 'Northern Europe'),
+(218, 'SZ', 'SWZ', 'Swaziland', 'Lobamba', 'Africa', 'Southern Africa'),
+(219, 'SE', 'SWE', 'Sweden', 'Stockholm', 'Europe', 'Northern Europe'),
+(220, 'CH', 'CHE', 'Switzerland', 'Bern', 'Europe', 'Western Europe'),
+(221, 'SY', 'SYR', 'Syria', 'Damascus', 'Asia', 'Western Asia'),
+(222, 'TW', 'TWN', 'Taiwan', 'Taipei', 'Asia', 'Eastern Asia'),
+(223, 'TJ', 'TJK', 'Tajikistan', 'Dushanbe', 'Asia', 'Central Asia'),
+(224, 'TZ', 'TZA', 'Tanzania', 'Dodoma', 'Africa', 'Eastern Africa'),
+(225, 'TH', 'THA', 'Thailand', 'Bangkok', 'Asia', 'South-Eastern Asia'),
+(226, 'TL', 'TLS', 'East Timor', 'Dili', 'Asia', 'South-Eastern Asia'),
+(227, 'TG', 'TGO', 'Togo', 'Lomé', 'Africa', 'Western Africa'),
+(228, 'TK', 'TKL', 'Tokelau', 'Fakaofo', 'Oceania', 'Polynesia'),
+(229, 'TO', 'TON', 'Tonga', 'Nuku\'alofa', 'Oceania', 'Polynesia'),
+(230, 'TT', 'TTO', 'Trinidad and Tobago', 'Port of Spain', 'Americas', 'Caribbean'),
+(231, 'TN', 'TUN', 'Tunisia', 'Tunis', 'Africa', 'Northern Africa'),
+(232, 'TR', 'TUR', 'Turkey', 'Ankara', 'Asia', 'Western Asia'),
+(233, 'TM', 'TKM', 'Turkmenistan', 'Ashgabat', 'Asia', 'Central Asia'),
+(234, 'TC', 'TCA', 'Turks and Caicos Islands', 'Cockburn Town', 'Americas', 'Caribbean'),
+(235, 'TV', 'TUV', 'Tuvalu', 'Funafuti', 'Oceania', 'Polynesia'),
+(236, 'UG', 'UGA', 'Uganda', 'Kampala', 'Africa', 'Eastern Africa'),
+(237, 'UA', 'UKR', 'Ukraine', 'Kiev', 'Europe', 'Eastern Europe'),
+(238, 'AE', 'ARE', 'United Arab Emirates', 'Abu Dhabi', 'Asia', 'Western Asia'),
+(239, 'GB', 'GBR', 'United Kingdom', 'London', 'Europe', 'Northern Europe'),
+(240, 'US', 'USA', 'United States', 'Washington, D.C.', 'Americas', 'Northern America'),
+(241, 'UY', 'URY', 'Uruguay', 'Montevideo', 'Americas', 'South America'),
+(242, 'UZ', 'UZB', 'Uzbekistan', 'Tashkent', 'Asia', 'Central Asia'),
+(243, 'VU', 'VUT', 'Vanuatu', 'Port Vila', 'Oceania', 'Melanesia'),
+(244, 'VE', 'VEN', 'Venezuela', 'Caracas', 'Americas', 'South America'),
+(245, 'VN', 'VNM', 'Vietnam', 'Hanoi', 'Asia', 'South-Eastern Asia'),
+(246, 'WF', 'WLF', 'Wallis and Futuna', 'Mata-Utu', 'Oceania', 'Polynesia'),
+(247, 'EH', 'ESH', 'Western Sahara', 'El Aaiún', 'Africa', 'Northern Africa'),
+(248, 'YE', 'YEM', 'Yemen', 'Sana\'a', 'Asia', 'Western Asia'),
+(249, 'ZM', 'ZMB', 'Zambia', 'Lusaka', 'Africa', 'Eastern Africa'),
+(250, 'ZW', 'ZWE', 'Zimbabwe', 'Harare', 'Africa', 'Eastern Africa');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `facility_loans`
+--
+
+CREATE TABLE `facility_loans` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `facility_limit` decimal(15,2) NOT NULL,
+  `current_utilization` decimal(15,2) NOT NULL,
+  `interest_rate` decimal(5,2) NOT NULL,
+  `maturity_date` date NOT NULL,
+  `interest_payment` decimal(15,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `facility_loans`
+--
+
+INSERT INTO `facility_loans` (`id`, `account_number`, `facility_limit`, `current_utilization`, `interest_rate`, `maturity_date`, `interest_payment`) VALUES
+(1, '0123456789', '1000.00', '200.00', '10.00', '2024-07-31', '100.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `investments`
+--
+
+CREATE TABLE `investments` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `portfolio_balance` decimal(15,2) NOT NULL,
+  `business_savings` decimal(15,2) NOT NULL,
+  `expense` decimal(15,2) NOT NULL,
+  `investment_options` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `investments`
+--
+
+INSERT INTO `investments` (`id`, `account_number`, `portfolio_balance`, `business_savings`, `expense`, `investment_options`, `created_at`, `updated_at`) VALUES
+(1, '0123456789', '12000.00', '30000.00', '3000.00', 'Bankers Group', '2024-07-19 08:46:22', '2024-07-19 08:46:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loan_applications`
+--
+
+CREATE TABLE `loan_applications` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `loan_type` enum('mortgage','cash','loan','investment','business') NOT NULL,
+  `status` enum('Pending','Approved','Rejected') NOT NULL,
+  `approved_by` int(11) DEFAULT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `application_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `approval_date` datetime DEFAULT NULL,
+  `interest_rate` decimal(5,2) DEFAULT NULL,
+  `repayment_term` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `description` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `loan_applications`
+--
+
+INSERT INTO `loan_applications` (`id`, `account_number`, `loan_type`, `status`, `approved_by`, `amount`, `application_date`, `approval_date`, `interest_rate`, `repayment_term`, `created_at`, `updated_at`, `description`) VALUES
+(1, '0123456789', 'mortgage', 'Pending', 1, '1000.00', '2024-07-19 08:47:45', '2024-07-19 09:46:58', '10.00', 12, '2024-07-19 08:47:45', '2024-07-19 08:47:45', 'Car Loan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mortgage_loans`
+--
+
+CREATE TABLE `mortgage_loans` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `mortgage_balance` decimal(15,2) NOT NULL,
+  `monthly_payment` decimal(10,2) NOT NULL,
+  `interest_rate` decimal(5,2) NOT NULL,
+  `remaining_terms` int(11) NOT NULL,
+  `mortgage_options` text NOT NULL,
+  `repayment_dates` date NOT NULL,
+  `previous_payments` decimal(15,2) NOT NULL,
+  `next_payment` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `mortgage_loans`
+--
+
+INSERT INTO `mortgage_loans` (`id`, `account_number`, `mortgage_balance`, `monthly_payment`, `interest_rate`, `remaining_terms`, `mortgage_options`, `repayment_dates`, `previous_payments`, `next_payment`) VALUES
+(1, '0123456789', '12000.00', '1200.00', '10.00', 10, 'House', '2024-07-19', '1500.00', '2024-08-19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pending_updates`
+--
+
+CREATE TABLE `pending_updates` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `update_type` enum('email','personal_info','account_info') NOT NULL,
+  `field_name` varchar(50) NOT NULL,
+  `old_value` text NOT NULL,
+  `new_value` text NOT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `approved_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Loan`
+-- Table structure for table `state`
 --
 
-CREATE TABLE `Loan` (
-  `LoanID` int(11) NOT NULL,
-  `ClientID` int(11) DEFAULT NULL,
-  `LoanType` varchar(50) NOT NULL,
-  `Amount` decimal(15,2) NOT NULL,
-  `InterestRate` decimal(5,2) NOT NULL,
-  `Term` int(11) NOT NULL,
-  `Status` varchar(20) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `state` (
+  `idstate` int(11) NOT NULL,
+  `country` int(11) NOT NULL,
+  `code` varchar(11) DEFAULT NULL,
+  `state_name` varchar(45) NOT NULL,
+  `subdivision` varchar(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `state`
+--
+
+INSERT INTO `state` (`idstate`, `country`, `code`, `state_name`, `subdivision`) VALUES
+(1, 1, 'BDS', 'Badakhshān', NULL),
+(2, 1, 'BGL', 'Baghlān', NULL),
+(3, 1, 'BAL', 'Balkh', NULL),
+(4, 1, 'BDG', 'Bādghīs', NULL),
+(5, 1, 'BAM', 'Bāmyān', NULL),
+(6, 1, 'DAY', 'Dāykundī', NULL),
+(7, 1, 'FRA', 'Farāh', NULL),
+(8, 1, 'FYB', 'Fāryāb', NULL),
+(9, 1, 'GHA', 'Ghaznī', NULL),
+(10, 1, 'GHO', 'Ghōr', NULL),
+(11, 1, 'HEL', 'Helmand', NULL),
+(12, 1, 'HER', 'Herāt', NULL),
+(13, 1, 'JOW', 'Jowzjān', NULL),
+(14, 1, 'KAN', 'Kandahār', NULL),
+(15, 1, 'KHO', 'Khōst', NULL),
+(16, 1, 'KNR', 'Kunar', NULL),
+(17, 1, 'KDZ', 'Kunduz', NULL),
+(18, 1, 'KAB', 'Kābul', NULL),
+(19, 1, 'KAP', 'Kāpīsā', NULL),
+(20, 1, 'LAG', 'Laghmān', NULL),
+(21, 1, 'LOG', 'Lōgar', NULL),
+(22, 1, 'NAN', 'Nangarhār', NULL),
+(23, 1, 'NIM', 'Nīmrōz', NULL),
+(24, 1, 'NUR', 'Nūristān', NULL),
+(25, 1, 'PIA', 'Paktiyā', NULL),
+(26, 1, 'PKA', 'Paktīkā', NULL),
+(27, 1, 'PAN', 'Panjshayr', NULL),
+(28, 1, 'PAR', 'Parwān', NULL),
+(29, 1, 'SAM', 'Samangān', NULL),
+(30, 1, 'SAR', 'Sar-e Pul', NULL),
+(31, 1, 'TAK', 'Takhār', NULL),
+(32, 1, 'URU', 'Uruzgān', NULL),
+(33, 1, 'WAR', 'Wardak', NULL),
+(34, 1, 'ZAB', 'Zābul', NULL),
+(35, 3, '01', 'Berat', NULL),
+(36, 3, '09', 'Dibër', NULL),
+(37, 3, '02', 'Durrës', NULL),
+(38, 3, '03', 'Elbasan', NULL),
+(39, 3, '04', 'Fier', NULL),
+(40, 3, '05', 'Gjirokastër', NULL),
+(41, 3, '06', 'Korçë', NULL),
+(42, 3, '07', 'Kukës', NULL),
+(43, 3, '08', 'Lezhë', NULL),
+(44, 3, '10', 'Shkodër', NULL),
+(45, 3, '11', 'Tiranë', NULL),
+(46, 3, '12', 'Vlorë', NULL),
+(47, 4, '01', 'Adrar', NULL),
+(48, 4, '16', 'Alger', NULL),
+(49, 4, '23', 'Annaba', NULL),
+(50, 4, '44', 'Aïn Defla', NULL),
+(51, 4, '46', 'Aïn Témouchent', NULL),
+(52, 4, '05', 'Batna', NULL),
+(53, 4, '07', 'Biskra', NULL),
+(54, 4, '09', 'Blida', NULL),
+(55, 4, '34', 'Bordj Bou Arréridj', NULL),
+(56, 4, '10', 'Bouira', NULL),
+(57, 4, '35', 'Boumerdès', NULL),
+(58, 4, '08', 'Béchar', NULL),
+(59, 4, '06', 'Béjaïa', NULL),
+(60, 4, '02', 'Chlef', NULL),
+(61, 4, '25', 'Constantine', NULL),
+(62, 4, '17', 'Djelfa', NULL),
+(63, 4, '32', 'El Bayadh', NULL),
+(64, 4, '39', 'El Oued', NULL),
+(65, 4, '36', 'El Tarf', NULL),
+(66, 4, '47', 'Ghardaïa', NULL),
+(67, 4, '24', 'Guelma', NULL),
+(68, 4, '33', 'Illizi', NULL),
+(69, 4, '18', 'Jijel', NULL),
+(70, 4, '40', 'Khenchela', NULL),
+(71, 4, '03', 'Laghouat', NULL),
+(72, 4, '29', 'Mascara', NULL),
+(73, 4, '43', 'Mila', NULL),
+(74, 4, '27', 'Mostaganem', NULL),
+(75, 4, '28', 'Msila', NULL),
+(76, 4, '26', 'Médéa', NULL),
+(77, 4, '45', 'Naama', NULL),
+(78, 4, '31', 'Oran', NULL),
+(79, 4, '30', 'Ouargla', NULL),
+(80, 4, '04', 'Oum el Bouaghi', NULL),
+(81, 4, '48', 'Relizane', NULL),
+(82, 4, '20', 'Saïda', NULL),
+(83, 4, '22', 'Sidi Bel Abbès', NULL),
+(84, 4, '21', 'Skikda', NULL),
+(85, 4, '41', 'Souk Ahras', NULL),
+(86, 4, '19', 'Sétif', NULL),
+(87, 4, '11', 'Tamanghasset', NULL),
+(88, 4, '14', 'Tiaret', NULL),
+(89, 4, '37', 'Tindouf', NULL),
+(90, 4, '42', 'Tipaza', NULL),
+(91, 4, '38', 'Tissemsilt', NULL),
+(92, 4, '15', 'Tizi Ouzou', NULL),
+(93, 4, '13', 'Tlemcen', NULL),
+(94, 4, '12', 'Tébessa', NULL),
+(95, 6, '07', 'Andorra la Vella', NULL),
+(96, 6, '02', 'Canillo', NULL),
+(97, 6, '03', 'Encamp', NULL),
+(98, 6, '08', 'Escaldes-Engordany', NULL),
+(99, 6, '04', 'La Massana', NULL),
+(100, 6, '05', 'Ordino', NULL),
+(101, 6, '06', 'Sant Julià de Lòria', NULL),
+(102, 7, 'BGO', 'Bengo', NULL),
+(103, 7, 'BGU', 'Benguela', NULL),
+(104, 7, 'BIE', 'Bié', NULL),
+(105, 7, 'CAB', 'Cabinda', NULL),
+(106, 7, 'CNN', 'Cunene', NULL),
+(107, 7, 'HUA', 'Huambo', NULL),
+(108, 7, 'HUI', 'Huíla', NULL),
+(109, 7, 'CCU', 'Kuando Kubango', NULL),
+(110, 7, 'CNO', 'Kwanza Norte', NULL),
+(111, 7, 'CUS', 'Kwanza Sul', NULL),
+(112, 7, 'LUA', 'Luanda', NULL),
+(113, 7, 'LNO', 'Lunda Norte', NULL),
+(114, 7, 'LSU', 'Lunda Sul', NULL),
+(115, 7, 'MAL', 'Malange', NULL),
+(116, 7, 'MOX', 'Moxico', NULL),
+(117, 7, 'NAM', 'Namibe', NULL),
+(118, 7, 'UIG', 'Uíge', NULL),
+(119, 7, 'ZAI', 'Zaire', NULL),
+(120, 10, '10', 'Barbuda', NULL),
+(121, 10, '11', 'Redonda', NULL),
+(122, 10, '03', 'Saint George', NULL),
+(123, 10, '04', 'Saint John', NULL),
+(124, 10, '05', 'Saint Mary', NULL),
+(125, 10, '06', 'Saint Paul', NULL),
+(126, 10, '07', 'Saint Peter', NULL),
+(127, 10, '08', 'Saint Philip', NULL),
+(128, 11, 'B', 'Buenos Aires', NULL),
+(129, 11, 'K', 'Catamarca', NULL),
+(130, 11, 'H', 'Chaco', NULL),
+(131, 11, 'U', 'Chubut', NULL),
+(132, 11, 'C', 'Ciudad Autónoma de Buenos Aires', NULL),
+(133, 11, 'W', 'Corrientes', NULL),
+(134, 11, 'X', 'Córdoba', NULL),
+(135, 11, 'E', 'Entre Ríos', NULL),
+(136, 11, 'P', 'Formosa', NULL),
+(137, 11, 'Y', 'Jujuy', NULL),
+(138, 11, 'L', 'La Pampa', NULL),
+(139, 11, 'F', 'La Rioja', NULL),
+(140, 11, 'M', 'Mendoza', NULL),
+(141, 11, 'N', 'Misiones', NULL),
+(142, 11, 'Q', 'Neuquén', NULL),
+(143, 11, 'R', 'Río Negro', NULL),
+(144, 11, 'A', 'Salta', NULL),
+(145, 11, 'J', 'San Juan', NULL),
+(146, 11, 'D', 'San Luis', NULL),
+(147, 11, 'Z', 'Santa Cruz', NULL),
+(148, 11, 'S', 'Santa Fe', NULL),
+(149, 11, 'G', 'Santiago del Estero', NULL),
+(150, 11, 'V', 'Tierra del Fuego', NULL),
+(151, 11, 'T', 'Tucumán', NULL),
+(152, 12, 'AG', 'Aragac̣otn', NULL),
+(153, 12, 'AR', 'Ararat', NULL),
+(154, 12, 'AV', 'Armavir', NULL),
+(155, 12, 'ER', 'Erevan', NULL),
+(156, 12, 'GR', 'Geġark\'unik\'', NULL),
+(157, 12, 'KT', 'Kotayk\'', NULL),
+(158, 12, 'LO', 'Loṙi', NULL),
+(159, 12, 'SU', 'Syunik\'', NULL),
+(160, 12, 'TV', 'Tavuš', NULL),
+(161, 12, 'VD', 'Vayoć Jor', NULL),
+(162, 12, 'SH', 'Širak', NULL),
+(163, 14, 'ACT', 'Australian Capital Territory', NULL),
+(164, 14, 'NSW', 'New South Wales', NULL),
+(165, 14, 'NT', 'Northern Territory', NULL),
+(166, 14, 'QLD', 'Queensland', NULL),
+(167, 14, 'SA', 'South Australia', NULL),
+(168, 14, 'TAS', 'Tasmania', NULL),
+(169, 14, 'VIC', 'Victoria', NULL),
+(170, 14, 'WA', 'Western Australia', NULL),
+(171, 15, 'B', 'Burgenland', NULL),
+(172, 15, 'K', 'Kärnten', NULL),
+(173, 15, 'NÖ', 'Niederösterreich', NULL),
+(174, 15, 'OÖ', 'Oberösterreich', NULL),
+(175, 15, 'S', 'Salzburg', NULL),
+(176, 15, 'ST', 'Steiermark', NULL),
+(177, 15, 'T', 'Tirol', NULL),
+(178, 15, 'V', 'Vorarlberg', NULL),
+(179, 15, 'W', 'Wien', NULL),
+(180, 16, 'NX', 'Naxçıvan', NULL),
+(181, 17, 'AK', 'Acklins', NULL),
+(182, 17, 'BY', 'Berry Islands', NULL),
+(183, 17, 'BI', 'Bimini', NULL),
+(184, 17, 'BP', 'Black Point', NULL),
+(185, 17, 'CI', 'Cat Island', NULL),
+(186, 17, 'CO', 'Central Abaco', NULL),
+(187, 17, 'CS', 'Central Andros', NULL),
+(188, 17, 'CE', 'Central Eleuthera', NULL),
+(189, 17, 'FP', 'City of Freeport', NULL),
+(190, 17, 'CK', 'Crooked Island and Long Cay', NULL),
+(191, 17, 'EG', 'East Grand Bahama', NULL),
+(192, 17, 'EX', 'Exuma', NULL),
+(193, 17, 'GC', 'Grand Cay', NULL),
+(194, 17, 'HI', 'Harbour Island', NULL),
+(195, 17, 'HT', 'Hope Town', NULL),
+(196, 17, 'IN', 'Inagua', NULL),
+(197, 17, 'LI', 'Long Island', NULL),
+(198, 17, 'MC', 'Mangrove Cay', NULL),
+(199, 17, 'MG', 'Mayaguana', NULL),
+(200, 17, 'MI', 'Moores Island', NULL),
+(201, 17, 'NO', 'North Abaco', NULL),
+(202, 17, 'NS', 'North Andros', NULL),
+(203, 17, 'NE', 'North Eleuthera', NULL),
+(204, 17, 'RI', 'Ragged Island', NULL),
+(205, 17, 'RC', 'Rum Cay', NULL),
+(206, 17, 'SS', 'San Salvador', NULL),
+(207, 17, 'SO', 'South Abaco', NULL),
+(208, 17, 'SA', 'South Andros', NULL),
+(209, 17, 'SE', 'South Eleuthera', NULL),
+(210, 17, 'SW', 'Spanish Wells', NULL),
+(211, 17, 'WG', 'West Grand Bahama', NULL),
+(212, 18, '14', 'Al Janūbīyah', NULL),
+(213, 18, '13', 'Al Manāmah', NULL),
+(214, 18, '15', 'Al Muḩarraq', NULL),
+(215, 18, '16', 'Al Wusţá', NULL),
+(216, 18, '17', 'Ash Shamālīyah', NULL),
+(217, 19, 'A', 'Barisal', NULL),
+(218, 19, 'B', 'Chittagong', NULL),
+(219, 19, 'C', 'Dhaka', NULL),
+(220, 19, 'D', 'Khulna', NULL),
+(221, 19, 'E', 'Rajshahi', NULL),
+(222, 19, 'F', 'Rangpur', NULL),
+(223, 19, 'G', 'Sylhet', NULL),
+(224, 20, '01', 'Christ Church', NULL),
+(225, 20, '02', 'Saint Andrew', NULL),
+(226, 20, '03', 'Saint George', NULL),
+(227, 20, '04', 'Saint James', NULL),
+(228, 20, '05', 'Saint John', NULL),
+(229, 20, '06', 'Saint Joseph', NULL),
+(230, 20, '07', 'Saint Lucy', NULL),
+(231, 20, '08', 'Saint Michael', NULL),
+(232, 20, '09', 'Saint Peter', NULL),
+(233, 20, '10', 'Saint Philip', NULL),
+(234, 20, '11', 'Saint Thomas', NULL),
+(235, 21, 'BR', 'Brestskaya voblasts\'', NULL),
+(236, 21, 'HO', 'Homyel\'skaya voblasts\'', NULL),
+(237, 21, 'HM', 'Horad Minsk', NULL),
+(238, 21, 'HR', 'Hrodzenskaya voblasts\'', NULL),
+(239, 21, 'MA', 'Mahilyowskaya voblasts\'', NULL),
+(240, 21, 'MI', 'Minskaya voblasts\'', NULL),
+(241, 21, 'VI', 'Vitsyebskaya voblasts\'', NULL),
+(242, 22, 'BRU', 'Brussels Hoofdstedelijk Gewest', NULL),
+(243, 22, 'WAL', 'Région Wallonne', NULL),
+(244, 22, 'VLG', 'Vlaams Gewest', NULL),
+(245, 23, 'BZ', 'Belize', NULL),
+(246, 23, 'CY', 'Cayo', NULL),
+(247, 23, 'CZL', 'Corozal', NULL),
+(248, 23, 'OW', 'Orange Walk', NULL),
+(249, 23, 'SC', 'Stann Creek', NULL),
+(250, 23, 'TOL', 'Toledo', NULL),
+(251, 24, 'AL', 'Alibori', NULL),
+(252, 24, 'AK', 'Atakora', NULL),
+(253, 24, 'AQ', 'Atlantique', NULL),
+(254, 24, 'BO', 'Borgou', NULL),
+(255, 24, 'CO', 'Collines', NULL),
+(256, 24, 'DO', 'Donga', NULL),
+(257, 24, 'KO', 'Kouffo', NULL),
+(258, 24, 'LI', 'Littoral', NULL),
+(259, 24, 'MO', 'Mono', NULL),
+(260, 24, 'OU', 'Ouémé', NULL),
+(261, 24, 'PL', 'Plateau', NULL),
+(262, 24, 'ZO', 'Zou', NULL),
+(263, 26, '33', 'Bumthang', NULL),
+(264, 26, '12', 'Chhukha', NULL),
+(265, 26, '22', 'Dagana', NULL),
+(266, 26, 'GA', 'Gasa', NULL),
+(267, 26, '13', 'Ha', NULL),
+(268, 26, '44', 'Lhuentse', NULL),
+(269, 26, '42', 'Monggar', NULL),
+(270, 26, '11', 'Paro', NULL),
+(271, 26, '43', 'Pemagatshel', NULL),
+(272, 26, '23', 'Punakha', NULL),
+(273, 26, '45', 'Samdrup Jongkha', NULL),
+(274, 26, '14', 'Samtse', NULL),
+(275, 26, '31', 'Sarpang', NULL),
+(276, 26, '15', 'Thimphu', NULL),
+(277, 26, 'TY', 'Trashi Yangtse', NULL),
+(278, 26, '41', 'Trashigang', NULL),
+(279, 26, '32', 'Trongsa', NULL),
+(280, 26, '21', 'Tsirang', NULL),
+(281, 26, '24', 'Wangdue Phodrang', NULL),
+(282, 26, '34', 'Zhemgang', NULL),
+(283, 27, 'H', 'Chuquisaca', NULL),
+(284, 27, 'C', 'Cochabamba', NULL),
+(285, 27, 'B', 'El Beni', NULL),
+(286, 27, 'L', 'La Paz', NULL),
+(287, 27, 'O', 'Oruro', NULL),
+(288, 27, 'N', 'Pando', NULL),
+(289, 27, 'P', 'Potosí', NULL),
+(290, 27, 'S', 'Santa Cruz', NULL),
+(291, 27, 'T', 'Tarija', NULL),
+(292, 29, 'BRC', 'Brčko distrikt', NULL),
+(293, 29, 'BIH', 'Federacija Bosna i Hercegovina', NULL),
+(294, 29, 'SRP', 'Republika Srpska', NULL),
+(295, 30, 'CE', 'Central', NULL),
+(296, 30, 'CH', 'Chobe', NULL),
+(297, 30, 'FR', 'Francistown', NULL),
+(298, 30, 'GA', 'Gaborone', NULL),
+(299, 30, 'GH', 'Ghanzi', NULL),
+(300, 30, 'JW', 'Jwaneng', NULL),
+(301, 30, 'KG', 'Kgalagadi', NULL),
+(302, 30, 'KL', 'Kgatleng', NULL),
+(303, 30, 'KW', 'Kweneng', NULL),
+(304, 30, 'LO', 'Lobatse', NULL),
+(305, 30, 'NE', 'North-East', NULL),
+(306, 30, 'NW', 'North-West', NULL),
+(307, 30, 'SP', 'Selibe Phikwe', NULL),
+(308, 30, 'SE', 'South-East', NULL),
+(309, 30, 'SO', 'Southern', NULL),
+(310, 30, 'ST', 'Sowa Town', NULL),
+(311, 32, 'AC', 'Acre', NULL),
+(312, 32, 'AL', 'Alagoas', NULL),
+(313, 32, 'AP', 'Amapá', NULL),
+(314, 32, 'AM', 'Amazonas', NULL),
+(315, 32, 'BA', 'Bahia', NULL),
+(316, 32, 'CE', 'Ceará', NULL),
+(317, 32, 'DF', 'Distrito Federal', NULL),
+(318, 32, 'ES', 'Espírito Santo', NULL),
+(319, 32, 'GO', 'Goiás', NULL),
+(320, 32, 'MA', 'Maranhão', NULL),
+(321, 32, 'MT', 'Mato Grosso', NULL),
+(322, 32, 'MS', 'Mato Grosso do Sul', NULL),
+(323, 32, 'MG', 'Minas Gerais', NULL),
+(324, 32, 'PR', 'Paraná', NULL),
+(325, 32, 'PB', 'Paraíba', NULL),
+(326, 32, 'PA', 'Pará', NULL),
+(327, 32, 'PE', 'Pernambuco', NULL),
+(328, 32, 'PI', 'Piauí', NULL),
+(329, 32, 'RN', 'Rio Grande do Norte', NULL),
+(330, 32, 'RS', 'Rio Grande do Sul', NULL),
+(331, 32, 'RJ', 'Rio de Janeiro', NULL),
+(332, 32, 'RO', 'Rondônia', NULL),
+(333, 32, 'RR', 'Roraima', NULL),
+(334, 32, 'SC', 'Santa Catarina', NULL),
+(335, 32, 'SE', 'Sergipe', NULL),
+(336, 32, 'SP', 'São Paulo', NULL),
+(337, 32, 'TO', 'Tocantins', NULL),
+(338, 34, '81', 'Baker Island', NULL),
+(339, 34, '84', 'Howland Island', NULL),
+(340, 34, '86', 'Jarvis Island', NULL),
+(341, 34, '67', 'Johnston Atoll', NULL),
+(342, 34, '89', 'Kingman Reef', NULL),
+(343, 34, '71', 'Midway Islands', NULL),
+(344, 34, '76', 'Navassa Island', NULL),
+(345, 34, '95', 'Palmyra Atoll', NULL),
+(346, 34, '79', 'Wake Island', NULL),
+(347, 37, 'BE', 'Belait', NULL),
+(348, 37, 'BM', 'Brunei-Muara', NULL),
+(349, 37, 'TE', 'Temburong', NULL),
+(350, 37, 'TU', 'Tutong', NULL),
+(351, 38, '01', 'Blagoevgrad', NULL),
+(352, 38, '02', 'Burgas', NULL),
+(353, 38, '08', 'Dobrich', NULL),
+(354, 38, '07', 'Gabrovo', NULL),
+(355, 38, '26', 'Haskovo', NULL),
+(356, 38, '09', 'Kardzhali', NULL),
+(357, 38, '10', 'Kyustendil', NULL),
+(358, 38, '11', 'Lovech', NULL),
+(359, 38, '12', 'Montana', NULL),
+(360, 38, '13', 'Pazardzhik', NULL),
+(361, 38, '14', 'Pernik', NULL),
+(362, 38, '15', 'Pleven', NULL),
+(363, 38, '16', 'Plovdiv', NULL),
+(364, 38, '17', 'Razgrad', NULL),
+(365, 38, '18', 'Ruse', NULL),
+(366, 38, '27', 'Shumen', NULL),
+(367, 38, '19', 'Silistra', NULL),
+(368, 38, '20', 'Sliven', NULL),
+(369, 38, '21', 'Smolyan', NULL),
+(370, 38, '23', 'Sofia', NULL),
+(371, 38, '22', 'Sofia-Grad', NULL),
+(372, 38, '24', 'Stara Zagora', NULL),
+(373, 38, '25', 'Targovishte', NULL),
+(374, 38, '03', 'Varna', NULL),
+(375, 38, '04', 'Veliko Tarnovo', NULL),
+(376, 38, '05', 'Vidin', NULL),
+(377, 38, '06', 'Vratsa', NULL),
+(378, 38, '28', 'Yambol', NULL),
+(379, 39, '01', 'Boucle du Mouhoun', NULL),
+(380, 39, '02', 'Cascades', NULL),
+(381, 39, '03', 'Centre', NULL),
+(382, 39, '04', 'Centre-Est', NULL),
+(383, 39, '05', 'Centre-Nord', NULL),
+(384, 39, '06', 'Centre-Ouest', NULL),
+(385, 39, '07', 'Centre-Sud', NULL),
+(386, 39, '08', 'Est', NULL),
+(387, 39, '09', 'Hauts-Bassins', NULL),
+(388, 39, '10', 'Nord', NULL),
+(389, 39, '11', 'Plateau-Central', NULL),
+(390, 39, '12', 'Sahel', NULL),
+(391, 39, '13', 'Sud-Ouest', NULL),
+(392, 40, 'BB', 'Bubanza', NULL),
+(393, 40, 'BM', 'Bujumbura Mairie', NULL),
+(394, 40, 'BL', 'Bujumbura Rural', NULL),
+(395, 40, 'BR', 'Bururi', NULL),
+(396, 40, 'CA', 'Cankuzo', NULL),
+(397, 40, 'CI', 'Cibitoke', NULL),
+(398, 40, 'GI', 'Gitega', NULL),
+(399, 40, 'KR', 'Karuzi', NULL),
+(400, 40, 'KY', 'Kayanza', NULL),
+(401, 40, 'KI', 'Kirundo', NULL),
+(402, 40, 'MA', 'Makamba', NULL),
+(403, 40, 'MU', 'Muramvya', NULL),
+(404, 40, 'MY', 'Muyinga', NULL),
+(405, 40, 'MW', 'Mwaro', NULL),
+(406, 40, 'NG', 'Ngozi', NULL),
+(407, 40, 'RT', 'Rutana', NULL),
+(408, 40, 'RY', 'Ruyigi', NULL),
+(409, 41, '2', 'Baat Dambang', NULL),
+(410, 41, '1', 'Banteay Mean Chey', NULL),
+(411, 41, '3', 'Kampong Chaam', NULL),
+(412, 41, '4', 'Kampong Chhnang', NULL),
+(413, 41, '5', 'Kampong Spueu', NULL),
+(414, 41, '6', 'Kampong Thum', NULL),
+(415, 41, '7', 'Kampot', NULL),
+(416, 41, '8', 'Kandaal', NULL),
+(417, 41, '9', 'Kaoh Kong', NULL),
+(418, 41, '10', 'Kracheh', NULL),
+(419, 41, '23', 'Krong Kaeb', NULL),
+(420, 41, '24', 'Krong Pailin', NULL),
+(421, 41, '18', 'Krong Preah Sihanouk', NULL),
+(422, 41, '11', 'Mondol Kiri', NULL),
+(423, 41, '22', 'Otdar Mean Chey', NULL),
+(424, 41, '12', 'Phnom Penh', NULL),
+(425, 41, '15', 'Pousaat', NULL),
+(426, 41, '13', 'Preah Vihear', NULL),
+(427, 41, '14', 'Prey Veaeng', NULL),
+(428, 41, '16', 'Rotanak Kiri', NULL),
+(429, 41, '17', 'Siem Reab', NULL),
+(430, 41, '19', 'Stueng Traeng', NULL),
+(431, 41, '20', 'Svaay Rieng', NULL),
+(432, 41, '21', 'Taakaev', NULL),
+(433, 42, 'AD', 'Adamaoua', NULL),
+(434, 42, 'CE', 'Centre', NULL),
+(435, 42, 'ES', 'East', NULL),
+(436, 42, 'EN', 'Far North', NULL),
+(437, 42, 'LT', 'Littoral', NULL),
+(438, 42, 'NO', 'North', NULL),
+(439, 42, 'NW', 'North-West', NULL),
+(440, 42, 'SU', 'South', NULL),
+(441, 42, 'SW', 'South-West', NULL),
+(442, 42, 'OU', 'West', NULL),
+(443, 43, 'AB', 'Alberta', 'province'),
+(444, 43, 'BC', 'British Columbia', 'province'),
+(445, 43, 'MB', 'Manitoba', 'province'),
+(446, 43, 'NB', 'New Brunswick', 'province'),
+(447, 43, 'NL', 'Newfoundland and Labrador', 'province'),
+(448, 43, 'NS', 'Nova Scotia', 'province'),
+(449, 43, 'ON', 'Ontario', 'province'),
+(450, 43, 'PE', 'Prince Edward Island', 'province'),
+(451, 43, 'QC', 'Quebec', 'province'),
+(452, 43, 'SK', 'Saskatchewan', 'province'),
+(453, 43, 'NT', 'Northwest Territories', 'territory'),
+(454, 43, 'NU', 'Nunavut', 'territory'),
+(455, 43, 'YT', 'Yukon', 'territory'),
+(456, 44, 'B', 'Ilhas de Barlavento', NULL),
+(457, 44, 'S', 'Ilhas de Sotavento', NULL),
+(458, 46, 'BB', 'Bamingui-Bangoran', NULL),
+(459, 46, 'BGF', 'Bangui', NULL),
+(460, 46, 'BK', 'Basse-Kotto', NULL),
+(461, 46, 'KB', 'Gribingui', NULL),
+(462, 46, 'HM', 'Haut-Mbomou', NULL),
+(463, 46, 'HK', 'Haute-Kotto', NULL),
+(464, 46, 'HS', 'Haute-Sangha / Mambéré-Kadéï', NULL),
+(465, 46, 'KG', 'Kémo-Gribingui', NULL),
+(466, 46, 'LB', 'Lobaye', NULL),
+(467, 46, 'MB', 'Mbomou', NULL),
+(468, 46, 'NM', 'Nana-Mambéré', NULL),
+(469, 46, 'MP', 'Ombella-Mpoko', NULL),
+(470, 46, 'UK', 'Ouaka', NULL),
+(471, 46, 'AC', 'Ouham', NULL),
+(472, 46, 'OP', 'Ouham-Pendé', NULL),
+(473, 46, 'SE', 'Sangha', NULL),
+(474, 46, 'VK', 'Vakaga', NULL),
+(475, 47, 'BA', 'Al Baṭḩah', NULL),
+(476, 47, 'LC', 'Al Buḩayrah', NULL),
+(477, 47, 'BG', 'Baḩr al Ghazāl', NULL),
+(478, 47, 'BO', 'Būrkū', NULL),
+(479, 47, 'EN', 'Innīdī', NULL),
+(480, 47, 'KA', 'Kānim', NULL),
+(481, 47, 'LO', 'Lūqūn al Gharbī', NULL),
+(482, 47, 'LR', 'Lūqūn ash Sharqī', NULL),
+(483, 47, 'ND', 'Madīnat Injamīnā', NULL),
+(484, 47, 'MA', 'Māndūl', NULL),
+(485, 47, 'MO', 'Māyū Kībbī al Gharbī', NULL),
+(486, 47, 'ME', 'Māyū Kībbī ash Sharqī', NULL),
+(487, 47, 'GR', 'Qīrā', NULL),
+(488, 47, 'SA', 'Salāmāt', NULL),
+(489, 47, 'CB', 'Shārī Bāqirmī', NULL),
+(490, 47, 'MC', 'Shārī al Awsaṭ', NULL),
+(491, 47, 'SI', 'Sīlā', NULL),
+(492, 47, 'TI', 'Tibastī', NULL),
+(493, 47, 'TA', 'Tānjilī', NULL),
+(494, 47, 'OD', 'Waddāy', NULL),
+(495, 47, 'WF', 'Wādī Fīrā', NULL),
+(496, 47, 'HL', 'Ḥajjar Lamīs', NULL),
+(497, 48, 'AI', 'Aisén del General Carlos Ibañez del Campo', NULL),
+(498, 48, 'AN', 'Antofagasta', NULL),
+(499, 48, 'AR', 'Araucanía', NULL),
+(500, 48, 'AP', 'Arica y Parinacota', NULL),
+(501, 48, 'AT', 'Atacama', NULL),
+(502, 48, 'BI', 'Bío-Bío', NULL),
+(503, 48, 'CO', 'Coquimbo', NULL),
+(504, 48, 'LI', 'Libertador General Bernardo O\'Higgins', NULL),
+(505, 48, 'LL', 'Los Lagos', NULL),
+(506, 48, 'LR', 'Los Ríos', NULL),
+(507, 48, 'MA', 'Magallanes', NULL),
+(508, 48, 'ML', 'Maule', NULL),
+(509, 48, 'RM', 'Región Metropolitana de Santiago', NULL),
+(510, 48, 'TA', 'Tarapacá', NULL),
+(511, 48, 'VS', 'Valparaíso', NULL),
+(512, 49, '34', 'Anhui', 'Province'),
+(513, 49, '35', 'Fujian', 'Province'),
+(514, 49, '62', 'Gansu', 'Province'),
+(515, 49, '44', 'Guangdong', 'Province'),
+(516, 49, '52', 'Guizhou', 'Province'),
+(517, 49, '46', 'Hainan', 'Province'),
+(518, 49, '13', 'Hebei', 'Province'),
+(519, 49, '23', 'Heilongjiang', 'Province'),
+(520, 49, '41', 'Henan', 'Province'),
+(521, 49, '42', 'Hubei', 'Province'),
+(522, 49, '43', 'Hunan', 'Province'),
+(523, 49, '32', 'Jiangsu', 'Province'),
+(524, 49, '36', 'Jiangxi', 'Province'),
+(525, 49, '22', 'Jilin', 'Province'),
+(526, 49, '21', 'Liaoning', 'Province'),
+(527, 49, '63', 'Qinghai', 'Province'),
+(528, 49, '61', 'Shaanxi', 'Province'),
+(529, 49, '37', 'Shandong', 'Province'),
+(530, 49, '14', 'Shanxi', 'Province'),
+(531, 49, '51', 'Sichuan', 'Province'),
+(532, 49, '71', 'Taiwan', 'Province'),
+(533, 49, '53', 'Yunnan', 'Province'),
+(534, 49, '33', 'Zhejiang', 'Province'),
+(535, 52, 'AMA', 'Amazonas', NULL),
+(536, 52, 'ANT', 'Antioquia', NULL),
+(537, 52, 'ARA', 'Arauca', NULL),
+(538, 52, 'ATL', 'Atlántico', NULL),
+(539, 52, 'BOL', 'Bolívar', NULL),
+(540, 52, 'BOY', 'Boyacá', NULL),
+(541, 52, 'CAL', 'Caldas', NULL),
+(542, 52, 'CAQ', 'Caquetá', NULL),
+(543, 52, 'CAS', 'Casanare', NULL),
+(544, 52, 'CAU', 'Cauca', NULL),
+(545, 52, 'CES', 'Cesar', NULL),
+(546, 52, 'CHO', 'Chocó', NULL),
+(547, 52, 'CUN', 'Cundinamarca', NULL),
+(548, 52, 'COR', 'Córdoba', NULL),
+(549, 52, 'DC', 'Distrito Capital de Bogotá', NULL),
+(550, 52, 'GUA', 'Guainía', NULL),
+(551, 52, 'GUV', 'Guaviare', NULL),
+(552, 52, 'HUI', 'Huila', NULL),
+(553, 52, 'LAG', 'La Guajira', NULL),
+(554, 52, 'MAG', 'Magdalena', NULL),
+(555, 52, 'MET', 'Meta', NULL),
+(556, 52, 'NAR', 'Nariño', NULL),
+(557, 52, 'NSA', 'Norte de Santander', NULL),
+(558, 52, 'PUT', 'Putumayo', NULL),
+(559, 52, 'QUI', 'Quindío', NULL),
+(560, 52, 'RIS', 'Risaralda', NULL),
+(561, 52, 'SAP', 'San Andrés, Providencia y Santa Catalina', NULL),
+(562, 52, 'SAN', 'Santander', NULL),
+(563, 52, 'SUC', 'Sucre', NULL),
+(564, 52, 'TOL', 'Tolima', NULL),
+(565, 52, 'VAC', 'Valle del Cauca', NULL),
+(566, 52, 'VAU', 'Vaupés', NULL),
+(567, 52, 'VID', 'Vichada', NULL),
+(568, 53, 'A', 'Anjouan', NULL),
+(569, 53, 'G', 'Grande Comore', NULL),
+(570, 53, 'M', 'Mohéli', NULL),
+(571, 54, '11', 'Bouenza', NULL),
+(572, 54, 'BZV', 'Brazzaville', NULL),
+(573, 54, '8', 'Cuvette', NULL),
+(574, 54, '15', 'Cuvette-Ouest', NULL),
+(575, 54, '5', 'Kouilou', NULL),
+(576, 54, '7', 'Likouala', NULL),
+(577, 54, '2', 'Lékoumou', NULL),
+(578, 54, '9', 'Niari', NULL),
+(579, 54, '14', 'Plateaux', NULL),
+(580, 54, '16', 'Pointe-Noire', NULL),
+(581, 54, '12', 'Pool', NULL),
+(582, 54, '13', 'Sangha', NULL),
+(583, 55, 'BN', 'Bandundu', NULL),
+(584, 55, 'BC', 'Bas-Congo', NULL),
+(585, 55, 'KW', 'Kasai-Occidental', NULL),
+(586, 55, 'KE', 'Kasai-Oriental', NULL),
+(587, 55, 'KA', 'Katanga', NULL),
+(588, 55, 'KN', 'Kinshasa', NULL),
+(589, 55, 'MA', 'Maniema', NULL),
+(590, 55, 'NK', 'Nord-Kivu', NULL),
+(591, 55, 'OR', 'Orientale', NULL),
+(592, 55, 'SK', 'Sud-Kivu', NULL),
+(593, 55, 'EQ', 'Équateur', NULL),
+(594, 57, 'A', 'Alajuela', NULL),
+(595, 57, 'C', 'Cartago', NULL),
+(596, 57, 'G', 'Guanacaste', NULL),
+(597, 57, 'H', 'Heredia', NULL),
+(598, 57, 'L', 'Limón', NULL),
+(599, 57, 'P', 'Puntarenas', NULL),
+(600, 57, 'SJ', 'San José', NULL),
+(601, 58, '07', 'Bjelovarsko-bilogorska županija', NULL),
+(602, 58, '12', 'Brodsko-posavska županija', NULL),
+(603, 58, '19', 'Dubrovačko-neretvanska županija', NULL),
+(604, 58, '21', 'Grad Zagreb', NULL),
+(605, 58, '18', 'Istarska županija', NULL),
+(606, 58, '04', 'Karlovačka županija', NULL),
+(607, 58, '06', 'Koprivničko-križevačka županija', NULL),
+(608, 58, '02', 'Krapinsko-zagorska županija', NULL),
+(609, 58, '09', 'Ličko-senjska županija', NULL),
+(610, 58, '20', 'Međimurska županija', NULL),
+(611, 58, '14', 'Osječko-baranjska županija', NULL),
+(612, 58, '11', 'Požeško-slavonska županija', NULL),
+(613, 58, '08', 'Primorsko-goranska županija', NULL),
+(614, 58, '03', 'Sisačko-moslavačka županija', NULL),
+(615, 58, '17', 'Splitsko-dalmatinska županija', NULL),
+(616, 58, '05', 'Varaždinska županija', NULL),
+(617, 58, '10', 'Virovitičko-podravska županija', NULL),
+(618, 58, '16', 'Vukovarsko-srijemska županija', NULL),
+(619, 58, '13', 'Zadarska županija', NULL),
+(620, 58, '01', 'Zagrebačka županija', NULL),
+(621, 58, '15', 'Šibensko-kninska županija', NULL),
+(622, 59, '15', 'Artemisa', NULL),
+(623, 59, '09', 'Camagüey', NULL),
+(624, 59, '08', 'Ciego de Ávila', NULL),
+(625, 59, '06', 'Cienfuegos', NULL),
+(626, 59, '12', 'Granma', NULL),
+(627, 59, '14', 'Guantánamo', NULL),
+(628, 59, '11', 'Holguín', NULL),
+(629, 59, '99', 'Isla de la Juventud', NULL),
+(630, 59, '03', 'La Habana', NULL),
+(631, 59, '10', 'Las Tunas', NULL),
+(632, 59, '04', 'Matanzas', NULL),
+(633, 59, '16', 'Mayabeque', NULL),
+(634, 59, '01', 'Pinar del Río', NULL),
+(635, 59, '07', 'Sancti Spíritus', NULL),
+(636, 59, '13', 'Santiago de Cuba', NULL),
+(637, 59, '05', 'Villa Clara', NULL),
+(638, 61, '04', 'Ammochostos', NULL),
+(639, 61, '06', 'Keryneia', NULL),
+(640, 61, '03', 'Larnaka', NULL),
+(641, 61, '01', 'Lefkosia', NULL),
+(642, 61, '02', 'Lemesos', NULL),
+(643, 61, '05', 'Pafos', NULL),
+(644, 62, 'JM', 'Jihomoravský kraj', NULL),
+(645, 62, 'JC', 'Jihočeský kraj', NULL),
+(646, 62, 'KA', 'Karlovarský kraj', NULL),
+(647, 62, 'KR', 'Královéhradecký kraj', NULL),
+(648, 62, 'LI', 'Liberecký kraj', NULL),
+(649, 62, 'MO', 'Moravskoslezský kraj', NULL),
+(650, 62, 'OL', 'Olomoucký kraj', NULL),
+(651, 62, 'PA', 'Pardubický kraj', NULL),
+(652, 62, 'PL', 'Plzeňský kraj', NULL),
+(653, 62, 'PR', 'Praha, hlavní město', NULL),
+(654, 62, 'ST', 'Středočeský kraj', NULL),
+(655, 62, 'VY', 'Vysočina', NULL),
+(656, 62, 'ZL', 'Zlínský kraj', NULL),
+(657, 62, 'US', 'Ústecký kraj', NULL),
+(658, 63, '84', 'Hovedstaden', NULL),
+(659, 63, '82', 'Midtjylland', NULL),
+(660, 63, '81', 'Nordjylland', NULL),
+(661, 63, '85', 'Sjælland', NULL),
+(662, 63, '83', 'Syddanmark', NULL),
+(663, 64, 'AS', 'Ali Sabieh', NULL),
+(664, 64, 'AR', 'Arta', NULL),
+(665, 64, 'DI', 'Dikhil', NULL),
+(666, 64, 'DJ', 'Djibouti', NULL),
+(667, 64, 'OB', 'Obock', NULL),
+(668, 64, 'TA', 'Tadjourah', NULL),
+(669, 65, '02', 'Saint Andrew', NULL),
+(670, 65, '03', 'Saint David', NULL),
+(671, 65, '04', 'Saint George', NULL),
+(672, 65, '05', 'Saint John', NULL),
+(673, 65, '06', 'Saint Joseph', NULL),
+(674, 65, '07', 'Saint Luke', NULL),
+(675, 65, '08', 'Saint Mark', NULL),
+(676, 65, '09', 'Saint Patrick', NULL),
+(677, 65, '10', 'Saint Paul', NULL),
+(678, 65, '11', 'Saint Peter', NULL),
+(679, 66, '33', 'Cibao Nordeste', NULL),
+(680, 66, '34', 'Cibao Noroeste', NULL),
+(681, 66, '35', 'Cibao Norte', NULL),
+(682, 66, '36', 'Cibao Sur', NULL),
+(683, 66, '37', 'El Valle', NULL),
+(684, 66, '38', 'Enriquillo', NULL),
+(685, 66, '39', 'Higuamo', NULL),
+(686, 66, '40', 'Ozama', NULL),
+(687, 66, '41', 'Valdesia', NULL),
+(688, 66, '42', 'Yuma', NULL),
+(689, 67, 'A', 'Azuay', NULL),
+(690, 67, 'B', 'Bolívar', NULL),
+(691, 67, 'C', 'Carchi', NULL),
+(692, 67, 'F', 'Cañar', NULL),
+(693, 67, 'H', 'Chimborazo', NULL),
+(694, 67, 'X', 'Cotopaxi', NULL),
+(695, 67, 'O', 'El Oro', NULL),
+(696, 67, 'E', 'Esmeraldas', NULL),
+(697, 67, 'W', 'Galápagos', NULL),
+(698, 67, 'G', 'Guayas', NULL),
+(699, 67, 'I', 'Imbabura', NULL),
+(700, 67, 'L', 'Loja', NULL),
+(701, 67, 'R', 'Los Ríos', NULL),
+(702, 67, 'M', 'Manabí', NULL),
+(703, 67, 'S', 'Morona-Santiago', NULL),
+(704, 67, 'N', 'Napo', NULL),
+(705, 67, 'D', 'Orellana', NULL),
+(706, 67, 'Y', 'Pastaza', NULL),
+(707, 67, 'P', 'Pichincha', NULL),
+(708, 67, 'SE', 'Santa Elena', NULL),
+(709, 67, 'SD', 'Santo Domingo de los Tsáchilas', NULL),
+(710, 67, 'U', 'Sucumbíos', NULL),
+(711, 67, 'T', 'Tungurahua', NULL),
+(712, 67, 'Z', 'Zamora-Chinchipe', NULL),
+(713, 68, 'DK', 'Ad Daqahlīyah', NULL),
+(714, 68, 'BA', 'Al Baḩr al Aḩmar', NULL),
+(715, 68, 'BH', 'Al Buḩayrah', NULL),
+(716, 68, 'FYM', 'Al Fayyūm', NULL),
+(717, 68, 'GH', 'Al Gharbīyah', NULL),
+(718, 68, 'ALX', 'Al Iskandarīyah', NULL),
+(719, 68, 'IS', 'Al Ismāٰīlīyah', NULL),
+(720, 68, 'GZ', 'Al Jīzah', NULL),
+(721, 68, 'MN', 'Al Minyā', NULL),
+(722, 68, 'MNF', 'Al Minūfīyah', NULL),
+(723, 68, 'KB', 'Al Qalyūbīyah', NULL),
+(724, 68, 'C', 'Al Qāhirah', NULL),
+(725, 68, 'LX', 'Al Uqşur', NULL),
+(726, 68, 'WAD', 'Al Wādī al Jadīd', NULL),
+(727, 68, 'SUZ', 'As Suways', NULL),
+(728, 68, 'SU', 'As Sādis min Uktūbar', NULL),
+(729, 68, 'SHR', 'Ash Sharqīyah', NULL),
+(730, 68, 'ASN', 'Aswān', NULL),
+(731, 68, 'AST', 'Asyūţ', NULL),
+(732, 68, 'BNS', 'Banī Suwayf', NULL),
+(733, 68, 'PTS', 'Būr Saٰīd', NULL),
+(734, 68, 'DT', 'Dumyāţ', NULL),
+(735, 68, 'JS', 'Janūb Sīnā\'', NULL),
+(736, 68, 'KFS', 'Kafr ash Shaykh', NULL),
+(737, 68, 'MT', 'Maţrūḩ', NULL),
+(738, 68, 'KN', 'Qinā', NULL),
+(739, 68, 'SIN', 'Shamāl Sīnā\'', NULL),
+(740, 68, 'SHG', 'Sūhāj', NULL),
+(741, 68, 'HU', 'Ḩulwān', NULL),
+(742, 69, 'AH', 'Ahuachapán', NULL),
+(743, 69, 'CA', 'Cabañas', NULL),
+(744, 69, 'CH', 'Chalatenango', NULL),
+(745, 69, 'CU', 'Cuscatlán', NULL),
+(746, 69, 'LI', 'La Libertad', NULL),
+(747, 69, 'PA', 'La Paz', NULL),
+(748, 69, 'UN', 'La Unión', NULL),
+(749, 69, 'MO', 'Morazán', NULL),
+(750, 69, 'SM', 'San Miguel', NULL),
+(751, 69, 'SS', 'San Salvador', NULL),
+(752, 69, 'SV', 'San Vicente', NULL),
+(753, 69, 'SA', 'Santa Ana', NULL),
+(754, 69, 'SO', 'Sonsonate', NULL),
+(755, 69, 'US', 'Usulután', NULL),
+(756, 70, 'C', 'Región Continental', NULL),
+(757, 70, 'I', 'Región Insular', NULL),
+(758, 71, 'MA', 'Al Awsaţ', NULL),
+(759, 71, 'DU', 'Al Janūbĩ', NULL),
+(760, 71, 'AN', 'Ansabā', NULL),
+(761, 71, 'DK', 'Janūbī al Baḩrī al Aḩmar', NULL),
+(762, 71, 'GB', 'Qāsh-Barkah', NULL),
+(763, 71, 'SK', 'Shimālī al Baḩrī al Aḩmar', NULL),
+(764, 72, '37', 'Harjumaa', NULL),
+(765, 72, '39', 'Hiiumaa', NULL),
+(766, 72, '44', 'Ida-Virumaa', NULL),
+(767, 72, '51', 'Järvamaa', NULL),
+(768, 72, '49', 'Jõgevamaa', NULL),
+(769, 72, '59', 'Lääne-Virumaa', NULL),
+(770, 72, '57', 'Läänemaa', NULL),
+(771, 72, '67', 'Pärnumaa', NULL),
+(772, 72, '65', 'Põlvamaa', NULL),
+(773, 72, '70', 'Raplamaa', NULL),
+(774, 72, '74', 'Saaremaa', NULL),
+(775, 72, '78', 'Tartumaa', NULL),
+(776, 72, '82', 'Valgamaa', NULL),
+(777, 72, '84', 'Viljandimaa', NULL),
+(778, 72, '86', 'Võrumaa', NULL),
+(779, 73, 'BE', 'Bīnshangul Gumuz', NULL),
+(780, 73, 'DD', 'Dirē Dawa', NULL),
+(781, 73, 'GA', 'Gambēla Hizboch', NULL),
+(782, 73, 'HA', 'Hārerī Hizb', NULL),
+(783, 73, 'OR', 'Oromīya', NULL),
+(784, 73, 'SO', 'Sumalē', NULL),
+(785, 73, 'TI', 'Tigray', NULL),
+(786, 73, 'SN', 'YeDebub Bihēroch Bihēreseboch na Hizboch', NULL),
+(787, 73, 'AA', 'Ādīs Ābeba', NULL),
+(788, 73, 'AF', 'Āfar', NULL),
+(789, 73, 'AM', 'Āmara', NULL),
+(790, 76, 'C', 'Central', NULL),
+(791, 76, 'E', 'Eastern', NULL),
+(792, 76, 'N', 'Northern', NULL),
+(793, 76, 'R', 'Rotuma', NULL),
+(794, 76, 'W', 'Western', NULL),
+(795, 77, '01', 'Ahvenanmaan maakunta', NULL),
+(796, 77, '02', 'Etelä-Karjala', NULL),
+(797, 77, '03', 'Etelä-Pohjanmaa', NULL),
+(798, 77, '04', 'Etelä-Savo', NULL),
+(799, 77, '05', 'Kainuu', NULL),
+(800, 77, '06', 'Kanta-Häme', NULL),
+(801, 77, '07', 'Keski-Pohjanmaa', NULL),
+(802, 77, '08', 'Keski-Suomi', NULL),
+(803, 77, '09', 'Kymenlaakso', NULL),
+(804, 77, '10', 'Lappi', NULL),
+(805, 77, '11', 'Pirkanmaa', NULL),
+(806, 77, '12', 'Pohjanmaa', NULL),
+(807, 77, '13', 'Pohjois-Karjala', NULL),
+(808, 77, '14', 'Pohjois-Pohjanmaa', NULL),
+(809, 77, '15', 'Pohjois-Savo', NULL),
+(810, 77, '16', 'Päijät-Häme', NULL),
+(811, 77, '17', 'Satakunta', NULL),
+(812, 77, '18', 'Uusimaa', NULL),
+(813, 77, '19', 'Varsinais-Suomi', NULL),
+(814, 82, '1', 'Estuaire', NULL),
+(815, 82, '2', 'Haut-Ogooué', NULL),
+(816, 82, '3', 'Moyen-Ogooué', NULL),
+(817, 82, '4', 'Ngounié', NULL),
+(818, 82, '5', 'Nyanga', NULL),
+(819, 82, '6', 'Ogooué-Ivindo', NULL),
+(820, 82, '7', 'Ogooué-Lolo', NULL),
+(821, 82, '8', 'Ogooué-Maritime', NULL),
+(822, 82, '9', 'Woleu-Ntem', NULL),
+(823, 83, 'B', 'Banjul', NULL),
+(824, 83, 'M', 'Central River', NULL),
+(825, 83, 'L', 'Lower River', NULL),
+(826, 83, 'N', 'North Bank', NULL),
+(827, 83, 'U', 'Upper River', NULL),
+(828, 83, 'W', 'Western', NULL),
+(829, 84, 'AB', 'Abkhazia', NULL),
+(830, 84, 'AJ', 'Ajaria', NULL),
+(831, 84, 'GU', 'Guria', NULL),
+(832, 84, 'IM', 'Imereti', NULL),
+(833, 84, 'KA', 'K\'akheti', NULL),
+(834, 84, 'KK', 'Kvemo Kartli', NULL),
+(835, 84, 'MM', 'Mtskheta-Mtianeti', NULL),
+(836, 84, 'RL', 'Rach\'a-Lechkhumi-Kvemo Svaneti', NULL),
+(837, 84, 'SZ', 'Samegrelo-Zemo Svaneti', NULL),
+(838, 84, 'SJ', 'Samtskhe-Javakheti', NULL),
+(839, 84, 'SK', 'Shida Kartli', NULL),
+(840, 84, 'TB', 'Tbilisi', NULL),
+(841, 85, 'BW', 'Baden-Württemberg', NULL),
+(842, 85, 'BY', 'Bayern', NULL),
+(843, 85, 'BE', 'Berlin', NULL),
+(844, 85, 'BB', 'Brandenburg', NULL),
+(845, 85, 'HB', 'Bremen', NULL),
+(846, 85, 'HH', 'Hamburg', NULL),
+(847, 85, 'HE', 'Hessen', NULL),
+(848, 85, 'MV', 'Mecklenburg-Vorpommern', NULL),
+(849, 85, 'NI', 'Niedersachsen', NULL),
+(850, 85, 'NW', 'Nordrhein-Westfalen', NULL),
+(851, 85, 'RP', 'Rheinland-Pfalz', NULL),
+(852, 85, 'SL', 'Saarland', NULL),
+(853, 85, 'SN', 'Sachsen', NULL),
+(854, 85, 'ST', 'Sachsen-Anhalt', NULL),
+(855, 85, 'SH', 'Schleswig-Holstein', NULL),
+(856, 85, 'TH', 'Thüringen', NULL),
+(857, 86, 'AH', 'Ashanti', NULL),
+(858, 86, 'BA', 'Brong-Ahafo', NULL),
+(859, 86, 'CP', 'Central', NULL),
+(860, 86, 'EP', 'Eastern', NULL),
+(861, 86, 'AA', 'Greater Accra', NULL),
+(862, 86, 'NP', 'Northern', NULL),
+(863, 86, 'UE', 'Upper East', NULL),
+(864, 86, 'UW', 'Upper West', NULL),
+(865, 86, 'TV', 'Volta', NULL),
+(866, 86, 'WP', 'Western', NULL),
+(867, 88, 'A', 'Anatoliki Makedonia kai Thraki', NULL),
+(868, 88, 'I', 'Attiki', NULL),
+(869, 88, 'G', 'Dytiki Ellada', NULL),
+(870, 88, 'C', 'Dytiki Makedonia', NULL),
+(871, 88, 'F', 'Ionia Nisia', NULL),
+(872, 88, 'D', 'Ipeiros', NULL),
+(873, 88, 'B', 'Kentriki Makedonia', NULL),
+(874, 88, 'M', 'Kriti', NULL),
+(875, 88, 'L', 'Notio Aigaio', NULL),
+(876, 88, 'J', 'Peloponnisos', NULL),
+(877, 88, 'H', 'Sterea Ellada', NULL),
+(878, 88, 'E', 'Thessalia', NULL),
+(879, 88, 'K', 'Voreio Aigaio', NULL),
+(880, 89, 'KU', 'Kommune Kujalleq', NULL),
+(881, 89, 'SM', 'Kommuneqarfik Sermersooq', NULL),
+(882, 89, 'QA', 'Qaasuitsup Kommunia', NULL),
+(883, 89, 'QE', 'Qeqqata Kommunia', NULL),
+(884, 90, '01', 'Saint Andrew', NULL),
+(885, 90, '02', 'Saint David', NULL),
+(886, 90, '03', 'Saint George', NULL),
+(887, 90, '04', 'Saint John', NULL),
+(888, 90, '05', 'Saint Mark', NULL),
+(889, 90, '06', 'Saint Patrick', NULL),
+(890, 90, '10', 'Southern Grenadine Islands', NULL),
+(891, 93, 'AV', 'Alta Verapaz', NULL),
+(892, 93, 'BV', 'Baja Verapaz', NULL),
+(893, 93, 'CM', 'Chimaltenango', NULL),
+(894, 93, 'CQ', 'Chiquimula', NULL),
+(895, 93, 'PR', 'El Progreso', NULL),
+(896, 93, 'ES', 'Escuintla', NULL),
+(897, 93, 'GU', 'Guatemala', NULL),
+(898, 93, 'HU', 'Huehuetenango', NULL),
+(899, 93, 'IZ', 'Izabal', NULL),
+(900, 93, 'JA', 'Jalapa', NULL),
+(901, 93, 'JU', 'Jutiapa', NULL),
+(902, 93, 'PE', 'Petén', NULL),
+(903, 93, 'QZ', 'Quetzaltenango', NULL),
+(904, 93, 'QC', 'Quiché', NULL),
+(905, 93, 'RE', 'Retalhuleu', NULL),
+(906, 93, 'SA', 'Sacatepéquez', NULL),
+(907, 93, 'SM', 'San Marcos', NULL),
+(908, 93, 'SR', 'Santa Rosa', NULL),
+(909, 93, 'SO', 'Sololá', NULL),
+(910, 93, 'SU', 'Suchitepéquez', NULL),
+(911, 93, 'TO', 'Totonicapán', NULL),
+(912, 93, 'ZA', 'Zacapa', NULL),
+(913, 95, 'B', 'Boké', NULL),
+(914, 95, 'C', 'Conakry', NULL),
+(915, 95, 'F', 'Faranah', NULL),
+(916, 95, 'K', 'Kankan', NULL),
+(917, 95, 'D', 'Kindia', NULL),
+(918, 95, 'L', 'Labé', NULL),
+(919, 95, 'M', 'Mamou', NULL),
+(920, 95, 'N', 'Nzérékoré', NULL),
+(921, 96, 'L', 'Leste', NULL),
+(922, 96, 'N', 'Norte', NULL),
+(923, 96, 'S', 'Sul', NULL),
+(924, 97, 'BA', 'Barima-Waini', NULL),
+(925, 97, 'CU', 'Cuyuni-Mazaruni', NULL),
+(926, 97, 'DE', 'Demerara-Mahaica', NULL),
+(927, 97, 'EB', 'East Berbice-Corentyne', NULL),
+(928, 97, 'ES', 'Essequibo Islands-West Demerara', NULL),
+(929, 97, 'MA', 'Mahaica-Berbice', NULL),
+(930, 97, 'PM', 'Pomeroon-Supenaam', NULL),
+(931, 97, 'PT', 'Potaro-Siparuni', NULL),
+(932, 97, 'UD', 'Upper Demerara-Berbice', NULL),
+(933, 97, 'UT', 'Upper Takutu-Upper Essequibo', NULL),
+(934, 98, 'AR', 'Artibonite', NULL),
+(935, 98, 'CE', 'Centre', NULL),
+(936, 98, 'GA', 'Grande-Anse', NULL),
+(937, 98, 'NI', 'Nippes', NULL),
+(938, 98, 'ND', 'Nord', NULL),
+(939, 98, 'NE', 'Nord-Est', NULL),
+(940, 98, 'NO', 'Nord-Ouest', NULL),
+(941, 98, 'OU', 'Ouest', NULL),
+(942, 98, 'SD', 'Sud', NULL),
+(943, 98, 'SE', 'Sud-Est', NULL),
+(944, 101, 'AT', 'Atlántida', NULL),
+(945, 101, 'CH', 'Choluteca', NULL),
+(946, 101, 'CL', 'Colón', NULL),
+(947, 101, 'CM', 'Comayagua', NULL),
+(948, 101, 'CP', 'Copán', NULL),
+(949, 101, 'CR', 'Cortés', NULL),
+(950, 101, 'EP', 'El Paraíso', NULL),
+(951, 101, 'FM', 'Francisco Morazán', NULL),
+(952, 101, 'GD', 'Gracias a Dios', NULL),
+(953, 101, 'IN', 'Intibucá', NULL),
+(954, 101, 'IB', 'Islas de la Bahía', NULL),
+(955, 101, 'LP', 'La Paz', NULL),
+(956, 101, 'LE', 'Lempira', NULL),
+(957, 101, 'OC', 'Ocotepeque', NULL),
+(958, 101, 'OL', 'Olancho', NULL),
+(959, 101, 'SB', 'Santa Bárbara', NULL),
+(960, 101, 'VA', 'Valle', NULL),
+(961, 101, 'YO', 'Yoro', NULL),
+(962, 103, 'BA', 'Baranya', NULL),
+(963, 103, 'BZ', 'Borsod-Abaúj-Zemplén', NULL),
+(964, 103, 'BU', 'Budapest', NULL),
+(965, 103, 'BK', 'Bács-Kiskun', NULL),
+(966, 103, 'BE', 'Békés', NULL),
+(967, 103, 'BC', 'Békéscsaba', NULL),
+(968, 103, 'CS', 'Csongrád', NULL),
+(969, 103, 'DE', 'Debrecen', NULL),
+(970, 103, 'DU', 'Dunaújváros', NULL),
+(971, 103, 'EG', 'Eger', NULL),
+(972, 103, 'FE', 'Fejér', NULL),
+(973, 103, 'GY', 'Győr', NULL),
+(974, 103, 'GS', 'Győr-Moson-Sopron', NULL),
+(975, 103, 'HB', 'Hajdú-Bihar', NULL),
+(976, 103, 'HE', 'Heves', NULL),
+(977, 103, 'HV', 'Hódmezővásárhely', NULL),
+(978, 103, 'JN', 'Jász-Nagykun-Szolnok', NULL),
+(979, 103, 'KV', 'Kaposvár', NULL),
+(980, 103, 'KM', 'Kecskemét', NULL),
+(981, 103, 'KE', 'Komárom-Esztergom', NULL),
+(982, 103, 'MI', 'Miskolc', NULL),
+(983, 103, 'NK', 'Nagykanizsa', NULL),
+(984, 103, 'NY', 'Nyíregyháza', NULL),
+(985, 103, 'NO', 'Nógrád', NULL),
+(986, 103, 'PE', 'Pest', NULL),
+(987, 103, 'PS', 'Pécs', NULL),
+(988, 103, 'ST', 'Salgótarján', NULL),
+(989, 103, 'SO', 'Somogy', NULL),
+(990, 103, 'SN', 'Sopron', NULL),
+(991, 103, 'SZ', 'Szabolcs-Szatmár-Bereg', NULL),
+(992, 103, 'SD', 'Szeged', NULL),
+(993, 103, 'SS', 'Szekszárd', NULL),
+(994, 103, 'SK', 'Szolnok', NULL),
+(995, 103, 'SH', 'Szombathely', NULL),
+(996, 103, 'SF', 'Székesfehérvár', NULL),
+(997, 103, 'TB', 'Tatabánya', NULL),
+(998, 103, 'TO', 'Tolna', NULL),
+(999, 103, 'VA', 'Vas', NULL),
+(1000, 103, 'VE', 'Veszprém', NULL),
+(1001, 103, 'VM', 'Veszprém', NULL),
+(1002, 103, 'ZA', 'Zala', NULL),
+(1003, 103, 'ZE', 'Zalaegerszeg', NULL),
+(1004, 103, 'ER', 'Érd', NULL),
+(1005, 104, '7', 'Austurland', NULL),
+(1006, 104, '1', 'Höfuðborgarsvæði utan Reykjavíkur', NULL),
+(1007, 104, '6', 'Norðurland eystra', NULL),
+(1008, 104, '5', 'Norðurland vestra', NULL),
+(1009, 104, '0', 'Reykjavík', NULL),
+(1010, 104, '8', 'Suðurland', NULL),
+(1011, 104, '2', 'Suðurnes', NULL),
+(1012, 104, '4', 'Vestfirðir', NULL),
+(1013, 104, '3', 'Vesturland', NULL),
+(1014, 105, 'AP', 'Andhra Pradesh', 'state'),
+(1015, 105, 'AR', 'Arunachal Pradesh', 'state'),
+(1016, 105, 'AS', 'Assam', 'state'),
+(1017, 105, 'BR', 'Bihar', 'state'),
+(1018, 105, 'CT', 'Chhattisgarh', 'state'),
+(1019, 105, 'GA', 'Goa', 'state'),
+(1020, 105, 'GJ', 'Gujarat', 'state'),
+(1021, 105, 'HR', 'Haryana', 'state'),
+(1022, 105, 'HP', 'Himachal Pradesh', 'state'),
+(1023, 105, 'JK', 'Jammu and Kashmir', 'state'),
+(1024, 105, 'JH', 'Jharkhand', 'state'),
+(1025, 105, 'KA', 'Karnataka', 'state'),
+(1026, 105, 'KL', 'Kerala', 'state'),
+(1027, 105, 'MP', 'Madhya Pradesh', 'state'),
+(1028, 105, 'MH', 'Maharashtra', 'state'),
+(1029, 105, 'MN', 'Manipur', 'state'),
+(1030, 105, 'ML', 'Meghalaya', 'state'),
+(1031, 105, 'MZ', 'Mizoram', 'state'),
+(1032, 105, 'NL', 'Nagaland', 'state'),
+(1033, 105, 'OR', 'Odisha', 'state'),
+(1034, 105, 'PB', 'Punjab', 'state'),
+(1035, 105, 'RJ', 'Rajasthan', 'state'),
+(1036, 105, 'SK', 'Sikkim', 'state'),
+(1037, 105, 'TN', 'Tamil Nadu', 'state'),
+(1038, 105, 'TG', 'Telangana', 'state'),
+(1039, 105, 'TR', 'Tripura', 'state'),
+(1040, 105, 'UP', 'Uttar Pradesh', 'state'),
+(1041, 105, 'UT', 'Uttarakhand', 'state'),
+(1042, 105, 'WB', 'West Bengal', 'state'),
+(1043, 106, 'JW', 'Jawa', NULL),
+(1044, 106, 'KA', 'Kalimantan', NULL),
+(1045, 106, 'ML', 'Maluku', NULL),
+(1046, 106, 'NU', 'Nusa Tenggara', NULL),
+(1047, 106, 'PP', 'Papua', NULL),
+(1048, 106, 'SL', 'Sulawesi', NULL),
+(1049, 106, 'SM', 'Sumatera', NULL),
+(1050, 107, '06', '18 Montagnes', NULL),
+(1051, 107, '16', 'Agnébi', NULL),
+(1052, 107, '17', 'Bafing', NULL),
+(1053, 107, '09', 'Bas-Sassandra', NULL),
+(1054, 107, '10', 'Denguélé', NULL),
+(1055, 107, '18', 'Fromager', NULL),
+(1056, 107, '02', 'Haut-Sassandra', NULL),
+(1057, 107, '07', 'Lacs', NULL),
+(1058, 107, '01', 'Lagunes', NULL),
+(1059, 107, '12', 'Marahoué', NULL),
+(1060, 107, '19', 'Moyen-Cavally', NULL),
+(1061, 107, '05', 'Moyen-Comoé', NULL),
+(1062, 107, '11', 'Nzi-Comoé', NULL),
+(1063, 107, '03', 'Savanes', NULL),
+(1064, 107, '15', 'Sud-Bandama', NULL),
+(1065, 107, '13', 'Sud-Comoé', NULL),
+(1066, 107, '04', 'Vallée du Bandama', NULL),
+(1067, 107, '14', 'Worodougou', NULL),
+(1068, 107, '08', 'Zanzan', NULL),
+(1069, 108, '32', 'Alborz', NULL),
+(1070, 108, '03', 'Ardabīl', NULL),
+(1071, 108, '06', 'Būshehr', NULL),
+(1072, 108, '08', 'Chahār Maḩāll va Bakhtīārī', NULL),
+(1073, 108, '04', 'Eşfahān', NULL),
+(1074, 108, '14', 'Fārs', NULL),
+(1075, 108, '27', 'Golestān', NULL),
+(1076, 108, '19', 'Gīlān', NULL),
+(1077, 108, '24', 'Hamadān', NULL),
+(1078, 108, '23', 'Hormozgān', NULL),
+(1079, 108, '15', 'Kermān', NULL),
+(1080, 108, '17', 'Kermānshāh', NULL),
+(1081, 108, '29', 'Khorāsān-e Janūbī', NULL),
+(1082, 108, '30', 'Khorāsān-e Razavī', NULL),
+(1083, 108, '31', 'Khorāsān-e Shemālī', NULL),
+(1084, 108, '10', 'Khūzestān', NULL),
+(1085, 108, '18', 'Kohgīlūyeh va Būyer Aḩmad', NULL),
+(1086, 108, '16', 'Kordestān', NULL),
+(1087, 108, '20', 'Lorestān', NULL),
+(1088, 108, '22', 'Markazī', NULL),
+(1089, 108, '21', 'Māzandarān', NULL),
+(1090, 108, '28', 'Qazvīn', NULL),
+(1091, 108, '26', 'Qom', NULL),
+(1092, 108, '12', 'Semnān', NULL),
+(1093, 108, '13', 'Sīstān va Balūchestān', NULL),
+(1094, 108, '07', 'Tehrān', NULL),
+(1095, 108, '25', 'Yazd', NULL),
+(1096, 108, '11', 'Zanjān', NULL),
+(1097, 108, '02', 'Āz̄arbāyjān-e Gharbī', NULL),
+(1098, 108, '01', 'Āz̄arbāyjān-e Sharqī', NULL),
+(1099, 108, '05', 'Īlām', NULL),
+(1100, 109, 'AN', 'Al Anbār', NULL),
+(1101, 109, 'BA', 'Al Başrah', NULL),
+(1102, 109, 'MU', 'Al Muthanná', NULL),
+(1103, 109, 'QA', 'Al Qādisīyah', NULL),
+(1104, 109, 'NA', 'An Najaf', NULL),
+(1105, 109, 'AR', 'Arbīl', NULL),
+(1106, 109, 'SU', 'As Sulaymānīyah', NULL),
+(1107, 109, 'TS', 'At Ta\'mīm', NULL),
+(1108, 109, 'BG', 'Baghdād', NULL),
+(1109, 109, 'BB', 'Bābil', NULL),
+(1110, 109, 'DA', 'Dahūk', NULL),
+(1111, 109, 'DQ', 'Dhī Qār', NULL),
+(1112, 109, 'DI', 'Diyālá', NULL),
+(1113, 109, 'KA', 'Karbalā\'', NULL),
+(1114, 109, 'MA', 'Maysān', NULL),
+(1115, 109, 'NI', 'Nīnawá', NULL),
+(1116, 109, 'WA', 'Wāsiţ', NULL),
+(1117, 109, 'SD', 'Şalāḩ ad Dīn', NULL),
+(1118, 110, 'C', 'Connaught', NULL),
+(1119, 110, 'L', 'Leinster', NULL),
+(1120, 110, 'M', 'Munster', NULL),
+(1121, 110, 'U', 'Ulster', NULL),
+(1122, 112, 'D', 'HaDarom', NULL),
+(1123, 112, 'M', 'HaMerkaz', NULL),
+(1124, 112, 'Z', 'HaTsafon', NULL),
+(1125, 112, 'HA', 'H̱efa', NULL),
+(1126, 112, 'TA', 'Tel-Aviv', NULL),
+(1127, 112, 'JM', 'Yerushalayim', NULL),
+(1128, 113, '65', 'Abruzzo', NULL),
+(1129, 113, '77', 'Basilicata', NULL),
+(1130, 113, '78', 'Calabria', NULL),
+(1131, 113, '72', 'Campania', NULL),
+(1132, 113, '45', 'Emilia-Romagna', NULL),
+(1133, 113, '36', 'Friuli-Venezia Giulia', NULL),
+(1134, 113, '62', 'Lazio', NULL),
+(1135, 113, '42', 'Liguria', NULL),
+(1136, 113, '25', 'Lombardia', NULL),
+(1137, 113, '57', 'Marche', NULL),
+(1138, 113, '67', 'Molise', NULL),
+(1139, 113, '21', 'Piemonte', NULL),
+(1140, 113, '75', 'Puglia', NULL),
+(1141, 113, '88', 'Sardegna', NULL),
+(1142, 113, '82', 'Sicilia', NULL),
+(1143, 113, '52', 'Toscana', NULL),
+(1144, 113, '32', 'Trentino-Alto Adige', NULL),
+(1145, 113, '55', 'Umbria', NULL),
+(1146, 113, '23', 'Valle d\'Aosta', NULL),
+(1147, 113, '34', 'Veneto', NULL),
+(1148, 114, '13', 'Clarendon', NULL),
+(1149, 114, '09', 'Hanover', NULL),
+(1150, 114, '01', 'Kingston', NULL),
+(1151, 114, '12', 'Manchester', NULL),
+(1152, 114, '04', 'Portland', NULL),
+(1153, 114, '02', 'Saint Andrew', NULL),
+(1154, 114, '06', 'Saint Ann', NULL),
+(1155, 114, '14', 'Saint Catherine', NULL),
+(1156, 114, '11', 'Saint Elizabeth', NULL),
+(1157, 114, '08', 'Saint James', NULL),
+(1158, 114, '05', 'Saint Mary', NULL),
+(1159, 114, '03', 'Saint Thomas', NULL),
+(1160, 114, '07', 'Trelawny', NULL),
+(1161, 114, '10', 'Westmoreland', NULL),
+(1162, 115, '23', 'Aiti', NULL),
+(1163, 115, '05', 'Akita', NULL),
+(1164, 115, '02', 'Aomori', NULL),
+(1165, 115, '38', 'Ehime', NULL),
+(1166, 115, '21', 'Gihu', NULL),
+(1167, 115, '10', 'Gunma', NULL),
+(1168, 115, '34', 'Hirosima', NULL),
+(1169, 115, '01', 'Hokkaidô', NULL),
+(1170, 115, '18', 'Hukui', NULL),
+(1171, 115, '40', 'Hukuoka', NULL),
+(1172, 115, '07', 'Hukusima', NULL),
+(1173, 115, '28', 'Hyôgo', NULL),
+(1174, 115, '08', 'Ibaraki', NULL),
+(1175, 115, '17', 'Isikawa', NULL),
+(1176, 115, '03', 'Iwate', NULL),
+(1177, 115, '37', 'Kagawa', NULL),
+(1178, 115, '46', 'Kagosima', NULL),
+(1179, 115, '14', 'Kanagawa', NULL),
+(1180, 115, '43', 'Kumamoto', NULL),
+(1181, 115, '26', 'Kyôto', NULL),
+(1182, 115, '39', 'Kôti', NULL),
+(1183, 115, '24', 'Mie', NULL),
+(1184, 115, '04', 'Miyagi', NULL),
+(1185, 115, '45', 'Miyazaki', NULL),
+(1186, 115, '20', 'Nagano', NULL),
+(1187, 115, '42', 'Nagasaki', NULL),
+(1188, 115, '29', 'Nara', NULL),
+(1189, 115, '15', 'Niigata', NULL),
+(1190, 115, '33', 'Okayama', NULL),
+(1191, 115, '47', 'Okinawa', NULL),
+(1192, 115, '41', 'Saga', NULL),
+(1193, 115, '11', 'Saitama', NULL),
+(1194, 115, '25', 'Siga', NULL),
+(1195, 115, '32', 'Simane', NULL),
+(1196, 115, '22', 'Sizuoka', NULL),
+(1197, 115, '12', 'Tiba', NULL),
+(1198, 115, '36', 'Tokusima', NULL),
+(1199, 115, '09', 'Totigi', NULL),
+(1200, 115, '31', 'Tottori', NULL),
+(1201, 115, '16', 'Toyama', NULL),
+(1202, 115, '13', 'Tôkyô', NULL),
+(1203, 115, '30', 'Wakayama', NULL),
+(1204, 115, '06', 'Yamagata', NULL),
+(1205, 115, '35', 'Yamaguti', NULL),
+(1206, 115, '19', 'Yamanasi', NULL),
+(1207, 115, '44', 'Ôita', NULL),
+(1208, 115, '27', 'Ôsaka', NULL),
+(1209, 117, 'BA', 'Al Balqā\'', NULL),
+(1210, 117, 'AQ', 'Al ʽAqabah', NULL),
+(1211, 117, 'AZ', 'Az Zarqā\'', NULL),
+(1212, 117, 'AT', 'Aţ Ţafīlah', NULL),
+(1213, 117, 'IR', 'Irbid', NULL),
+(1214, 117, 'JA', 'Jerash', NULL),
+(1215, 117, 'KA', 'Karak', NULL),
+(1216, 117, 'MN', 'Ma\'ān', NULL),
+(1217, 117, 'MA', 'Mafraq', NULL),
+(1218, 117, 'MD', 'Mādabā', NULL),
+(1219, 117, 'AJ', 'ʽAjlūn', NULL),
+(1220, 117, 'AM', '‘Ammān', NULL),
+(1221, 118, 'ALA', 'Almaty', NULL),
+(1222, 118, 'ALM', 'Almaty oblysy', NULL),
+(1223, 118, 'AKM', 'Aqmola oblysy', NULL),
+(1224, 118, 'AKT', 'Aqtöbe oblysy', NULL),
+(1225, 118, 'AST', 'Astana', NULL),
+(1226, 118, 'ATY', 'Atyraū oblysy', NULL),
+(1227, 118, 'ZAP', 'Batys Qazaqstan oblysy', NULL),
+(1228, 118, 'MAN', 'Mangghystaū oblysy', NULL),
+(1229, 118, 'YUZ', 'Ongtüstik Qazaqstan oblysy', NULL),
+(1230, 118, 'PAV', 'Pavlodar oblysy', NULL),
+(1231, 118, 'KAR', 'Qaraghandy oblysy', NULL),
+(1232, 118, 'KUS', 'Qostanay oblysy', NULL),
+(1233, 118, 'KZY', 'Qyzylorda oblysy', NULL),
+(1234, 118, 'VOS', 'Shyghys Qazaqstan oblysy', NULL),
+(1235, 118, 'SEV', 'Soltüstik Qazaqstan oblysy', NULL),
+(1236, 118, 'ZHA', 'Zhambyl oblysy', NULL),
+(1237, 119, '200', 'Central', NULL),
+(1238, 119, '300', 'Coast', NULL),
+(1239, 119, '400', 'Eastern', NULL),
+(1240, 119, '110', 'Nairobi', NULL),
+(1241, 119, '500', 'North-Eastern', NULL),
+(1242, 119, '600', 'Nyanza', NULL),
+(1243, 119, '700', 'Rift Valley', NULL),
+(1244, 119, '800', 'Western', NULL),
+(1245, 120, 'G', 'Gilbert Islands', NULL),
+(1246, 120, 'L', 'Line Islands', NULL),
+(1247, 120, 'P', 'Phoenix Islands', NULL),
+(1248, 121, 'AH', 'Al Aḩmadi', NULL),
+(1249, 121, 'FA', 'Al Farwānīyah', NULL),
+(1250, 121, 'JA', 'Al Jahrā’', NULL),
+(1251, 121, 'KU', 'Al Kuwayt', NULL),
+(1252, 121, 'MU', 'Mubārak al Kabīr', NULL),
+(1253, 121, 'HA', 'Ḩawallī', NULL),
+(1254, 122, 'B', 'Batken', NULL),
+(1255, 122, 'GB', 'Bishkek', NULL),
+(1256, 122, 'C', 'Chü', NULL),
+(1257, 122, 'J', 'Jalal-Abad', NULL),
+(1258, 122, 'N', 'Naryn', NULL),
+(1259, 122, 'O', 'Osh', NULL),
+(1260, 122, 'T', 'Talas', NULL),
+(1261, 122, 'Y', 'Ysyk-Köl', NULL),
+(1262, 123, 'AT', 'Attapu', NULL),
+(1263, 123, 'BK', 'Bokèo', NULL),
+(1264, 123, 'BL', 'Bolikhamxai', NULL),
+(1265, 123, 'CH', 'Champasak', NULL),
+(1266, 123, 'HO', 'Houaphan', NULL),
+(1267, 123, 'KH', 'Khammouan', NULL),
+(1268, 123, 'LM', 'Louang Namtha', NULL),
+(1269, 123, 'LP', 'Louangphabang', NULL),
+(1270, 123, 'OU', 'Oudômxai', NULL),
+(1271, 123, 'PH', 'Phôngsali', NULL),
+(1272, 123, 'SL', 'Salavan', NULL),
+(1273, 123, 'SV', 'Savannakhét', NULL),
+(1274, 123, 'VT', 'Vientiane', NULL),
+(1275, 123, 'VI', 'Vientiane', NULL),
+(1276, 123, 'XA', 'Xaignabouli', NULL),
+(1277, 123, 'XN', 'Xaisômboun', NULL),
+(1278, 123, 'XI', 'Xiangkhoang', NULL),
+(1279, 123, 'XE', 'Xékong', NULL),
+(1280, 124, '001', 'Aglonas novads', NULL),
+(1281, 124, '002', 'Aizkraukles novads', NULL),
+(1282, 124, '003', 'Aizputes novads', NULL),
+(1283, 124, '004', 'Aknīstes novads', NULL),
+(1284, 124, '005', 'Alojas novads', NULL),
+(1285, 124, '006', 'Alsungas novads', NULL),
+(1286, 124, '007', 'Alūksnes novads', NULL),
+(1287, 124, '008', 'Amatas novads', NULL),
+(1288, 124, '009', 'Apes novads', NULL),
+(1289, 124, '010', 'Auces novads', NULL),
+(1290, 124, '012', 'Babītes novads', NULL),
+(1291, 124, '013', 'Baldones novads', NULL),
+(1292, 124, '014', 'Baltinavas novads', NULL),
+(1293, 124, '015', 'Balvu novads', NULL),
+(1294, 124, '016', 'Bauskas novads', NULL),
+(1295, 124, '017', 'Beverīnas novads', NULL),
+(1296, 124, '018', 'Brocēnu novads', NULL),
+(1297, 124, '019', 'Burtnieku novads', NULL),
+(1298, 124, '020', 'Carnikavas novads', NULL),
+(1299, 124, '021', 'Cesvaines novads', NULL),
+(1300, 124, '023', 'Ciblas novads', NULL),
+(1301, 124, '022', 'Cēsu novads', NULL),
+(1302, 124, '024', 'Dagdas novads', NULL),
+(1303, 124, 'DGV', 'Daugavpils', NULL),
+(1304, 124, '025', 'Daugavpils novads', NULL),
+(1305, 124, '026', 'Dobeles novads', NULL),
+(1306, 124, '027', 'Dundagas novads', NULL),
+(1307, 124, '028', 'Durbes novads', NULL),
+(1308, 124, '029', 'Engures novads', NULL),
+(1309, 124, '031', 'Garkalnes novads', NULL),
+(1310, 124, '032', 'Grobiņas novads', NULL),
+(1311, 124, '033', 'Gulbenes novads', NULL),
+(1312, 124, '034', 'Iecavas novads', NULL),
+(1313, 124, '035', 'Ikšķiles novads', NULL),
+(1314, 124, '036', 'Ilūkstes novads', NULL),
+(1315, 124, '037', 'Inčukalna novads', NULL),
+(1316, 124, '038', 'Jaunjelgavas novads', NULL),
+(1317, 124, '039', 'Jaunpiebalgas novads', NULL),
+(1318, 124, '040', 'Jaunpils novads', NULL),
+(1319, 124, 'JEL', 'Jelgava', NULL),
+(1320, 124, '041', 'Jelgavas novads', NULL),
+(1321, 124, 'JKB', 'Jēkabpils', NULL),
+(1322, 124, '042', 'Jēkabpils novads', NULL),
+(1323, 124, 'JUR', 'Jūrmala', NULL),
+(1324, 124, '043', 'Kandavas novads', NULL),
+(1325, 124, '045', 'Kocēnu novads', NULL),
+(1326, 124, '046', 'Kokneses novads', NULL),
+(1327, 124, '048', 'Krimuldas novads', NULL),
+(1328, 124, '049', 'Krustpils novads', NULL),
+(1329, 124, '047', 'Krāslavas novads', NULL),
+(1330, 124, '050', 'Kuldīgas novads', NULL),
+(1331, 124, '044', 'Kārsavas novads', NULL),
+(1332, 124, '053', 'Lielvārdes novads', NULL),
+(1333, 124, 'LPX', 'Liepāja', NULL),
+(1334, 124, '054', 'Limbažu novads', NULL),
+(1335, 124, '057', 'Lubānas novads', NULL),
+(1336, 124, '058', 'Ludzas novads', NULL),
+(1337, 124, '055', 'Līgatnes novads', NULL),
+(1338, 124, '056', 'Līvānu novads', NULL),
+(1339, 124, '059', 'Madonas novads', NULL),
+(1340, 124, '060', 'Mazsalacas novads', NULL),
+(1341, 124, '061', 'Mālpils novads', NULL),
+(1342, 124, '062', 'Mārupes novads', NULL),
+(1343, 124, '063', 'Mērsraga novads', NULL),
+(1344, 124, '064', 'Naukšēnu novads', NULL),
+(1345, 124, '065', 'Neretas novads', NULL),
+(1346, 124, '066', 'Nīcas novads', NULL),
+(1347, 124, '067', 'Ogres novads', NULL),
+(1348, 124, '068', 'Olaines novads', NULL),
+(1349, 124, '069', 'Ozolnieku novads', NULL),
+(1350, 124, '073', 'Preiļu novads', NULL),
+(1351, 124, '074', 'Priekules novads', NULL),
+(1352, 124, '075', 'Priekuļu novads', NULL),
+(1353, 124, '070', 'Pārgaujas novads', NULL),
+(1354, 124, '071', 'Pāvilostas novads', NULL),
+(1355, 124, '072', 'Pļaviņu novads', NULL),
+(1356, 124, '076', 'Raunas novads', NULL),
+(1357, 124, '078', 'Riebiņu novads', NULL),
+(1358, 124, '079', 'Rojas novads', NULL),
+(1359, 124, '080', 'Ropažu novads', NULL),
+(1360, 124, '081', 'Rucavas novads', NULL),
+(1361, 124, '082', 'Rugāju novads', NULL),
+(1362, 124, '083', 'Rundāles novads', NULL),
+(1363, 124, 'REZ', 'Rēzekne', NULL),
+(1364, 124, '077', 'Rēzeknes novads', NULL),
+(1365, 124, 'RIX', 'Rīga', NULL),
+(1366, 124, '084', 'Rūjienas novads', NULL),
+(1367, 124, '086', 'Salacgrīvas novads', NULL),
+(1368, 124, '085', 'Salas novads', NULL),
+(1369, 124, '087', 'Salaspils novads', NULL),
+(1370, 124, '088', 'Saldus novads', NULL),
+(1371, 124, '089', 'Saulkrastu novads', NULL),
+(1372, 124, '091', 'Siguldas novads', NULL),
+(1373, 124, '093', 'Skrundas novads', NULL),
+(1374, 124, '092', 'Skrīveru novads', NULL),
+(1375, 124, '094', 'Smiltenes novads', NULL),
+(1376, 124, '095', 'Stopiņu novads', NULL),
+(1377, 124, '096', 'Strenču novads', NULL),
+(1378, 124, '090', 'Sējas novads', NULL),
+(1379, 124, '097', 'Talsu novads', NULL),
+(1380, 124, '099', 'Tukuma novads', NULL),
+(1381, 124, '098', 'Tērvetes novads', NULL),
+(1382, 124, '100', 'Vaiņodes novads', NULL),
+(1383, 124, '101', 'Valkas novads', NULL),
+(1384, 124, 'VMR', 'Valmiera', NULL),
+(1385, 124, '102', 'Varakļānu novads', NULL),
+(1386, 124, '104', 'Vecpiebalgas novads', NULL),
+(1387, 124, '105', 'Vecumnieku novads', NULL),
+(1388, 124, 'VEN', 'Ventspils', NULL),
+(1389, 124, '106', 'Ventspils novads', NULL);
+INSERT INTO `state` (`idstate`, `country`, `code`, `state_name`, `subdivision`) VALUES
+(1390, 124, '107', 'Viesītes novads', NULL),
+(1391, 124, '108', 'Viļakas novads', NULL),
+(1392, 124, '109', 'Viļānu novads', NULL),
+(1393, 124, '103', 'Vārkavas novads', NULL),
+(1394, 124, '110', 'Zilupes novads', NULL),
+(1395, 124, '011', 'Ādažu novads', NULL),
+(1396, 124, '030', 'Ērgļu novads', NULL),
+(1397, 124, '051', 'Ķeguma novads', NULL),
+(1398, 124, '052', 'Ķekavas novads', NULL),
+(1399, 125, 'AK', 'Aakkâr', NULL),
+(1400, 125, 'BH', 'Baalbek-Hermel', NULL),
+(1401, 125, 'BA', 'Beyrouth', NULL),
+(1402, 125, 'BI', 'Béqaa', NULL),
+(1403, 125, 'AS', 'Liban-Nord', NULL),
+(1404, 125, 'JA', 'Liban-Sud', NULL),
+(1405, 125, 'JL', 'Mont-Liban', NULL),
+(1406, 125, 'NA', 'Nabatîyé', NULL),
+(1407, 126, 'D', 'Berea', NULL),
+(1408, 126, 'B', 'Butha-Buthe', NULL),
+(1409, 126, 'C', 'Leribe', NULL),
+(1410, 126, 'E', 'Mafeteng', NULL),
+(1411, 126, 'A', 'Maseru', NULL),
+(1412, 126, 'F', 'Mohale\'s Hoek', NULL),
+(1413, 126, 'J', 'Mokhotlong', NULL),
+(1414, 126, 'H', 'Qacha\'s Nek', NULL),
+(1415, 126, 'G', 'Quthing', NULL),
+(1416, 126, 'K', 'Thaba-Tseka', NULL),
+(1417, 127, 'BM', 'Bomi', NULL),
+(1418, 127, 'BG', 'Bong', NULL),
+(1419, 127, 'GP', 'Gbarpolu', NULL),
+(1420, 127, 'GB', 'Grand Bassa', NULL),
+(1421, 127, 'CM', 'Grand Cape Mount', NULL),
+(1422, 127, 'GG', 'Grand Gedeh', NULL),
+(1423, 127, 'GK', 'Grand Kru', NULL),
+(1424, 127, 'LO', 'Lofa', NULL),
+(1425, 127, 'MG', 'Margibi', NULL),
+(1426, 127, 'MY', 'Maryland', NULL),
+(1427, 127, 'MO', 'Montserrado', NULL),
+(1428, 127, 'NI', 'Nimba', NULL),
+(1429, 127, 'RG', 'River Gee', NULL),
+(1430, 127, 'RI', 'Rivercess', NULL),
+(1431, 127, 'SI', 'Sinoe', NULL),
+(1432, 128, 'BU', 'Al Buţnān', NULL),
+(1433, 128, 'JA', 'Al Jabal al Akhḑar', NULL),
+(1434, 128, 'JG', 'Al Jabal al Gharbī', NULL),
+(1435, 128, 'JI', 'Al Jifārah', NULL),
+(1436, 128, 'JU', 'Al Jufrah', NULL),
+(1437, 128, 'KF', 'Al Kufrah', NULL),
+(1438, 128, 'MJ', 'Al Marj', NULL),
+(1439, 128, 'MB', 'Al Marqab', NULL),
+(1440, 128, 'WA', 'Al Wāḩāt', NULL),
+(1441, 128, 'NQ', 'An Nuqaţ al Khams', NULL),
+(1442, 128, 'ZA', 'Az Zāwiyah', NULL),
+(1443, 128, 'BA', 'Banghāzī', NULL),
+(1444, 128, 'DR', 'Darnah', NULL),
+(1445, 128, 'GT', 'Ghāt', NULL),
+(1446, 128, 'MI', 'Mişrātah', NULL),
+(1447, 128, 'MQ', 'Murzuq', NULL),
+(1448, 128, 'NL', 'Nālūt', NULL),
+(1449, 128, 'SB', 'Sabhā', NULL),
+(1450, 128, 'SR', 'Surt', NULL),
+(1451, 128, 'WD', 'Wādī al Ḩayāt', NULL),
+(1452, 128, 'WS', 'Wādī ash Shāţiʾ', NULL),
+(1453, 128, 'TB', 'Ţarābulus', NULL),
+(1454, 129, '01', 'Balzers', NULL),
+(1455, 129, '02', 'Eschen', NULL),
+(1456, 129, '03', 'Gamprin', NULL),
+(1457, 129, '04', 'Mauren', NULL),
+(1458, 129, '05', 'Planken', NULL),
+(1459, 129, '06', 'Ruggell', NULL),
+(1460, 129, '07', 'Schaan', NULL),
+(1461, 129, '08', 'Schellenberg', NULL),
+(1462, 129, '09', 'Triesen', NULL),
+(1463, 129, '10', 'Triesenberg', NULL),
+(1464, 129, '11', 'Vaduz', NULL),
+(1465, 130, 'AL', 'Alytaus Apskritis', NULL),
+(1466, 130, 'KU', 'Kauno Apskritis', NULL),
+(1467, 130, 'KL', 'Klaipėdos Apskritis', NULL),
+(1468, 130, 'MR', 'Marijampolės Apskritis', NULL),
+(1469, 130, 'PN', 'Panevėžio Apskritis', NULL),
+(1470, 130, 'TA', 'Tauragės Apskritis', NULL),
+(1471, 130, 'TE', 'Telšių Apskritis', NULL),
+(1472, 130, 'UT', 'Utenos Apskritis', NULL),
+(1473, 130, 'VL', 'Vilniaus Apskritis', NULL),
+(1474, 130, 'SA', 'Šiaulių Apskritis', NULL),
+(1475, 131, 'D', 'Diekirch', NULL),
+(1476, 131, 'G', 'Grevenmacher', NULL),
+(1477, 131, 'L', 'Luxembourg', NULL),
+(1478, 133, '01', 'Aerodrom', NULL),
+(1479, 133, '02', 'Aračinovo', NULL),
+(1480, 133, '03', 'Berovo', NULL),
+(1481, 133, '04', 'Bitola', NULL),
+(1482, 133, '05', 'Bogdanci', NULL),
+(1483, 133, '06', 'Bogovinje', NULL),
+(1484, 133, '07', 'Bosilovo', NULL),
+(1485, 133, '08', 'Brvenica', NULL),
+(1486, 133, '09', 'Butel', NULL),
+(1487, 133, '77', 'Centar', NULL),
+(1488, 133, '78', 'Centar Župa', NULL),
+(1489, 133, '21', 'Debar', NULL),
+(1490, 133, '22', 'Debarca', NULL),
+(1491, 133, '23', 'Delčevo', NULL),
+(1492, 133, '25', 'Demir Hisar', NULL),
+(1493, 133, '24', 'Demir Kapija', NULL),
+(1494, 133, '26', 'Dojran', NULL),
+(1495, 133, '27', 'Dolneni', NULL),
+(1496, 133, '28', 'Drugovo', NULL),
+(1497, 133, '17', 'Gazi Baba', NULL),
+(1498, 133, '18', 'Gevgelija', NULL),
+(1499, 133, '29', 'Gjorče Petrov', NULL),
+(1500, 133, '19', 'Gostivar', NULL),
+(1501, 133, '20', 'Gradsko', NULL),
+(1502, 133, '34', 'Ilinden', NULL),
+(1503, 133, '35', 'Jegunovce', NULL),
+(1504, 133, '37', 'Karbinci', NULL),
+(1505, 133, '38', 'Karpoš', NULL),
+(1506, 133, '36', 'Kavadarci', NULL),
+(1507, 133, '39', 'Kisela Voda', NULL),
+(1508, 133, '40', 'Kičevo', NULL),
+(1509, 133, '41', 'Konče', NULL),
+(1510, 133, '42', 'Kočani', NULL),
+(1511, 133, '43', 'Kratovo', NULL),
+(1512, 133, '44', 'Kriva Palanka', NULL),
+(1513, 133, '45', 'Krivogaštani', NULL),
+(1514, 133, '46', 'Kruševo', NULL),
+(1515, 133, '47', 'Kumanovo', NULL),
+(1516, 133, '48', 'Lipkovo', NULL),
+(1517, 133, '49', 'Lozovo', NULL),
+(1518, 133, '51', 'Makedonska Kamenica', NULL),
+(1519, 133, '52', 'Makedonski Brod', NULL),
+(1520, 133, '50', 'Mavrovo i Rostuša', NULL),
+(1521, 133, '53', 'Mogila', NULL),
+(1522, 133, '54', 'Negotino', NULL),
+(1523, 133, '55', 'Novaci', NULL),
+(1524, 133, '56', 'Novo Selo', NULL),
+(1525, 133, '58', 'Ohrid', NULL),
+(1526, 133, '57', 'Oslomej', NULL),
+(1527, 133, '60', 'Pehčevo', NULL),
+(1528, 133, '59', 'Petrovec', NULL),
+(1529, 133, '61', 'Plasnica', NULL),
+(1530, 133, '62', 'Prilep', NULL),
+(1531, 133, '63', 'Probištip', NULL),
+(1532, 133, '64', 'Radoviš', NULL),
+(1533, 133, '65', 'Rankovce', NULL),
+(1534, 133, '66', 'Resen', NULL),
+(1535, 133, '67', 'Rosoman', NULL),
+(1536, 133, '68', 'Saraj', NULL),
+(1537, 133, '70', 'Sopište', NULL),
+(1538, 133, '71', 'Staro Nagoričane', NULL),
+(1539, 133, '72', 'Struga', NULL),
+(1540, 133, '73', 'Strumica', NULL),
+(1541, 133, '74', 'Studeničani', NULL),
+(1542, 133, '69', 'Sveti Nikole', NULL),
+(1543, 133, '75', 'Tearce', NULL),
+(1544, 133, '76', 'Tetovo', NULL),
+(1545, 133, '10', 'Valandovo', NULL),
+(1546, 133, '11', 'Vasilevo', NULL),
+(1547, 133, '13', 'Veles', NULL),
+(1548, 133, '12', 'Vevčani', NULL),
+(1549, 133, '14', 'Vinica', NULL),
+(1550, 133, '15', 'Vraneštica', NULL),
+(1551, 133, '16', 'Vrapčište', NULL),
+(1552, 133, '31', 'Zajas', NULL),
+(1553, 133, '32', 'Zelenikovo', NULL),
+(1554, 133, '33', 'Zrnovci', NULL),
+(1555, 133, '79', 'Čair', NULL),
+(1556, 133, '80', 'Čaška', NULL),
+(1557, 133, '81', 'Češinovo-Obleševo', NULL),
+(1558, 133, '82', 'Čučer Sandevo', NULL),
+(1559, 133, '83', 'Štip', NULL),
+(1560, 133, '84', 'Šuto Orizari', NULL),
+(1561, 133, '30', 'Želino', NULL),
+(1562, 134, 'T', 'Antananarivo', NULL),
+(1563, 134, 'D', 'Antsiranana', NULL),
+(1564, 134, 'F', 'Fianarantsoa', NULL),
+(1565, 134, 'M', 'Mahajanga', NULL),
+(1566, 134, 'A', 'Toamasina', NULL),
+(1567, 134, 'U', 'Toliara', NULL),
+(1568, 135, 'C', 'Central Region', NULL),
+(1569, 135, 'N', 'Northern Region', NULL),
+(1570, 135, 'S', 'Southern Region', NULL),
+(1571, 136, '01', 'Johor', 'state'),
+(1572, 136, '02', 'Kedah', 'state'),
+(1573, 136, '03', 'Kelantan', 'state'),
+(1574, 136, '04', 'Melaka', 'state'),
+(1575, 136, '05', 'Negeri Sembilan', 'state'),
+(1576, 136, '06', 'Pahang', 'state'),
+(1577, 136, '08', 'Perak', 'state'),
+(1578, 136, '09', 'Perlis', 'state'),
+(1579, 136, '07', 'Pulau Pinang', 'state'),
+(1580, 136, '12', 'Sabah', 'state'),
+(1581, 136, '13', 'Sarawak', 'state'),
+(1582, 136, '10', 'Selangor', 'state'),
+(1583, 136, '11', 'Terengganu', 'state'),
+(1584, 137, 'CE', 'Central', NULL),
+(1585, 137, 'MLE', 'Male', NULL),
+(1586, 137, 'NO', 'North', NULL),
+(1587, 137, 'NC', 'North Central', NULL),
+(1588, 137, 'SU', 'South', NULL),
+(1589, 137, 'SC', 'South Central', NULL),
+(1590, 137, 'UN', 'Upper North', NULL),
+(1591, 137, 'US', 'Upper South', NULL),
+(1592, 138, 'BKO', 'Bamako', NULL),
+(1593, 138, '7', 'Gao', NULL),
+(1594, 138, '1', 'Kayes', NULL),
+(1595, 138, '8', 'Kidal', NULL),
+(1596, 138, '2', 'Koulikoro', NULL),
+(1597, 138, '5', 'Mopti', NULL),
+(1598, 138, '3', 'Sikasso', NULL),
+(1599, 138, '4', 'Ségou', NULL),
+(1600, 138, '6', 'Tombouctou', NULL),
+(1601, 139, '01', 'Attard', NULL),
+(1602, 139, '02', 'Balzan', NULL),
+(1603, 139, '03', 'Birgu', NULL),
+(1604, 139, '04', 'Birkirkara', NULL),
+(1605, 139, '05', 'Birżebbuġa', NULL),
+(1606, 139, '06', 'Bormla', NULL),
+(1607, 139, '07', 'Dingli', NULL),
+(1608, 139, '08', 'Fgura', NULL),
+(1609, 139, '09', 'Floriana', NULL),
+(1610, 139, '10', 'Fontana', NULL),
+(1611, 139, '11', 'Gudja', NULL),
+(1612, 139, '13', 'Għajnsielem', NULL),
+(1613, 139, '14', 'Għarb', NULL),
+(1614, 139, '15', 'Għargħur', NULL),
+(1615, 139, '16', 'Għasri', NULL),
+(1616, 139, '17', 'Għaxaq', NULL),
+(1617, 139, '12', 'Gżira', NULL),
+(1618, 139, '19', 'Iklin', NULL),
+(1619, 139, '20', 'Isla', NULL),
+(1620, 139, '21', 'Kalkara', NULL),
+(1621, 139, '22', 'Kerċem', NULL),
+(1622, 139, '23', 'Kirkop', NULL),
+(1623, 139, '24', 'Lija', NULL),
+(1624, 139, '25', 'Luqa', NULL),
+(1625, 139, '26', 'Marsa', NULL),
+(1626, 139, '27', 'Marsaskala', NULL),
+(1627, 139, '28', 'Marsaxlokk', NULL),
+(1628, 139, '29', 'Mdina', NULL),
+(1629, 139, '30', 'Mellieħa', NULL),
+(1630, 139, '32', 'Mosta', NULL),
+(1631, 139, '33', 'Mqabba', NULL),
+(1632, 139, '34', 'Msida', NULL),
+(1633, 139, '35', 'Mtarfa', NULL),
+(1634, 139, '36', 'Munxar', NULL),
+(1635, 139, '31', 'Mġarr', NULL),
+(1636, 139, '37', 'Nadur', NULL),
+(1637, 139, '38', 'Naxxar', NULL),
+(1638, 139, '39', 'Paola', NULL),
+(1639, 139, '40', 'Pembroke', NULL),
+(1640, 139, '41', 'Pietà', NULL),
+(1641, 139, '42', 'Qala', NULL),
+(1642, 139, '43', 'Qormi', NULL),
+(1643, 139, '44', 'Qrendi', NULL),
+(1644, 139, '45', 'Rabat Għawdex', NULL),
+(1645, 139, '46', 'Rabat Malta', NULL),
+(1646, 139, '47', 'Safi', NULL),
+(1647, 139, '50', 'San Lawrenz', NULL),
+(1648, 139, '51', 'San Pawl il-Baħar', NULL),
+(1649, 139, '48', 'San Ġiljan', NULL),
+(1650, 139, '49', 'San Ġwann', NULL),
+(1651, 139, '52', 'Sannat', NULL),
+(1652, 139, '53', 'Santa Luċija', NULL),
+(1653, 139, '54', 'Santa Venera', NULL),
+(1654, 139, '55', 'Siġġiewi', NULL),
+(1655, 139, '56', 'Sliema', NULL),
+(1656, 139, '57', 'Swieqi', NULL),
+(1657, 139, '58', 'Ta\' Xbiex', NULL),
+(1658, 139, '59', 'Tarxien', NULL),
+(1659, 139, '60', 'Valletta', NULL),
+(1660, 139, '61', 'Xagħra', NULL),
+(1661, 139, '62', 'Xewkija', NULL),
+(1662, 139, '63', 'Xgħajra', NULL),
+(1663, 139, '18', 'Ħamrun', NULL),
+(1664, 139, '64', 'Żabbar', NULL),
+(1665, 139, '65', 'Żebbuġ Għawdex', NULL),
+(1666, 139, '66', 'Żebbuġ Malta', NULL),
+(1667, 139, '67', 'Żejtun', NULL),
+(1668, 139, '68', 'Żurrieq', NULL),
+(1669, 140, 'L', 'Ralik chain', NULL),
+(1670, 140, 'T', 'Ratak chain', NULL),
+(1671, 142, '07', 'Adrar', NULL),
+(1672, 142, '03', 'Assaba', NULL),
+(1673, 142, '05', 'Brakna', NULL),
+(1674, 142, '08', 'Dakhlet Nouâdhibou', NULL),
+(1675, 142, '04', 'Gorgol', NULL),
+(1676, 142, '10', 'Guidimaka', NULL),
+(1677, 142, '01', 'Hodh ech Chargui', NULL),
+(1678, 142, '02', 'Hodh el Gharbi', NULL),
+(1679, 142, '12', 'Inchiri', NULL),
+(1680, 142, 'NKC', 'Nouakchott', NULL),
+(1681, 142, '09', 'Tagant', NULL),
+(1682, 142, '11', 'Tiris Zemmour', NULL),
+(1683, 142, '06', 'Trarza', NULL),
+(1684, 143, 'AG', 'Agalega Islands', NULL),
+(1685, 143, 'BR', 'Beau Bassin-Rose Hill', NULL),
+(1686, 143, 'BL', 'Black River', NULL),
+(1687, 143, 'CC', 'Cargados Carajos Shoals', NULL),
+(1688, 143, 'CU', 'Curepipe', NULL),
+(1689, 143, 'FL', 'Flacq', NULL),
+(1690, 143, 'GP', 'Grand Port', NULL),
+(1691, 143, 'MO', 'Moka', NULL),
+(1692, 143, 'PA', 'Pamplemousses', NULL),
+(1693, 143, 'PW', 'Plaines Wilhems', NULL),
+(1694, 143, 'PL', 'Port Louis', NULL),
+(1695, 143, 'PU', 'Port Louis', NULL),
+(1696, 143, 'QB', 'Quatre Bornes', NULL),
+(1697, 143, 'RR', 'Rivière du Rempart', NULL),
+(1698, 143, 'RO', 'Rodrigues Island', NULL),
+(1699, 143, 'SA', 'Savanne', NULL),
+(1700, 143, 'VP', 'Vacoas-Phoenix', NULL),
+(1701, 145, 'AGU', 'Aguascalientes', 'state'),
+(1702, 145, 'BCN', 'Baja California', 'state'),
+(1703, 145, 'BCS', 'Baja California Sur', 'state'),
+(1704, 145, 'CAM', 'Campeche', 'state'),
+(1705, 145, 'CHP', 'Chiapas', 'state'),
+(1706, 145, 'CHH', 'Chihuahua', 'state'),
+(1707, 145, 'COA', 'Coahuila', 'state'),
+(1708, 145, 'COL', 'Colima', 'state'),
+(1709, 145, 'DUR', 'Durango', 'state'),
+(1710, 145, 'GUA', 'Guanajuato', 'state'),
+(1711, 145, 'GRO', 'Guerrero', 'state'),
+(1712, 145, 'HID', 'Hidalgo', 'state'),
+(1713, 145, 'JAL', 'Jalisco', 'state'),
+(1714, 145, 'MIC', 'Michoacán', 'state'),
+(1715, 145, 'MOR', 'Morelos', 'state'),
+(1716, 145, 'MEX', 'México', 'state'),
+(1717, 145, 'NAY', 'Nayarit', 'state'),
+(1718, 145, 'NLE', 'Nuevo León', 'state'),
+(1719, 145, 'OAX', 'Oaxaca', 'state'),
+(1720, 145, 'PUE', 'Puebla', 'state'),
+(1721, 145, 'QUE', 'Querétaro', 'state'),
+(1722, 145, 'ROO', 'Quintana Roo', 'state'),
+(1723, 145, 'SLP', 'San Luis Potosí', 'state'),
+(1724, 145, 'SIN', 'Sinaloa', 'state'),
+(1725, 145, 'SON', 'Sonora', 'state'),
+(1726, 145, 'TAB', 'Tabasco', 'state'),
+(1727, 145, 'TAM', 'Tamaulipas', 'state'),
+(1728, 145, 'TLA', 'Tlaxcala', 'state'),
+(1729, 145, 'VER', 'Veracruz', 'state'),
+(1730, 145, 'YUC', 'Yucatán', 'state'),
+(1731, 145, 'ZAC', 'Zacatecas', 'state'),
+(1732, 146, 'TRK', 'Chuuk', NULL),
+(1733, 146, 'KSA', 'Kosrae', NULL),
+(1734, 146, 'PNI', 'Pohnpei', NULL),
+(1735, 146, 'YAP', 'Yap', NULL),
+(1736, 147, 'AN', 'Anenii Noi', NULL),
+(1737, 147, 'BS', 'Basarabeasca', NULL),
+(1738, 147, 'BR', 'Briceni', NULL),
+(1739, 147, 'BA', 'Bălţi', NULL),
+(1740, 147, 'CA', 'Cahul', NULL),
+(1741, 147, 'CT', 'Cantemir', NULL),
+(1742, 147, 'CU', 'Chişinău', NULL),
+(1743, 147, 'CM', 'Cimişlia', NULL),
+(1744, 147, 'CR', 'Criuleni', NULL),
+(1745, 147, 'CL', 'Călăraşi', NULL),
+(1746, 147, 'CS', 'Căuşeni', NULL),
+(1747, 147, 'DO', 'Donduşeni', NULL),
+(1748, 147, 'DR', 'Drochia', NULL),
+(1749, 147, 'DU', 'Dubăsari', NULL),
+(1750, 147, 'ED', 'Edineţ', NULL),
+(1751, 147, 'FL', 'Floreşti', NULL),
+(1752, 147, 'FA', 'Făleşti', NULL),
+(1753, 147, 'GL', 'Glodeni', NULL),
+(1754, 147, 'GA', 'Găgăuzia, Unitatea teritorială autonomă', NULL),
+(1755, 147, 'HI', 'Hînceşti', NULL),
+(1756, 147, 'IA', 'Ialoveni', NULL),
+(1757, 147, 'LE', 'Leova', NULL),
+(1758, 147, 'NI', 'Nisporeni', NULL),
+(1759, 147, 'OC', 'Ocniţa', NULL),
+(1760, 147, 'OR', 'Orhei', NULL),
+(1761, 147, 'RE', 'Rezina', NULL),
+(1762, 147, 'RI', 'Rîşcani', NULL),
+(1763, 147, 'SO', 'Soroca', NULL),
+(1764, 147, 'ST', 'Străşeni', NULL),
+(1765, 147, 'SN', 'Stînga Nistrului, unitatea teritorială din', NULL),
+(1766, 147, 'SI', 'Sîngerei', NULL),
+(1767, 147, 'TA', 'Taraclia', NULL),
+(1768, 147, 'TE', 'Teleneşti', NULL),
+(1769, 147, 'BD', 'Tighina', NULL),
+(1770, 147, 'UN', 'Ungheni', NULL),
+(1771, 147, 'SD', 'Şoldăneşti', NULL),
+(1772, 147, 'SV', 'Ştefan Vodă', NULL),
+(1773, 148, 'FO', 'Fontvieille', NULL),
+(1774, 148, 'JE', 'Jardin Exotique', NULL),
+(1775, 148, 'CL', 'La Colle', NULL),
+(1776, 148, 'CO', 'La Condamine', NULL),
+(1777, 148, 'GA', 'La Gare', NULL),
+(1778, 148, 'SO', 'La Source', NULL),
+(1779, 148, 'LA', 'Larvotto', NULL),
+(1780, 148, 'MA', 'Malbousquet', NULL),
+(1781, 148, 'MO', 'Monaco-Ville', NULL),
+(1782, 148, 'MG', 'Moneghetti', NULL),
+(1783, 148, 'MC', 'Monte-Carlo', NULL),
+(1784, 148, 'MU', 'Moulins', NULL),
+(1785, 148, 'PH', 'Port-Hercule', NULL),
+(1786, 148, 'SR', 'Saint-Roman', NULL),
+(1787, 148, 'SD', 'Sainte-Dévote', NULL),
+(1788, 148, 'SP', 'Spélugues', NULL),
+(1789, 148, 'VR', 'Vallon de la Rousse', NULL),
+(1790, 149, '073', 'Arhangay', NULL),
+(1791, 149, '071', 'Bayan-Ölgiy', NULL),
+(1792, 149, '069', 'Bayanhongor', NULL),
+(1793, 149, '067', 'Bulgan', NULL),
+(1794, 149, '037', 'Darhan uul', NULL),
+(1795, 149, '061', 'Dornod', NULL),
+(1796, 149, '063', 'Dornogovĭ', NULL),
+(1797, 149, '059', 'Dundgovĭ', NULL),
+(1798, 149, '057', 'Dzavhan', NULL),
+(1799, 149, '065', 'Govĭ-Altay', NULL),
+(1800, 149, '064', 'Govĭ-Sümber', NULL),
+(1801, 149, '039', 'Hentiy', NULL),
+(1802, 149, '043', 'Hovd', NULL),
+(1803, 149, '041', 'Hövsgöl', NULL),
+(1804, 149, '035', 'Orhon', NULL),
+(1805, 149, '049', 'Selenge', NULL),
+(1806, 149, '051', 'Sühbaatar', NULL),
+(1807, 149, '047', 'Töv', NULL),
+(1808, 149, '1', 'Ulaanbaatar', NULL),
+(1809, 149, '046', 'Uvs', NULL),
+(1810, 149, '053', 'Ömnögovĭ', NULL),
+(1811, 149, '055', 'Övörhangay', NULL),
+(1812, 150, '01', 'Andrijevica', NULL),
+(1813, 150, '02', 'Bar', NULL),
+(1814, 150, '03', 'Berane', NULL),
+(1815, 150, '04', 'Bijelo Polje', NULL),
+(1816, 150, '05', 'Budva', NULL),
+(1817, 150, '06', 'Cetinje', NULL),
+(1818, 150, '07', 'Danilovgrad', NULL),
+(1819, 150, '22', 'Gusinje', NULL),
+(1820, 150, '08', 'Herceg-Novi', NULL),
+(1821, 150, '09', 'Kolašin', NULL),
+(1822, 150, '10', 'Kotor', NULL),
+(1823, 150, '11', 'Mojkovac', NULL),
+(1824, 150, '12', 'Nikšić', NULL),
+(1825, 150, '23', 'Petnjica', NULL),
+(1826, 150, '13', 'Plav', NULL),
+(1827, 150, '14', 'Pljevlja', NULL),
+(1828, 150, '15', 'Plužine', NULL),
+(1829, 150, '16', 'Podgorica', NULL),
+(1830, 150, '17', 'Rožaje', NULL),
+(1831, 150, '19', 'Tivat', NULL),
+(1832, 150, '20', 'Ulcinj', NULL),
+(1833, 150, '18', 'Šavnik', NULL),
+(1834, 150, '21', 'Žabljak', NULL),
+(1835, 152, '09', 'Chaouia-Ouardigha', NULL),
+(1836, 152, '10', 'Doukhala-Abda', NULL),
+(1837, 152, '05', 'Fès-Boulemane', NULL),
+(1838, 152, '02', 'Gharb-Chrarda-Beni Hssen', NULL),
+(1839, 152, '08', 'Grand Casablanca', NULL),
+(1840, 152, '14', 'Guelmim-Es Smara', NULL),
+(1841, 152, '04', 'L\'Oriental', NULL),
+(1842, 152, '15', 'Laâyoune-Boujdour-Sakia el Hamra', NULL),
+(1843, 152, '11', 'Marrakech-Tensift-Al Haouz', NULL),
+(1844, 152, '06', 'Meknès-Tafilalet', NULL),
+(1845, 152, '16', 'Oued ed Dahab-Lagouira', NULL),
+(1846, 152, '07', 'Rabat-Salé-Zemmour-Zaer', NULL),
+(1847, 152, '13', 'Souss-Massa-Drâa', NULL),
+(1848, 152, '12', 'Tadla-Azilal', NULL),
+(1849, 152, '01', 'Tanger-Tétouan', NULL),
+(1850, 152, '03', 'Taza-Al Hoceima-Taounate', NULL),
+(1851, 153, 'P', 'Cabo Delgado', NULL),
+(1852, 153, 'G', 'Gaza', NULL),
+(1853, 153, 'I', 'Inhambane', NULL),
+(1854, 153, 'B', 'Manica', NULL),
+(1855, 153, 'MPM', 'Maputo', NULL),
+(1856, 153, 'L', 'Maputo', NULL),
+(1857, 153, 'N', 'Nampula', NULL),
+(1858, 153, 'A', 'Niassa', NULL),
+(1859, 153, 'S', 'Sofala', NULL),
+(1860, 153, 'T', 'Tete', NULL),
+(1861, 153, 'Q', 'Zambézia', NULL),
+(1862, 154, '07', 'Ayeyarwady', NULL),
+(1863, 154, '02', 'Bago', NULL),
+(1864, 154, '14', 'Chin', NULL),
+(1865, 154, '11', 'Kachin', NULL),
+(1866, 154, '12', 'Kayah', NULL),
+(1867, 154, '13', 'Kayin', NULL),
+(1868, 154, '03', 'Magway', NULL),
+(1869, 154, '04', 'Mandalay', NULL),
+(1870, 154, '15', 'Mon', NULL),
+(1871, 154, '16', 'Rakhine', NULL),
+(1872, 154, '01', 'Sagaing', NULL),
+(1873, 154, '17', 'Shan', NULL),
+(1874, 154, '05', 'Tanintharyi', NULL),
+(1875, 154, '06', 'Yangon', NULL),
+(1876, 155, 'ER', 'Erongo', NULL),
+(1877, 155, 'HA', 'Hardap', NULL),
+(1878, 155, 'KA', 'Karas', NULL),
+(1879, 155, 'KE', 'Kavango East', NULL),
+(1880, 155, 'KW', 'Kavango West', NULL),
+(1881, 155, 'KH', 'Khomas', NULL),
+(1882, 155, 'KU', 'Kunene', NULL),
+(1883, 155, 'OW', 'Ohangwena', NULL),
+(1884, 155, 'OH', 'Omaheke', NULL),
+(1885, 155, 'OS', 'Omusati', NULL),
+(1886, 155, 'ON', 'Oshana', NULL),
+(1887, 155, 'OT', 'Oshikoto', NULL),
+(1888, 155, 'OD', 'Otjozondjupa', NULL),
+(1889, 155, 'CA', 'Zambezi', NULL),
+(1890, 156, '01', 'Aiwo', NULL),
+(1891, 156, '02', 'Anabar', NULL),
+(1892, 156, '03', 'Anetan', NULL),
+(1893, 156, '04', 'Anibare', NULL),
+(1894, 156, '05', 'Baiti', NULL),
+(1895, 156, '06', 'Boe', NULL),
+(1896, 156, '07', 'Buada', NULL),
+(1897, 156, '08', 'Denigomodu', NULL),
+(1898, 156, '09', 'Ewa', NULL),
+(1899, 156, '10', 'Ijuw', NULL),
+(1900, 156, '11', 'Meneng', NULL),
+(1901, 156, '12', 'Nibok', NULL),
+(1902, 156, '13', 'Uaboe', NULL),
+(1903, 156, '14', 'Yaren', NULL),
+(1904, 157, '2', 'Madhya Pashchimanchal', NULL),
+(1905, 157, '1', 'Madhyamanchal', NULL),
+(1906, 157, '3', 'Pashchimanchal', NULL),
+(1907, 157, '4', 'Purwanchal', NULL),
+(1908, 157, '5', 'Sudur Pashchimanchal', NULL),
+(1909, 158, 'DR', 'Drenthe', 'Province'),
+(1910, 158, 'FL', 'Flevoland', 'Province'),
+(1911, 158, 'FR', 'Fryslân', 'Province'),
+(1912, 158, 'GE', 'Gelderland', 'Province'),
+(1913, 158, 'GR', 'Groningen', 'Province'),
+(1914, 158, 'LI', 'Limburg', 'Province'),
+(1915, 158, 'NB', 'Noord-Brabant', 'Province'),
+(1916, 158, 'NH', 'Noord-Holland', 'Province'),
+(1917, 158, 'OV', 'Overijssel', 'Province'),
+(1918, 158, 'UT', 'Utrecht', 'Province'),
+(1919, 158, 'ZE', 'Zeeland', 'Province'),
+(1920, 158, 'ZH', 'Zuid-Holland', 'Province'),
+(1921, 158, 'AW', 'Aruba', 'country'),
+(1922, 158, 'CW', 'Curaçao', 'country'),
+(1923, 158, 'SX', 'Sint Maarten', 'country'),
+(1924, 160, 'N', 'North Island', 'Island'),
+(1925, 160, 'S', 'South Island', 'Island'),
+(1926, 161, 'AN', 'Atlántico Norte', NULL),
+(1927, 161, 'AS', 'Atlántico Sur', NULL),
+(1928, 161, 'BO', 'Boaco', NULL),
+(1929, 161, 'CA', 'Carazo', NULL),
+(1930, 161, 'CI', 'Chinandega', NULL),
+(1931, 161, 'CO', 'Chontales', NULL),
+(1932, 161, 'ES', 'Estelí', NULL),
+(1933, 161, 'GR', 'Granada', NULL),
+(1934, 161, 'JI', 'Jinotega', NULL),
+(1935, 161, 'LE', 'León', NULL),
+(1936, 161, 'MD', 'Madriz', NULL),
+(1937, 161, 'MN', 'Managua', NULL),
+(1938, 161, 'MS', 'Masaya', NULL),
+(1939, 161, 'MT', 'Matagalpa', NULL),
+(1940, 161, 'NS', 'Nueva Segovia', NULL),
+(1941, 161, 'RI', 'Rivas', NULL),
+(1942, 161, 'SJ', 'Río San Juan', NULL),
+(1943, 162, '1', 'Agadez', NULL),
+(1944, 162, '2', 'Diffa', NULL),
+(1945, 162, '3', 'Dosso', NULL),
+(1946, 162, '4', 'Maradi', NULL),
+(1947, 162, '8', 'Niamey', NULL),
+(1948, 162, '5', 'Tahoua', NULL),
+(1949, 162, '6', 'Tillabéri', NULL),
+(1950, 162, '7', 'Zinder', NULL),
+(1951, 163, 'AB', 'Abia', NULL),
+(1952, 163, 'FC', 'Abuja Federal Capital Territory', NULL),
+(1953, 163, 'AD', 'Adamawa', NULL),
+(1954, 163, 'AK', 'Akwa Ibom', NULL),
+(1955, 163, 'AN', 'Anambra', NULL),
+(1956, 163, 'BA', 'Bauchi', NULL),
+(1957, 163, 'BY', 'Bayelsa', NULL),
+(1958, 163, 'BE', 'Benue', NULL),
+(1959, 163, 'BO', 'Borno', NULL),
+(1960, 163, 'CR', 'Cross River', NULL),
+(1961, 163, 'DE', 'Delta', NULL),
+(1962, 163, 'EB', 'Ebonyi', NULL),
+(1963, 163, 'ED', 'Edo', NULL),
+(1964, 163, 'EK', 'Ekiti', NULL),
+(1965, 163, 'EN', 'Enugu', NULL),
+(1966, 163, 'GO', 'Gombe', NULL),
+(1967, 163, 'IM', 'Imo', NULL),
+(1968, 163, 'JI', 'Jigawa', NULL),
+(1969, 163, 'KD', 'Kaduna', NULL),
+(1970, 163, 'KN', 'Kano', NULL),
+(1971, 163, 'KT', 'Katsina', NULL),
+(1972, 163, 'KE', 'Kebbi', NULL),
+(1973, 163, 'KO', 'Kogi', NULL),
+(1974, 163, 'KW', 'Kwara', NULL),
+(1975, 163, 'LA', 'Lagos', NULL),
+(1976, 163, 'NA', 'Nassarawa', NULL),
+(1977, 163, 'NI', 'Niger', NULL),
+(1978, 163, 'OG', 'Ogun', NULL),
+(1979, 163, 'ON', 'Ondo', NULL),
+(1980, 163, 'OS', 'Osun', NULL),
+(1981, 163, 'OY', 'Oyo', NULL),
+(1982, 163, 'PL', 'Plateau', NULL),
+(1983, 163, 'RI', 'Rivers', NULL),
+(1984, 163, 'SO', 'Sokoto', NULL),
+(1985, 163, 'TA', 'Taraba', NULL),
+(1986, 163, 'YO', 'Yobe', NULL),
+(1987, 163, 'ZA', 'Zamfara', NULL),
+(1988, 166, '04', 'Chagang', NULL),
+(1989, 166, '07', 'Kangwon', NULL),
+(1990, 166, '09', 'North Hamgyong', NULL),
+(1991, 166, '06', 'North Hwanghae', NULL),
+(1992, 166, '03', 'North Pyongan', NULL),
+(1993, 166, '01', 'Pyongyang', NULL),
+(1994, 166, '13', 'Rason', NULL),
+(1995, 166, '10', 'Ryanggang', NULL),
+(1996, 166, '08', 'South Hamgyong', NULL),
+(1997, 166, '05', 'South Hwanghae', NULL),
+(1998, 166, '02', 'South Pyongan', NULL),
+(1999, 168, '02', 'Akershus', NULL),
+(2000, 168, '09', 'Aust-Agder', NULL),
+(2001, 168, '06', 'Buskerud', NULL),
+(2002, 168, '20', 'Finnmark', NULL),
+(2003, 168, '04', 'Hedmark', NULL),
+(2004, 168, '12', 'Hordaland', NULL),
+(2005, 168, '22', 'Jan Mayen', NULL),
+(2006, 168, '15', 'Møre og Romsdal', NULL),
+(2007, 168, '17', 'Nord-Trøndelag', NULL),
+(2008, 168, '18', 'Nordland', NULL),
+(2009, 168, '05', 'Oppland', NULL),
+(2010, 168, '03', 'Oslo', NULL),
+(2011, 168, '11', 'Rogaland', NULL),
+(2012, 168, '14', 'Sogn og Fjordane', NULL),
+(2013, 168, '21', 'Svalbard', NULL),
+(2014, 168, '16', 'Sør-Trøndelag', NULL),
+(2015, 168, '08', 'Telemark', NULL),
+(2016, 168, '19', 'Troms', NULL),
+(2017, 168, '10', 'Vest-Agder', NULL),
+(2018, 168, '07', 'Vestfold', NULL),
+(2019, 168, '01', 'Østfold', NULL),
+(2020, 169, 'DA', 'Ad Dākhilīyah', NULL),
+(2021, 169, 'BU', 'Al Buraymī', NULL),
+(2022, 169, 'BA', 'Al Bāţinah', NULL),
+(2023, 169, 'WU', 'Al Wusţá', NULL),
+(2024, 169, 'SH', 'Ash Sharqīyah', NULL),
+(2025, 169, 'ZA', 'Az̧ Z̧āhirah', NULL),
+(2026, 169, 'MA', 'Masqaţ', NULL),
+(2027, 169, 'MU', 'Musandam', NULL),
+(2028, 169, 'ZU', 'Z̧ufār', NULL),
+(2029, 170, 'JK', 'Azad Kashmir', NULL),
+(2030, 170, 'BA', 'Balochistan', NULL),
+(2031, 170, 'TA', 'Federally Administered Tribal Areas', NULL),
+(2032, 170, 'GB', 'Gilgit-Baltistan', NULL),
+(2033, 170, 'IS', 'Islamabad', NULL),
+(2034, 170, 'KP', 'Khyber Pakhtunkhwa', NULL),
+(2035, 170, 'PB', 'Punjab', NULL),
+(2036, 170, 'SD', 'Sindh', NULL),
+(2037, 171, '002', 'Aimeliik', NULL),
+(2038, 171, '004', 'Airai', NULL),
+(2039, 171, '010', 'Angaur', NULL),
+(2040, 171, '050', 'Hatobohei', NULL),
+(2041, 171, '100', 'Kayangel', NULL),
+(2042, 171, '150', 'Koror', NULL),
+(2043, 171, '212', 'Melekeok', NULL),
+(2044, 171, '214', 'Ngaraard', NULL),
+(2045, 171, '218', 'Ngarchelong', NULL),
+(2046, 171, '222', 'Ngardmau', NULL),
+(2047, 171, '224', 'Ngatpang', NULL),
+(2048, 171, '226', 'Ngchesar', NULL),
+(2049, 171, '227', 'Ngeremlengui', NULL),
+(2050, 171, '228', 'Ngiwal', NULL),
+(2051, 171, '350', 'Peleliu', NULL),
+(2052, 171, '370', 'Sonsorol', NULL),
+(2053, 172, 'BTH', 'Bethlehem', NULL),
+(2054, 172, 'DEB', 'Deir El Balah', NULL),
+(2055, 172, 'GZA', 'Gaza', NULL),
+(2056, 172, 'HBN', 'Hebron', NULL),
+(2057, 172, 'JEN', 'Jenin', NULL),
+(2058, 172, 'JRH', 'Jericho – Al Aghwar', NULL),
+(2059, 172, 'JEM', 'Jerusalem', NULL),
+(2060, 172, 'KYS', 'Khan Yunis', NULL),
+(2061, 172, 'NBS', 'Nablus', NULL),
+(2062, 172, 'NGZ', 'North Gaza', NULL),
+(2063, 172, 'QQA', 'Qalqilya', NULL),
+(2064, 172, 'RFH', 'Rafah', NULL),
+(2065, 172, 'RBH', 'Ramallah', NULL),
+(2066, 172, 'SLT', 'Salfit', NULL),
+(2067, 172, 'TBS', 'Tubas', NULL),
+(2068, 172, 'TKM', 'Tulkarm', NULL),
+(2069, 173, '1', 'Bocas del Toro', NULL),
+(2070, 173, '4', 'Chiriquí', NULL),
+(2071, 173, '2', 'Coclé', NULL),
+(2072, 173, '3', 'Colón', NULL),
+(2073, 173, '5', 'Darién', NULL),
+(2074, 173, 'EM', 'Emberá', NULL),
+(2075, 173, '6', 'Herrera', NULL),
+(2076, 173, 'KY', 'Kuna Yala', NULL),
+(2077, 173, '7', 'Los Santos', NULL),
+(2078, 173, 'NB', 'Ngöbe-Buglé', NULL),
+(2079, 173, '8', 'Panamá', NULL),
+(2080, 173, '10', 'Panamá Oeste', NULL),
+(2081, 173, '9', 'Veraguas', NULL),
+(2082, 174, 'NSB', 'Bougainville', NULL),
+(2083, 174, 'CPM', 'Central', NULL),
+(2084, 174, 'CPK', 'Chimbu', NULL),
+(2085, 174, 'EBR', 'East New Britain', NULL),
+(2086, 174, 'ESW', 'East Sepik', NULL),
+(2087, 174, 'EHG', 'Eastern Highlands', NULL),
+(2088, 174, 'EPW', 'Enga', NULL),
+(2089, 174, 'GPK', 'Gulf', NULL),
+(2090, 174, 'MPM', 'Madang', NULL),
+(2091, 174, 'MRL', 'Manus', NULL),
+(2092, 174, 'MBA', 'Milne Bay', NULL),
+(2093, 174, 'MPL', 'Morobe', NULL),
+(2094, 174, 'NCD', 'National Capital District', NULL),
+(2095, 174, 'NIK', 'New Ireland', NULL),
+(2096, 174, 'NPP', 'Northern', NULL),
+(2097, 174, 'SAN', 'Sandaun', NULL),
+(2098, 174, 'SHM', 'Southern Highlands', NULL),
+(2099, 174, 'WBK', 'West New Britain', NULL),
+(2100, 174, 'WPD', 'Western', NULL),
+(2101, 174, 'WHM', 'Western Highlands', NULL),
+(2102, 175, '16', 'Alto Paraguay', NULL),
+(2103, 175, '10', 'Alto Paraná', NULL),
+(2104, 175, '13', 'Amambay', NULL),
+(2105, 175, 'ASU', 'Asunción', NULL),
+(2106, 175, '19', 'Boquerón', NULL),
+(2107, 175, '5', 'Caaguazú', NULL),
+(2108, 175, '6', 'Caazapá', NULL),
+(2109, 175, '14', 'Canindeyú', NULL),
+(2110, 175, '11', 'Central', NULL),
+(2111, 175, '1', 'Concepción', NULL),
+(2112, 175, '3', 'Cordillera', NULL),
+(2113, 175, '4', 'Guairá', NULL),
+(2114, 175, '7', 'Itapúa', NULL),
+(2115, 175, '8', 'Misiones', NULL),
+(2116, 175, '9', 'Paraguarí', NULL),
+(2117, 175, '15', 'Presidente Hayes', NULL),
+(2118, 175, '2', 'San Pedro', NULL),
+(2119, 175, '12', 'Ñeembucú', NULL),
+(2120, 176, 'AMA', 'Amazonas', NULL),
+(2121, 176, 'ANC', 'Ancash', NULL),
+(2122, 176, 'APU', 'Apurímac', NULL),
+(2123, 176, 'ARE', 'Arequipa', NULL),
+(2124, 176, 'AYA', 'Ayacucho', NULL),
+(2125, 176, 'CAJ', 'Cajamarca', NULL),
+(2126, 176, 'CUS', 'Cusco', NULL),
+(2127, 176, 'CAL', 'El Callao', NULL),
+(2128, 176, 'HUV', 'Huancavelica', NULL),
+(2129, 176, 'HUC', 'Huánuco', NULL),
+(2130, 176, 'ICA', 'Ica', NULL),
+(2131, 176, 'JUN', 'Junín', NULL),
+(2132, 176, 'LAL', 'La Libertad', NULL),
+(2133, 176, 'LAM', 'Lambayeque', NULL),
+(2134, 176, 'LIM', 'Lima', NULL),
+(2135, 176, 'LOR', 'Loreto', NULL),
+(2136, 176, 'MDD', 'Madre de Dios', NULL),
+(2137, 176, 'MOQ', 'Moquegua', NULL),
+(2138, 176, 'LMA', 'Municipalidad Metropolitana de Lima', NULL),
+(2139, 176, 'PAS', 'Pasco', NULL),
+(2140, 176, 'PIU', 'Piura', NULL),
+(2141, 176, 'PUN', 'Puno', NULL),
+(2142, 176, 'SAM', 'San Martín', NULL),
+(2143, 176, 'TAC', 'Tacna', NULL),
+(2144, 176, 'TUM', 'Tumbes', NULL),
+(2145, 176, 'UCA', 'Ucayali', NULL),
+(2146, 177, '14', 'Autonomous Region in Muslim Mindanao', NULL),
+(2147, 177, '05', 'Bicol', NULL),
+(2148, 177, '02', 'Cagayan Valley', NULL),
+(2149, 177, '40', 'Calabarzon', NULL),
+(2150, 177, '13', 'Caraga', NULL),
+(2151, 177, '03', 'Central Luzon', NULL),
+(2152, 177, '07', 'Central Visayas', NULL),
+(2153, 177, '15', 'Cordillera Administrative Region', NULL),
+(2154, 177, '11', 'Davao', NULL),
+(2155, 177, '08', 'Eastern Visayas', NULL),
+(2156, 177, '01', 'Ilocos', NULL),
+(2157, 177, '41', 'Mimaropa', NULL),
+(2158, 177, '00', 'National Capital Region', NULL),
+(2159, 177, '10', 'Northern Mindanao', NULL),
+(2160, 177, '12', 'Soccsksargen', NULL),
+(2161, 177, '06', 'Western Visayas', NULL),
+(2162, 177, '09', 'Zamboanga Peninsula', NULL),
+(2163, 179, 'DS', 'Dolnośląskie', NULL),
+(2164, 179, 'KP', 'Kujawsko-pomorskie', NULL),
+(2165, 179, 'LU', 'Lubelskie', NULL),
+(2166, 179, 'LB', 'Lubuskie', NULL),
+(2167, 179, 'MZ', 'Mazowieckie', NULL),
+(2168, 179, 'MA', 'Małopolskie', NULL),
+(2169, 179, 'OP', 'Opolskie', NULL),
+(2170, 179, 'PK', 'Podkarpackie', NULL),
+(2171, 179, 'PD', 'Podlaskie', NULL),
+(2172, 179, 'PM', 'Pomorskie', NULL),
+(2173, 179, 'WN', 'Warmińsko-mazurskie', NULL),
+(2174, 179, 'WP', 'Wielkopolskie', NULL),
+(2175, 179, 'ZP', 'Zachodniopomorskie', NULL),
+(2176, 179, 'LD', 'Łódzkie', NULL),
+(2177, 179, 'SL', 'Śląskie', NULL),
+(2178, 179, 'SK', 'Świętokrzyskie', NULL),
+(2179, 180, '01', 'Aveiro', NULL),
+(2180, 180, '02', 'Beja', NULL),
+(2181, 180, '03', 'Braga', NULL),
+(2182, 180, '04', 'Bragança', NULL),
+(2183, 180, '05', 'Castelo Branco', NULL),
+(2184, 180, '06', 'Coimbra', NULL),
+(2185, 180, '08', 'Faro', NULL),
+(2186, 180, '09', 'Guarda', NULL),
+(2187, 180, '10', 'Leiria', NULL),
+(2188, 180, '11', 'Lisboa', NULL),
+(2189, 180, '12', 'Portalegre', NULL),
+(2190, 180, '13', 'Porto', NULL),
+(2191, 180, '30', 'Região Autónoma da Madeira', NULL),
+(2192, 180, '20', 'Região Autónoma dos Açores', NULL),
+(2193, 180, '14', 'Santarém', NULL),
+(2194, 180, '15', 'Setúbal', NULL),
+(2195, 180, '16', 'Viana do Castelo', NULL),
+(2196, 180, '17', 'Vila Real', NULL),
+(2197, 180, '18', 'Viseu', NULL),
+(2198, 180, '07', 'Évora', NULL),
+(2199, 182, 'DA', 'Ad Dawḩah', NULL),
+(2200, 182, 'KH', 'Al Khawr wa adh Dhakhīrah', NULL),
+(2201, 182, 'WA', 'Al Wakrah', NULL),
+(2202, 182, 'RA', 'Ar Rayyān', NULL),
+(2203, 182, 'MS', 'Ash Shamāl', NULL),
+(2204, 182, 'ZA', 'Az̧ Za̧`āyin', NULL),
+(2205, 182, 'US', 'Umm Şalāl', NULL),
+(2206, 185, 'AB', 'Alba', NULL),
+(2207, 185, 'AR', 'Arad', NULL),
+(2208, 185, 'AG', 'Argeș', NULL),
+(2209, 185, 'BC', 'Bacău', NULL),
+(2210, 185, 'BH', 'Bihor', NULL),
+(2211, 185, 'BN', 'Bistrița-Năsăud', NULL),
+(2212, 185, 'BT', 'Botoșani', NULL),
+(2213, 185, 'BV', 'Brașov', NULL),
+(2214, 185, 'BR', 'Brăila', NULL),
+(2215, 185, 'B', 'București', NULL),
+(2216, 185, 'BZ', 'Buzău', NULL),
+(2217, 185, 'CS', 'Caraș-Severin', NULL),
+(2218, 185, 'CJ', 'Cluj', NULL),
+(2219, 185, 'CT', 'Constanța', NULL),
+(2220, 185, 'CV', 'Covasna', NULL),
+(2221, 185, 'CL', 'Călărași', NULL),
+(2222, 185, 'DJ', 'Dolj', NULL),
+(2223, 185, 'DB', 'Dâmbovița', NULL),
+(2224, 185, 'GL', 'Galați', NULL),
+(2225, 185, 'GR', 'Giurgiu', NULL),
+(2226, 185, 'GJ', 'Gorj', NULL),
+(2227, 185, 'HR', 'Harghita', NULL),
+(2228, 185, 'HD', 'Hunedoara', NULL),
+(2229, 185, 'IL', 'Ialomița', NULL),
+(2230, 185, 'IS', 'Iași', NULL),
+(2231, 185, 'IF', 'Ilfov', NULL),
+(2232, 185, 'MM', 'Maramureș', NULL),
+(2233, 185, 'MH', 'Mehedinți', NULL),
+(2234, 185, 'MS', 'Mureș', NULL),
+(2235, 185, 'NT', 'Neamț', NULL),
+(2236, 185, 'OT', 'Olt', NULL),
+(2237, 185, 'PH', 'Prahova', NULL),
+(2238, 185, 'SM', 'Satu Mare', NULL),
+(2239, 185, 'SB', 'Sibiu', NULL),
+(2240, 185, 'SV', 'Suceava', NULL),
+(2241, 185, 'SJ', 'Sălaj', NULL),
+(2242, 185, 'TR', 'Teleorman', NULL),
+(2243, 185, 'TM', 'Timiș', NULL),
+(2244, 185, 'TL', 'Tulcea', NULL),
+(2245, 185, 'VS', 'Vaslui', NULL),
+(2246, 185, 'VN', 'Vrancea', NULL),
+(2247, 185, 'VL', 'Vâlcea', NULL),
+(2248, 186, 'AD', 'Adygeya, Respublika', 'republic'),
+(2249, 186, 'AL', 'Altay, Respublika', 'republic'),
+(2250, 186, 'BA', 'Bashkortostan, Respublika', 'republic'),
+(2251, 186, 'BU', 'Buryatiya, Respublika', 'republic'),
+(2252, 186, 'CE', 'Chechenskaya Respublika', 'republic'),
+(2253, 186, 'CU', 'Chuvashskaya Respublika', 'republic'),
+(2254, 186, 'DA', 'Dagestan, Respublika', 'republic'),
+(2255, 186, 'IN', 'Ingushetiya, Respublika', 'republic'),
+(2256, 186, 'KB', 'Kabardino-Balkarskaya Respublika', 'republic'),
+(2257, 186, 'KL', 'Kalmykiya, Respublika', 'republic'),
+(2258, 186, 'KC', 'Karachayevo-Cherkesskaya Respublika', 'republic'),
+(2259, 186, 'KR', 'Kareliya, Respublika', 'republic'),
+(2260, 186, 'KK', 'Khakasiya, Respublika', 'republic'),
+(2261, 186, 'KO', 'Komi, Respublika', 'republic'),
+(2262, 186, 'ME', 'Mariy El, Respublika', 'republic'),
+(2263, 186, 'MO', 'Mordoviya, Respublika', 'republic'),
+(2264, 186, 'SA', 'Sakha, Respublika', 'republic'),
+(2265, 186, 'SE', 'Severnaya Osetiya-Alaniya, Respublika', 'republic'),
+(2266, 186, 'TA', 'Tatarstan, Respublika', 'republic'),
+(2267, 186, 'TY', 'Tyva, Respublika', 'republic'),
+(2268, 186, 'UD', 'Udmurtskaya Respublika', 'republic'),
+(2269, 187, '02', 'Est', NULL),
+(2270, 187, '03', 'Nord', NULL),
+(2271, 187, '04', 'Ouest', NULL),
+(2272, 187, '05', 'Sud', NULL),
+(2273, 187, '01', 'Ville de Kigali', NULL),
+(2274, 189, 'AC', 'Ascension', NULL),
+(2275, 189, 'HL', 'Saint Helena', NULL),
+(2276, 189, 'TA', 'Tristan da Cunha', NULL),
+(2277, 190, 'N', 'Nevis', NULL),
+(2278, 190, 'K', 'Saint Kitts', NULL),
+(2279, 191, '01', 'Anse la Raye', NULL),
+(2280, 191, '02', 'Castries', NULL),
+(2281, 191, '03', 'Choiseul', NULL),
+(2282, 191, '04', 'Dauphin', NULL),
+(2283, 191, '05', 'Dennery', NULL),
+(2284, 191, '06', 'Gros Islet', NULL),
+(2285, 191, '07', 'Laborie', NULL),
+(2286, 191, '08', 'Micoud', NULL),
+(2287, 191, '09', 'Praslin', NULL),
+(2288, 191, '10', 'Soufrière', NULL),
+(2289, 191, '11', 'Vieux Fort', NULL),
+(2290, 194, '01', 'Charlotte', NULL),
+(2291, 194, '06', 'Grenadines', NULL),
+(2292, 194, '02', 'Saint Andrew', NULL),
+(2293, 194, '03', 'Saint David', NULL),
+(2294, 194, '04', 'Saint George', NULL),
+(2295, 194, '05', 'Saint Patrick', NULL),
+(2296, 195, 'AA', 'A\'ana', NULL),
+(2297, 195, 'AL', 'Aiga-i-le-Tai', NULL),
+(2298, 195, 'AT', 'Atua', NULL),
+(2299, 195, 'FA', 'Fa\'asaleleaga', NULL),
+(2300, 195, 'GE', 'Gaga\'emauga', NULL),
+(2301, 195, 'GI', 'Gagaifomauga', NULL),
+(2302, 195, 'PA', 'Palauli', NULL),
+(2303, 195, 'SA', 'Satupa\'itea', NULL),
+(2304, 195, 'TU', 'Tuamasaga', NULL),
+(2305, 195, 'VF', 'Va\'a-o-Fonoti', NULL),
+(2306, 195, 'VS', 'Vaisigano', NULL),
+(2307, 196, '01', 'Acquaviva', NULL),
+(2308, 196, '06', 'Borgo Maggiore', NULL),
+(2309, 196, '02', 'Chiesanuova', NULL),
+(2310, 196, '03', 'Domagnano', NULL),
+(2311, 196, '04', 'Faetano', NULL),
+(2312, 196, '05', 'Fiorentino', NULL),
+(2313, 196, '08', 'Montegiardino', NULL),
+(2314, 196, '07', 'San Marino', NULL),
+(2315, 196, '09', 'Serravalle', NULL),
+(2316, 197, 'P', 'Príncipe', NULL),
+(2317, 197, 'S', 'São Tomé', NULL),
+(2318, 198, '11', 'Al Bāḩah', NULL),
+(2319, 198, '12', 'Al Jawf', NULL),
+(2320, 198, '03', 'Al Madīnah', NULL),
+(2321, 198, '05', 'Al Qaşīm', NULL),
+(2322, 198, '08', 'Al Ḩudūd ash Shamālīyah', NULL),
+(2323, 198, '01', 'Ar Riyāḑ', NULL),
+(2324, 198, '04', 'Ash Sharqīyah', NULL),
+(2325, 198, '09', 'Jīzān', NULL),
+(2326, 198, '02', 'Makkah', NULL),
+(2327, 198, '10', 'Najrān', NULL),
+(2328, 198, '07', 'Tabūk', NULL),
+(2329, 198, '14', 'ٰĀsīr', NULL),
+(2330, 198, '06', 'Ḩā\'il', NULL),
+(2331, 199, 'DK', 'Dakar', NULL),
+(2332, 199, 'DB', 'Diourbel', NULL),
+(2333, 199, 'FK', 'Fatick', NULL),
+(2334, 199, 'KA', 'Kaffrine', NULL),
+(2335, 199, 'KL', 'Kaolack', NULL),
+(2336, 199, 'KD', 'Kolda', NULL),
+(2337, 199, 'KE', 'Kédougou', NULL),
+(2338, 199, 'LG', 'Louga', NULL),
+(2339, 199, 'MT', 'Matam', NULL),
+(2340, 199, 'SL', 'Saint-Louis', NULL),
+(2341, 199, 'SE', 'Sédhiou', NULL),
+(2342, 199, 'TC', 'Tambacounda', NULL),
+(2343, 199, 'TH', 'Thiès', NULL),
+(2344, 199, 'ZG', 'Ziguinchor', NULL),
+(2345, 200, 'KM', 'Kosovo-Metohija', NULL),
+(2346, 200, 'VO', 'Vojvodina', NULL),
+(2347, 201, '02', 'Anse Boileau', NULL),
+(2348, 201, '03', 'Anse Etoile', NULL),
+(2349, 201, '05', 'Anse Royale', NULL),
+(2350, 201, '01', 'Anse aux Pins', NULL),
+(2351, 201, '04', 'Au Cap', NULL),
+(2352, 201, '06', 'Baie Lazare', NULL),
+(2353, 201, '07', 'Baie Sainte Anne', NULL),
+(2354, 201, '08', 'Beau Vallon', NULL),
+(2355, 201, '09', 'Bel Air', NULL),
+(2356, 201, '10', 'Bel Ombre', NULL),
+(2357, 201, '11', 'Cascade', NULL),
+(2358, 201, '16', 'English River', NULL),
+(2359, 201, '12', 'Glacis', NULL),
+(2360, 201, '13', 'Grand Anse Mahe', NULL),
+(2361, 201, '14', 'Grand Anse Praslin', NULL),
+(2362, 201, '15', 'La Digue', NULL),
+(2363, 201, '24', 'Les Mamelles', NULL),
+(2364, 201, '17', 'Mont Buxton', NULL),
+(2365, 201, '18', 'Mont Fleuri', NULL),
+(2366, 201, '19', 'Plaisance', NULL),
+(2367, 201, '20', 'Pointe Larue', NULL),
+(2368, 201, '21', 'Port Glaud', NULL),
+(2369, 201, '25', 'Roche Caiman', NULL),
+(2370, 201, '22', 'Saint Louis', NULL),
+(2371, 201, '23', 'Takamaka', NULL),
+(2372, 202, 'E', 'Eastern', NULL),
+(2373, 202, 'N', 'Northern', NULL),
+(2374, 202, 'S', 'Southern', NULL),
+(2375, 202, 'W', 'Western Area', NULL),
+(2376, 203, '01', 'Central Singapore', NULL),
+(2377, 203, '02', 'North East', NULL),
+(2378, 203, '03', 'North West', NULL),
+(2379, 203, '04', 'South East', NULL),
+(2380, 203, '05', 'South West', NULL),
+(2381, 205, 'BC', 'Banskobystrický kraj', NULL),
+(2382, 205, 'BL', 'Bratislavský kraj', NULL),
+(2383, 205, 'KI', 'Košický kraj', NULL),
+(2384, 205, 'NI', 'Nitriansky kraj', NULL),
+(2385, 205, 'PV', 'Prešovský kraj', NULL),
+(2386, 205, 'TC', 'Trenčiansky kraj', NULL),
+(2387, 205, 'TA', 'Trnavský kraj', NULL),
+(2388, 205, 'ZI', 'Žilinský kraj', NULL),
+(2389, 206, '001', 'Ajdovščina', NULL),
+(2390, 206, '195', 'Apače', NULL),
+(2391, 206, '002', 'Beltinci', NULL),
+(2392, 206, '148', 'Benedikt', NULL),
+(2393, 206, '149', 'Bistrica ob Sotli', NULL),
+(2394, 206, '003', 'Bled', NULL),
+(2395, 206, '150', 'Bloke', NULL),
+(2396, 206, '004', 'Bohinj', NULL),
+(2397, 206, '005', 'Borovnica', NULL),
+(2398, 206, '006', 'Bovec', NULL),
+(2399, 206, '151', 'Braslovče', NULL),
+(2400, 206, '007', 'Brda', NULL),
+(2401, 206, '008', 'Brezovica', NULL),
+(2402, 206, '009', 'Brežice', NULL),
+(2403, 206, '152', 'Cankova', NULL),
+(2404, 206, '011', 'Celje', NULL),
+(2405, 206, '012', 'Cerklje na Gorenjskem', NULL),
+(2406, 206, '013', 'Cerknica', NULL),
+(2407, 206, '014', 'Cerkno', NULL),
+(2408, 206, '153', 'Cerkvenjak', NULL),
+(2409, 206, '196', 'Cirkulane', NULL),
+(2410, 206, '018', 'Destrnik', NULL),
+(2411, 206, '019', 'Divača', NULL),
+(2412, 206, '154', 'Dobje', NULL),
+(2413, 206, '020', 'Dobrepolje', NULL),
+(2414, 206, '155', 'Dobrna', NULL),
+(2415, 206, '021', 'Dobrova–Polhov Gradec', NULL),
+(2416, 206, '156', 'Dobrovnik', NULL),
+(2417, 206, '022', 'Dol pri Ljubljani', NULL),
+(2418, 206, '157', 'Dolenjske Toplice', NULL),
+(2419, 206, '023', 'Domžale', NULL),
+(2420, 206, '024', 'Dornava', NULL),
+(2421, 206, '025', 'Dravograd', NULL),
+(2422, 206, '026', 'Duplek', NULL),
+(2423, 206, '027', 'Gorenja vas–Poljane', NULL),
+(2424, 206, '028', 'Gorišnica', NULL),
+(2425, 206, '207', 'Gorje', NULL),
+(2426, 206, '029', 'Gornja Radgona', NULL),
+(2427, 206, '030', 'Gornji Grad', NULL),
+(2428, 206, '031', 'Gornji Petrovci', NULL),
+(2429, 206, '158', 'Grad', NULL),
+(2430, 206, '032', 'Grosuplje', NULL),
+(2431, 206, '159', 'Hajdina', NULL),
+(2432, 206, '161', 'Hodoš', NULL),
+(2433, 206, '162', 'Horjul', NULL),
+(2434, 206, '160', 'Hoče–Slivnica', NULL),
+(2435, 206, '034', 'Hrastnik', NULL),
+(2436, 206, '035', 'Hrpelje-Kozina', NULL),
+(2437, 206, '036', 'Idrija', NULL),
+(2438, 206, '037', 'Ig', NULL),
+(2439, 206, '038', 'Ilirska Bistrica', NULL),
+(2440, 206, '039', 'Ivančna Gorica', NULL),
+(2441, 206, '040', 'Izola', NULL),
+(2442, 206, '041', 'Jesenice', NULL),
+(2443, 206, '163', 'Jezersko', NULL),
+(2444, 206, '042', 'Juršinci', NULL),
+(2445, 206, '043', 'Kamnik', NULL),
+(2446, 206, '044', 'Kanal', NULL),
+(2447, 206, '045', 'Kidričevo', NULL),
+(2448, 206, '046', 'Kobarid', NULL),
+(2449, 206, '047', 'Kobilje', NULL),
+(2450, 206, '049', 'Komen', NULL),
+(2451, 206, '164', 'Komenda', NULL),
+(2452, 206, '050', 'Koper', NULL),
+(2453, 206, '197', 'Kosanjevica na Krki', NULL),
+(2454, 206, '165', 'Kostel', NULL),
+(2455, 206, '051', 'Kozje', NULL),
+(2456, 206, '048', 'Kočevje', NULL),
+(2457, 206, '052', 'Kranj', NULL),
+(2458, 206, '053', 'Kranjska Gora', NULL),
+(2459, 206, '166', 'Križevci', NULL),
+(2460, 206, '054', 'Krško', NULL),
+(2461, 206, '055', 'Kungota', NULL),
+(2462, 206, '056', 'Kuzma', NULL),
+(2463, 206, '057', 'Laško', NULL),
+(2464, 206, '058', 'Lenart', NULL),
+(2465, 206, '059', 'Lendava', NULL),
+(2466, 206, '060', 'Litija', NULL),
+(2467, 206, '061', 'Ljubljana', NULL),
+(2468, 206, '062', 'Ljubno', NULL),
+(2469, 206, '063', 'Ljutomer', NULL),
+(2470, 206, '208', 'Log-Dragomer', NULL),
+(2471, 206, '064', 'Logatec', NULL),
+(2472, 206, '167', 'Lovrenc na Pohorju', NULL),
+(2473, 206, '065', 'Loška Dolina', NULL),
+(2474, 206, '066', 'Loški Potok', NULL),
+(2475, 206, '068', 'Lukovica', NULL),
+(2476, 206, '067', 'Luče', NULL),
+(2477, 206, '069', 'Majšperk', NULL),
+(2478, 206, '198', 'Makole', NULL),
+(2479, 206, '070', 'Maribor', NULL),
+(2480, 206, '168', 'Markovci', NULL),
+(2481, 206, '071', 'Medvode', NULL),
+(2482, 206, '072', 'Mengeš', NULL),
+(2483, 206, '073', 'Metlika', NULL),
+(2484, 206, '074', 'Mežica', NULL),
+(2485, 206, '169', 'Miklavž na Dravskem Polju', NULL),
+(2486, 206, '075', 'Miren–Kostanjevica', NULL),
+(2487, 206, '170', 'Mirna Peč', NULL),
+(2488, 206, '076', 'Mislinja', NULL),
+(2489, 206, '199', 'Mokronog–Trebelno', NULL),
+(2490, 206, '078', 'Moravske Toplice', NULL),
+(2491, 206, '077', 'Moravče', NULL),
+(2492, 206, '079', 'Mozirje', NULL),
+(2493, 206, '080', 'Murska Sobota', NULL),
+(2494, 206, '081', 'Muta', NULL),
+(2495, 206, '082', 'Naklo', NULL),
+(2496, 206, '083', 'Nazarje', NULL),
+(2497, 206, '084', 'Nova Gorica', NULL),
+(2498, 206, '085', 'Novo Mesto', NULL),
+(2499, 206, '086', 'Odranci', NULL),
+(2500, 206, '171', 'Oplotnica', NULL),
+(2501, 206, '087', 'Ormož', NULL),
+(2502, 206, '088', 'Osilnica', NULL),
+(2503, 206, '089', 'Pesnica', NULL),
+(2504, 206, '090', 'Piran', NULL),
+(2505, 206, '091', 'Pivka', NULL),
+(2506, 206, '172', 'Podlehnik', NULL),
+(2507, 206, '093', 'Podvelka', NULL),
+(2508, 206, '092', 'Podčetrtek', NULL),
+(2509, 206, '200', 'Poljčane', NULL),
+(2510, 206, '173', 'Polzela', NULL),
+(2511, 206, '094', 'Postojna', NULL),
+(2512, 206, '174', 'Prebold', NULL),
+(2513, 206, '095', 'Preddvor', NULL),
+(2514, 206, '175', 'Prevalje', NULL),
+(2515, 206, '096', 'Ptuj', NULL),
+(2516, 206, '097', 'Puconci', NULL),
+(2517, 206, '100', 'Radenci', NULL),
+(2518, 206, '099', 'Radeče', NULL),
+(2519, 206, '101', 'Radlje ob Dravi', NULL),
+(2520, 206, '102', 'Radovljica', NULL),
+(2521, 206, '103', 'Ravne na Koroškem', NULL),
+(2522, 206, '176', 'Razkrižje', NULL),
+(2523, 206, '098', 'Rače–Fram', NULL),
+(2524, 206, '201', 'Renče-Vogrsko', NULL),
+(2525, 206, '209', 'Rečica ob Savinji', NULL),
+(2526, 206, '104', 'Ribnica', NULL),
+(2527, 206, '177', 'Ribnica na Pohorju', NULL),
+(2528, 206, '107', 'Rogatec', NULL),
+(2529, 206, '106', 'Rogaška Slatina', NULL),
+(2530, 206, '105', 'Rogašovci', NULL),
+(2531, 206, '108', 'Ruše', NULL),
+(2532, 206, '178', 'Selnica ob Dravi', NULL),
+(2533, 206, '109', 'Semič', NULL),
+(2534, 206, '110', 'Sevnica', NULL),
+(2535, 206, '111', 'Sežana', NULL),
+(2536, 206, '112', 'Slovenj Gradec', NULL),
+(2537, 206, '113', 'Slovenska Bistrica', NULL),
+(2538, 206, '114', 'Slovenske Konjice', NULL),
+(2539, 206, '179', 'Sodražica', NULL),
+(2540, 206, '180', 'Solčava', NULL),
+(2541, 206, '202', 'Središče ob Dravi', NULL),
+(2542, 206, '115', 'Starše', NULL),
+(2543, 206, '203', 'Straža', NULL),
+(2544, 206, '181', 'Sveta Ana', NULL),
+(2545, 206, '204', 'Sveta Trojica v Slovenskih Goricah', NULL),
+(2546, 206, '182', 'Sveti Andraž v Slovenskih Goricah', NULL),
+(2547, 206, '116', 'Sveti Jurij', NULL),
+(2548, 206, '210', 'Sveti Jurij v Slovenskih Goricah', NULL),
+(2549, 206, '205', 'Sveti Tomaž', NULL),
+(2550, 206, '184', 'Tabor', NULL),
+(2551, 206, '010', 'Tišina', NULL),
+(2552, 206, '128', 'Tolmin', NULL),
+(2553, 206, '129', 'Trbovlje', NULL),
+(2554, 206, '130', 'Trebnje', NULL),
+(2555, 206, '185', 'Trnovska Vas', NULL),
+(2556, 206, '186', 'Trzin', NULL),
+(2557, 206, '131', 'Tržič', NULL),
+(2558, 206, '132', 'Turnišče', NULL),
+(2559, 206, '133', 'Velenje', NULL),
+(2560, 206, '187', 'Velika Polana', NULL),
+(2561, 206, '134', 'Velike Lašče', NULL),
+(2562, 206, '188', 'Veržej', NULL),
+(2563, 206, '135', 'Videm', NULL),
+(2564, 206, '136', 'Vipava', NULL),
+(2565, 206, '137', 'Vitanje', NULL),
+(2566, 206, '138', 'Vodice', NULL),
+(2567, 206, '139', 'Vojnik', NULL),
+(2568, 206, '189', 'Vransko', NULL),
+(2569, 206, '140', 'Vrhnika', NULL),
+(2570, 206, '141', 'Vuzenica', NULL),
+(2571, 206, '142', 'Zagorje ob Savi', NULL),
+(2572, 206, '143', 'Zavrč', NULL),
+(2573, 206, '144', 'Zreče', NULL),
+(2574, 206, '015', 'Črenšovci', NULL),
+(2575, 206, '016', 'Črna na Koroškem', NULL),
+(2576, 206, '017', 'Črnomelj', NULL),
+(2577, 206, '033', 'Šalovci', NULL),
+(2578, 206, '183', 'Šempeter–Vrtojba', NULL),
+(2579, 206, '118', 'Šentilj', NULL),
+(2580, 206, '119', 'Šentjernej', NULL),
+(2581, 206, '120', 'Šentjur', NULL),
+(2582, 206, '211', 'Šentrupert', NULL),
+(2583, 206, '117', 'Šenčur', NULL),
+(2584, 206, '121', 'Škocjan', NULL),
+(2585, 206, '122', 'Škofja Loka', NULL),
+(2586, 206, '123', 'Škofljica', NULL),
+(2587, 206, '124', 'Šmarje pri Jelšah', NULL),
+(2588, 206, '206', 'Šmarješke Toplice', NULL),
+(2589, 206, '125', 'Šmartno ob Paki', NULL),
+(2590, 206, '194', 'Šmartno pri Litiji', NULL),
+(2591, 206, '126', 'Šoštanj', NULL),
+(2592, 206, '127', 'Štore', NULL),
+(2593, 206, '190', 'Žalec', NULL),
+(2594, 206, '146', 'Železniki', NULL),
+(2595, 206, '191', 'Žetale', NULL),
+(2596, 206, '147', 'Žiri', NULL),
+(2597, 206, '192', 'Žirovnica', NULL),
+(2598, 206, '193', 'Žužemberk', NULL),
+(2599, 207, 'CT', 'Capital Territory', NULL),
+(2600, 207, 'CE', 'Central', NULL),
+(2601, 207, 'CH', 'Choiseul', NULL),
+(2602, 207, 'GU', 'Guadalcanal', NULL),
+(2603, 207, 'IS', 'Isabel', NULL),
+(2604, 207, 'MK', 'Makira-Ulawa', NULL),
+(2605, 207, 'ML', 'Malaita', NULL),
+(2606, 207, 'RB', 'Rennell and Bellona', NULL),
+(2607, 207, 'TE', 'Temotu', NULL),
+(2608, 207, 'WE', 'Western', NULL),
+(2609, 208, 'AW', 'Awdal', NULL),
+(2610, 208, 'BK', 'Bakool', NULL),
+(2611, 208, 'BN', 'Banaadir', NULL),
+(2612, 208, 'BR', 'Bari', NULL),
+(2613, 208, 'BY', 'Bay', NULL),
+(2614, 208, 'GA', 'Galguduud', NULL),
+(2615, 208, 'GE', 'Gedo', NULL),
+(2616, 208, 'HI', 'Hiiraan', NULL),
+(2617, 208, 'JD', 'Jubbada Dhexe', NULL),
+(2618, 208, 'JH', 'Jubbada Hoose', NULL),
+(2619, 208, 'MU', 'Mudug', NULL),
+(2620, 208, 'NU', 'Nugaal', NULL),
+(2621, 208, 'SA', 'Sanaag', NULL),
+(2622, 208, 'SD', 'Shabeellaha Dhexe', NULL),
+(2623, 208, 'SH', 'Shabeellaha Hoose', NULL),
+(2624, 208, 'SO', 'Sool', NULL),
+(2625, 208, 'TO', 'Togdheer', NULL),
+(2626, 208, 'WO', 'Woqooyi Galbeed', NULL),
+(2627, 209, 'EC', 'Eastern Cape', NULL),
+(2628, 209, 'FS', 'Free State', NULL),
+(2629, 209, 'GT', 'Gauteng', NULL),
+(2630, 209, 'NL', 'KwaZulu-Natal', NULL),
+(2631, 209, 'LP', 'Limpopo', NULL),
+(2632, 209, 'MP', 'Mpumalanga', NULL),
+(2633, 209, 'NW', 'North West', NULL),
+(2634, 209, 'NC', 'Northern Cape', NULL),
+(2635, 209, 'WC', 'Western Cape', NULL),
+(2636, 211, '26', 'Busan-gwangyeoksi', NULL),
+(2637, 211, '43', 'Chungcheongbuk-do', NULL),
+(2638, 211, '44', 'Chungcheongnam-do', NULL),
+(2639, 211, '27', 'Daegu-gwangyeoksi', NULL),
+(2640, 211, '30', 'Daejeon-gwangyeoksi', NULL),
+(2641, 211, '42', 'Gangwon-do', NULL),
+(2642, 211, '29', 'Gwangju-gwangyeoksi', NULL),
+(2643, 211, '41', 'Gyeonggi-do', NULL),
+(2644, 211, '47', 'Gyeongsangbuk-do', NULL),
+(2645, 211, '48', 'Gyeongsangnam-do', NULL),
+(2646, 211, '28', 'Incheon-gwangyeoksi', NULL),
+(2647, 211, '49', 'Jeju-teukbyeoljachido', NULL),
+(2648, 211, '45', 'Jeollabuk-do', NULL),
+(2649, 211, '46', 'Jeollanam-do', NULL),
+(2650, 211, '50', 'Sejong', NULL),
+(2651, 211, '11', 'Seoul-teukbyeolsi', NULL),
+(2652, 211, '31', 'Ulsan-gwangyeoksi', NULL),
+(2653, 212, 'EC', 'Central Equatoria', NULL),
+(2654, 212, 'EE', 'Eastern Equatoria', NULL),
+(2655, 212, 'JG', 'Jonglei', NULL),
+(2656, 212, 'LK', 'Lakes', NULL),
+(2657, 212, 'BN', 'Northern Bahr el Ghazal', NULL),
+(2658, 212, 'UY', 'Unity', NULL),
+(2659, 212, 'NU', 'Upper Nile', NULL),
+(2660, 212, 'WR', 'Warrap', NULL),
+(2661, 212, 'BW', 'Western Bahr el Ghazal', NULL),
+(2662, 212, 'EW', 'Western Equatoria', NULL),
+(2663, 213, 'C', 'A Coruña', 'Province'),
+(2664, 213, 'AB', 'Albacete', 'Province'),
+(2665, 213, 'A', 'Alicante', 'Province'),
+(2666, 213, 'AL', 'Almería', 'Province'),
+(2667, 213, 'O', 'Asturias', 'Province'),
+(2668, 213, 'BA', 'Badajoz', 'Province'),
+(2669, 213, 'PM', 'Balears', 'Province'),
+(2670, 213, 'B', 'Barcelona', 'Province'),
+(2671, 213, 'BU', 'Burgos', 'Province'),
+(2672, 213, 'S', 'Cantabria', 'Province'),
+(2673, 213, 'CS', 'Castellón', 'Province'),
+(2674, 213, 'CR', 'Ciudad Real', 'Province'),
+(2675, 213, 'CU', 'Cuenca', 'Province'),
+(2676, 213, 'CC', 'Cáceres', 'Province'),
+(2677, 213, 'CA', 'Cádiz', 'Province'),
+(2678, 213, 'CO', 'Córdoba', 'Province'),
+(2679, 213, 'GI', 'Girona', 'Province'),
+(2680, 213, 'GR', 'Granada', 'Province'),
+(2681, 213, 'GU', 'Guadalajara', 'Province'),
+(2682, 213, 'SS', 'Guipúzcoa', 'Province'),
+(2683, 213, 'H', 'Huelva', 'Province'),
+(2684, 213, 'HU', 'Huesca', 'Province'),
+(2685, 213, 'J', 'Jaén', 'Province'),
+(2686, 213, 'LO', 'La Rioja', 'Province'),
+(2687, 213, 'GC', 'Las Palmas', 'Province'),
+(2688, 213, 'LE', 'León', 'Province'),
+(2689, 213, 'L', 'Lleida', 'Province'),
+(2690, 213, 'LU', 'Lugo', 'Province'),
+(2691, 213, 'M', 'Madrid', 'Province'),
+(2692, 213, 'MU', 'Murcia', 'Province'),
+(2693, 213, 'MA', 'Málaga', 'Province'),
+(2694, 213, 'NA', 'Navarra', 'Province'),
+(2695, 213, 'OR', 'Ourense', 'Province'),
+(2696, 213, 'P', 'Palencia', 'Province'),
+(2697, 213, 'PO', 'Pontevedra', 'Province'),
+(2698, 213, 'SA', 'Salamanca', 'Province'),
+(2699, 213, 'TF', 'Santa Cruz de Tenerife', 'Province'),
+(2700, 213, 'SG', 'Segovia', 'Province'),
+(2701, 213, 'SE', 'Sevilla', 'Province'),
+(2702, 213, 'SO', 'Soria', 'Province'),
+(2703, 213, 'T', 'Tarragona', 'Province'),
+(2704, 213, 'TE', 'Teruel', 'Province'),
+(2705, 213, 'TO', 'Toledo', 'Province'),
+(2706, 213, 'V', 'Valencia', 'Province'),
+(2707, 213, 'VA', 'Valladolid', 'Province'),
+(2708, 213, 'BI', 'Vizcaya', 'Province'),
+(2709, 213, 'ZA', 'Zamora', 'Province'),
+(2710, 213, 'Z', 'Zaragoza', 'Province'),
+(2711, 213, 'VI', 'Álava', 'Province'),
+(2712, 213, 'AV', 'Ávila', 'Province'),
+(2713, 214, '2', 'Central Province', NULL),
+(2714, 214, '5', 'Eastern Province', NULL),
+(2715, 214, '7', 'North Central Province', NULL),
+(2716, 214, '6', 'North Western Province', NULL),
+(2717, 214, '4', 'Northern Province', NULL),
+(2718, 214, '9', 'Sabaragamuwa Province', NULL),
+(2719, 214, '3', 'Southern Province', NULL),
+(2720, 214, '8', 'Uva Province', NULL),
+(2721, 214, '1', 'Western Province', NULL),
+(2722, 215, 'RS', 'Al Baḩr al Aḩmar', NULL),
+(2723, 215, 'GZ', 'Al Jazīrah', NULL),
+(2724, 215, 'KH', 'Al Kharţūm', NULL),
+(2725, 215, 'GD', 'Al Qaḑārif', NULL),
+(2726, 215, 'NR', 'An Nīl', NULL),
+(2727, 215, 'NW', 'An Nīl al Abyaḑ', NULL),
+(2728, 215, 'NB', 'An Nīl al Azraq', NULL),
+(2729, 215, 'NO', 'Ash Shamālīyah', NULL),
+(2730, 215, 'DW', 'Gharb Dārfūr', NULL),
+(2731, 215, 'DS', 'Janūb Dārfūr', NULL),
+(2732, 215, 'KS', 'Janūb Kurdufān', NULL),
+(2733, 215, 'KA', 'Kassalā', NULL),
+(2734, 215, 'DN', 'Shamāl Dārfūr', NULL);
+INSERT INTO `state` (`idstate`, `country`, `code`, `state_name`, `subdivision`) VALUES
+(2735, 215, 'KN', 'Shamāl Kurdufān', NULL),
+(2736, 215, 'DE', 'Sharq Dārfūr', NULL),
+(2737, 215, 'SI', 'Sinnār', NULL),
+(2738, 215, 'DC', 'Zalingei', NULL),
+(2739, 216, 'BR', 'Brokopondo', NULL),
+(2740, 216, 'CM', 'Commewijne', NULL),
+(2741, 216, 'CR', 'Coronie', NULL),
+(2742, 216, 'MA', 'Marowijne', NULL),
+(2743, 216, 'NI', 'Nickerie', NULL),
+(2744, 216, 'PR', 'Para', NULL),
+(2745, 216, 'PM', 'Paramaribo', NULL),
+(2746, 216, 'SA', 'Saramacca', NULL),
+(2747, 216, 'SI', 'Sipaliwini', NULL),
+(2748, 216, 'WA', 'Wanica', NULL),
+(2749, 218, 'HH', 'Hhohho', NULL),
+(2750, 218, 'LU', 'Lubombo', NULL),
+(2751, 218, 'MA', 'Manzini', NULL),
+(2752, 218, 'SH', 'Shiselweni', NULL),
+(2753, 219, 'K', 'Blekinge län', NULL),
+(2754, 219, 'W', 'Dalarnas län', NULL),
+(2755, 219, 'I', 'Gotlands län', NULL),
+(2756, 219, 'X', 'Gävleborgs län', NULL),
+(2757, 219, 'N', 'Hallands län', NULL),
+(2758, 219, 'Z', 'Jämtlands län', NULL),
+(2759, 219, 'F', 'Jönköpings län', NULL),
+(2760, 219, 'H', 'Kalmar län', NULL),
+(2761, 219, 'G', 'Kronobergs län', NULL),
+(2762, 219, 'BD', 'Norrbottens län', NULL),
+(2763, 219, 'M', 'Skåne län', NULL),
+(2764, 219, 'AB', 'Stockholms län', NULL),
+(2765, 219, 'D', 'Södermanlands län', NULL),
+(2766, 219, 'C', 'Uppsala län', NULL),
+(2767, 219, 'S', 'Värmlands län', NULL),
+(2768, 219, 'AC', 'Västerbottens län', NULL),
+(2769, 219, 'Y', 'Västernorrlands län', NULL),
+(2770, 219, 'U', 'Västmanlands län', NULL),
+(2771, 219, 'O', 'Västra Götalands län', NULL),
+(2772, 219, 'T', 'Örebro län', NULL),
+(2773, 219, 'E', 'Östergötlands län', NULL),
+(2774, 220, 'AG', 'Aargau', NULL),
+(2775, 220, 'AR', 'Appenzell Ausserrhoden', NULL),
+(2776, 220, 'AI', 'Appenzell Innerrhoden', NULL),
+(2777, 220, 'BL', 'Basel-Landschaft', NULL),
+(2778, 220, 'BS', 'Basel-Stadt', NULL),
+(2779, 220, 'BE', 'Bern', NULL),
+(2780, 220, 'FR', 'Fribourg', NULL),
+(2781, 220, 'GE', 'Genève', NULL),
+(2782, 220, 'GL', 'Glarus', NULL),
+(2783, 220, 'GR', 'Graubünden', NULL),
+(2784, 220, 'JU', 'Jura', NULL),
+(2785, 220, 'LU', 'Luzern', NULL),
+(2786, 220, 'NE', 'Neuchâtel', NULL),
+(2787, 220, 'NW', 'Nidwalden', NULL),
+(2788, 220, 'OW', 'Obwalden', NULL),
+(2789, 220, 'SG', 'Sankt Gallen', NULL),
+(2790, 220, 'SH', 'Schaffhausen', NULL),
+(2791, 220, 'SZ', 'Schwyz', NULL),
+(2792, 220, 'SO', 'Solothurn', NULL),
+(2793, 220, 'TG', 'Thurgau', NULL),
+(2794, 220, 'TI', 'Ticino', NULL),
+(2795, 220, 'UR', 'Uri', NULL),
+(2796, 220, 'VS', 'Valais', NULL),
+(2797, 220, 'VD', 'Vaud', NULL),
+(2798, 220, 'ZG', 'Zug', NULL),
+(2799, 220, 'ZH', 'Zürich', NULL),
+(2800, 221, 'LA', 'Al Lādhiqīyah', NULL),
+(2801, 221, 'QU', 'Al Qunayţirah', NULL),
+(2802, 221, 'HA', 'Al Ḩasakah', NULL),
+(2803, 221, 'RA', 'Ar Raqqah', NULL),
+(2804, 221, 'SU', 'As Suwaydā\'', NULL),
+(2805, 221, 'DR', 'Darٰā', NULL),
+(2806, 221, 'DY', 'Dayr az Zawr', NULL),
+(2807, 221, 'DI', 'Dimashq', NULL),
+(2808, 221, 'ID', 'Idlib', NULL),
+(2809, 221, 'RD', 'Rīf Dimashq', NULL),
+(2810, 221, 'TA', 'Ţarţūs', NULL),
+(2811, 221, 'HL', 'Ḩalab', NULL),
+(2812, 221, 'HM', 'Ḩamāh', NULL),
+(2813, 221, 'HI', 'Ḩimş', NULL),
+(2814, 222, 'CHA', 'Changhua', NULL),
+(2815, 222, 'CYQ', 'Chiayi', NULL),
+(2816, 222, 'CYI', 'Chiayi', NULL),
+(2817, 222, 'HSZ', 'Hsinchu', NULL),
+(2818, 222, 'HSQ', 'Hsinchu', NULL),
+(2819, 222, 'HUA', 'Hualien', NULL),
+(2820, 222, 'ILA', 'Ilan', NULL),
+(2821, 222, 'KHQ', 'Kaohsiung', NULL),
+(2822, 222, 'KHH', 'Kaohsiung', NULL),
+(2823, 222, 'KEE', 'Keelung', NULL),
+(2824, 222, 'MIA', 'Miaoli', NULL),
+(2825, 222, 'NAN', 'Nantou', NULL),
+(2826, 222, 'PEN', 'Penghu', NULL),
+(2827, 222, 'PIF', 'Pingtung', NULL),
+(2828, 222, 'TXG', 'Taichung', NULL),
+(2829, 222, 'TXQ', 'Taichung', NULL),
+(2830, 222, 'TNN', 'Tainan', NULL),
+(2831, 222, 'TNQ', 'Tainan', NULL),
+(2832, 222, 'TPE', 'Taipei', NULL),
+(2833, 222, 'TPQ', 'Taipei', NULL),
+(2834, 222, 'TTT', 'Taitung', NULL),
+(2835, 222, 'TAO', 'Taoyuan', NULL),
+(2836, 222, 'YUN', 'Yunlin', NULL),
+(2837, 223, 'DU', 'Dushanbe', NULL),
+(2838, 223, 'KT', 'Khatlon', NULL),
+(2839, 223, 'GB', 'Kŭhistoni Badakhshon', NULL),
+(2840, 223, 'SU', 'Sughd', NULL),
+(2841, 224, '01', 'Arusha', NULL),
+(2842, 224, '02', 'Dar es Salaam', NULL),
+(2843, 224, '03', 'Dodoma', NULL),
+(2844, 224, '04', 'Iringa', NULL),
+(2845, 224, '05', 'Kagera', NULL),
+(2846, 224, '06', 'Kaskazini Pemba', NULL),
+(2847, 224, '07', 'Kaskazini Unguja', NULL),
+(2848, 224, '08', 'Kigoma', NULL),
+(2849, 224, '09', 'Kilimanjaro', NULL),
+(2850, 224, '10', 'Kusini Pemba', NULL),
+(2851, 224, '11', 'Kusini Unguja', NULL),
+(2852, 224, '12', 'Lindi', NULL),
+(2853, 224, '26', 'Manyara', NULL),
+(2854, 224, '13', 'Mara', NULL),
+(2855, 224, '14', 'Mbeya', NULL),
+(2856, 224, '15', 'Mjini Magharibi', NULL),
+(2857, 224, '16', 'Morogoro', NULL),
+(2858, 224, '17', 'Mtwara', NULL),
+(2859, 224, '18', 'Mwanza', NULL),
+(2860, 224, '19', 'Pwani', NULL),
+(2861, 224, '20', 'Rukwa', NULL),
+(2862, 224, '21', 'Ruvuma', NULL),
+(2863, 224, '22', 'Shinyanga', NULL),
+(2864, 224, '23', 'Singida', NULL),
+(2865, 224, '24', 'Tabora', NULL),
+(2866, 224, '25', 'Tanga', NULL),
+(2867, 225, '37', 'Amnat Charoen', NULL),
+(2868, 225, '15', 'Ang Thong', NULL),
+(2869, 225, '38', 'Bueng Kan', NULL),
+(2870, 225, '31', 'Buri Ram', NULL),
+(2871, 225, '24', 'Chachoengsao', NULL),
+(2872, 225, '18', 'Chai Nat', NULL),
+(2873, 225, '36', 'Chaiyaphum', NULL),
+(2874, 225, '22', 'Chanthaburi', NULL),
+(2875, 225, '50', 'Chiang Mai', NULL),
+(2876, 225, '57', 'Chiang Rai', NULL),
+(2877, 225, '20', 'Chon Buri', NULL),
+(2878, 225, '86', 'Chumphon', NULL),
+(2879, 225, '46', 'Kalasin', NULL),
+(2880, 225, '62', 'Kamphaeng Phet', NULL),
+(2881, 225, '71', 'Kanchanaburi', NULL),
+(2882, 225, '40', 'Khon Kaen', NULL),
+(2883, 225, '81', 'Krabi', NULL),
+(2884, 225, '10', 'Krung Thep Maha Nakhon', NULL),
+(2885, 225, '52', 'Lampang', NULL),
+(2886, 225, '51', 'Lamphun', NULL),
+(2887, 225, '42', 'Loei', NULL),
+(2888, 225, '16', 'Lop Buri', NULL),
+(2889, 225, '58', 'Mae Hong Son', NULL),
+(2890, 225, '44', 'Maha Sarakham', NULL),
+(2891, 225, '49', 'Mukdahan', NULL),
+(2892, 225, '26', 'Nakhon Nayok', NULL),
+(2893, 225, '73', 'Nakhon Pathom', NULL),
+(2894, 225, '48', 'Nakhon Phanom', NULL),
+(2895, 225, '30', 'Nakhon Ratchasima', NULL),
+(2896, 225, '60', 'Nakhon Sawan', NULL),
+(2897, 225, '80', 'Nakhon Si Thammarat', NULL),
+(2898, 225, '55', 'Nan', NULL),
+(2899, 225, '96', 'Narathiwat', NULL),
+(2900, 225, '39', 'Nong Bua Lam Phu', NULL),
+(2901, 225, '43', 'Nong Khai', NULL),
+(2902, 225, '12', 'Nonthaburi', NULL),
+(2903, 225, '13', 'Pathum Thani', NULL),
+(2904, 225, '94', 'Pattani', NULL),
+(2905, 225, '82', 'Phangnga', NULL),
+(2906, 225, '93', 'Phatthalung', NULL),
+(2907, 225, 'S', 'Phatthaya', NULL),
+(2908, 225, '56', 'Phayao', NULL),
+(2909, 225, '67', 'Phetchabun', NULL),
+(2910, 225, '76', 'Phetchaburi', NULL),
+(2911, 225, '66', 'Phichit', NULL),
+(2912, 225, '65', 'Phitsanulok', NULL),
+(2913, 225, '14', 'Phra Nakhon Si Ayutthaya', NULL),
+(2914, 225, '54', 'Phrae', NULL),
+(2915, 225, '83', 'Phuket', NULL),
+(2916, 225, '25', 'Prachin Buri', NULL),
+(2917, 225, '77', 'Prachuap Khiri Khan', NULL),
+(2918, 225, '85', 'Ranong', NULL),
+(2919, 225, '70', 'Ratchaburi', NULL),
+(2920, 225, '21', 'Rayong', NULL),
+(2921, 225, '45', 'Roi Et', NULL),
+(2922, 225, '27', 'Sa Kaeo', NULL),
+(2923, 225, '47', 'Sakon Nakhon', NULL),
+(2924, 225, '11', 'Samut Prakan', NULL),
+(2925, 225, '74', 'Samut Sakhon', NULL),
+(2926, 225, '75', 'Samut Songkhram', NULL),
+(2927, 225, '19', 'Saraburi', NULL),
+(2928, 225, '91', 'Satun', NULL),
+(2929, 225, '33', 'Si Sa Ket', NULL),
+(2930, 225, '17', 'Sing Buri', NULL),
+(2931, 225, '90', 'Songkhla', NULL),
+(2932, 225, '64', 'Sukhothai', NULL),
+(2933, 225, '72', 'Suphan Buri', NULL),
+(2934, 225, '84', 'Surat Thani', NULL),
+(2935, 225, '32', 'Surin', NULL),
+(2936, 225, '63', 'Tak', NULL),
+(2937, 225, '92', 'Trang', NULL),
+(2938, 225, '23', 'Trat', NULL),
+(2939, 225, '34', 'Ubon Ratchathani', NULL),
+(2940, 225, '41', 'Udon Thani', NULL),
+(2941, 225, '61', 'Uthai Thani', NULL),
+(2942, 225, '53', 'Uttaradit', NULL),
+(2943, 225, '95', 'Yala', NULL),
+(2944, 225, '35', 'Yasothon', NULL),
+(2945, 226, 'AL', 'Aileu', NULL),
+(2946, 226, 'AN', 'Ainaro', NULL),
+(2947, 226, 'BA', 'Baucau', NULL),
+(2948, 226, 'BO', 'Bobonaro', NULL),
+(2949, 226, 'CO', 'Cova Lima', NULL),
+(2950, 226, 'DI', 'Díli', NULL),
+(2951, 226, 'ER', 'Ermera', NULL),
+(2952, 226, 'LA', 'Lautem', NULL),
+(2953, 226, 'LI', 'Liquiça', NULL),
+(2954, 226, 'MT', 'Manatuto', NULL),
+(2955, 226, 'MF', 'Manufahi', NULL),
+(2956, 226, 'OE', 'Oecussi', NULL),
+(2957, 226, 'VI', 'Viqueque', NULL),
+(2958, 227, 'C', 'Centre', NULL),
+(2959, 227, 'K', 'Kara', NULL),
+(2960, 227, 'M', 'Maritime', NULL),
+(2961, 227, 'P', 'Plateaux', NULL),
+(2962, 227, 'S', 'Savannes', NULL),
+(2963, 229, '01', '\'Eua', NULL),
+(2964, 229, '02', 'Ha\'apai', NULL),
+(2965, 229, '03', 'Niuas', NULL),
+(2966, 229, '04', 'Tongatapu', NULL),
+(2967, 229, '05', 'Vava\'u', NULL),
+(2968, 230, 'ARI', 'Arima', NULL),
+(2969, 230, 'CHA', 'Chaguanas', NULL),
+(2970, 230, 'CTT', 'Couva-Tabaquite-Talparo', NULL),
+(2971, 230, 'DMN', 'Diego Martin', NULL),
+(2972, 230, 'ETO', 'Eastern Tobago', NULL),
+(2973, 230, 'PED', 'Penal-Debe', NULL),
+(2974, 230, 'PTF', 'Point Fortin', NULL),
+(2975, 230, 'POS', 'Port of Spain', NULL),
+(2976, 230, 'PRT', 'Princes Town', NULL),
+(2977, 230, 'RCM', 'Rio Claro-Mayaro', NULL),
+(2978, 230, 'SFO', 'San Fernando', NULL),
+(2979, 230, 'SJL', 'San Juan-Laventille', NULL),
+(2980, 230, 'SGE', 'Sangre Grande', NULL),
+(2981, 230, 'SIP', 'Siparia', NULL),
+(2982, 230, 'TUP', 'Tunapuna-Piarco', NULL),
+(2983, 230, 'WTO', 'Western Tobago', NULL),
+(2984, 231, '12', 'Ariana', NULL),
+(2985, 231, '13', 'Ben Arous', NULL),
+(2986, 231, '23', 'Bizerte', NULL),
+(2987, 231, '31', 'Béja', NULL),
+(2988, 231, '81', 'Gabès', NULL),
+(2989, 231, '71', 'Gafsa', NULL),
+(2990, 231, '32', 'Jendouba', NULL),
+(2991, 231, '41', 'Kairouan', NULL),
+(2992, 231, '42', 'Kasserine', NULL),
+(2993, 231, '73', 'Kebili', NULL),
+(2994, 231, '14', 'La Manouba', NULL),
+(2995, 231, '33', 'Le Kef', NULL),
+(2996, 231, '53', 'Mahdia', NULL),
+(2997, 231, '82', 'Medenine', NULL),
+(2998, 231, '52', 'Monastir', NULL),
+(2999, 231, '21', 'Nabeul', NULL),
+(3000, 231, '61', 'Sfax', NULL),
+(3001, 231, '43', 'Sidi Bouzid', NULL),
+(3002, 231, '34', 'Siliana', NULL),
+(3003, 231, '51', 'Sousse', NULL),
+(3004, 231, '83', 'Tataouine', NULL),
+(3005, 231, '72', 'Tozeur', NULL),
+(3006, 231, '11', 'Tunis', NULL),
+(3007, 231, '22', 'Zaghouan', NULL),
+(3008, 232, '01', 'Adana', NULL),
+(3009, 232, '02', 'Adıyaman', NULL),
+(3010, 232, '03', 'Afyonkarahisar', NULL),
+(3011, 232, '68', 'Aksaray', NULL),
+(3012, 232, '05', 'Amasya', NULL),
+(3013, 232, '06', 'Ankara', NULL),
+(3014, 232, '07', 'Antalya', NULL),
+(3015, 232, '75', 'Ardahan', NULL),
+(3016, 232, '08', 'Artvin', NULL),
+(3017, 232, '09', 'Aydın', NULL),
+(3018, 232, '04', 'Ağrı', NULL),
+(3019, 232, '10', 'Balıkesir', NULL),
+(3020, 232, '74', 'Bartın', NULL),
+(3021, 232, '72', 'Batman', NULL),
+(3022, 232, '69', 'Bayburt', NULL),
+(3023, 232, '11', 'Bilecik', NULL),
+(3024, 232, '12', 'Bingöl', NULL),
+(3025, 232, '13', 'Bitlis', NULL),
+(3026, 232, '14', 'Bolu', NULL),
+(3027, 232, '15', 'Burdur', NULL),
+(3028, 232, '16', 'Bursa', NULL),
+(3029, 232, '20', 'Denizli', NULL),
+(3030, 232, '21', 'Diyarbakır', NULL),
+(3031, 232, '81', 'Düzce', NULL),
+(3032, 232, '22', 'Edirne', NULL),
+(3033, 232, '23', 'Elazığ', NULL),
+(3034, 232, '24', 'Erzincan', NULL),
+(3035, 232, '25', 'Erzurum', NULL),
+(3036, 232, '26', 'Eskişehir', NULL),
+(3037, 232, '27', 'Gaziantep', NULL),
+(3038, 232, '28', 'Giresun', NULL),
+(3039, 232, '29', 'Gümüşhane', NULL),
+(3040, 232, '30', 'Hakkâri', NULL),
+(3041, 232, '31', 'Hatay', NULL),
+(3042, 232, '32', 'Isparta', NULL),
+(3043, 232, '76', 'Iğdır', NULL),
+(3044, 232, '46', 'Kahramanmaraş', NULL),
+(3045, 232, '78', 'Karabük', NULL),
+(3046, 232, '70', 'Karaman', NULL),
+(3047, 232, '36', 'Kars', NULL),
+(3048, 232, '37', 'Kastamonu', NULL),
+(3049, 232, '38', 'Kayseri', NULL),
+(3050, 232, '79', 'Kilis', NULL),
+(3051, 232, '41', 'Kocaeli', NULL),
+(3052, 232, '42', 'Konya', NULL),
+(3053, 232, '43', 'Kütahya', NULL),
+(3054, 232, '39', 'Kırklareli', NULL),
+(3055, 232, '71', 'Kırıkkale', NULL),
+(3056, 232, '40', 'Kırşehir', NULL),
+(3057, 232, '44', 'Malatya', NULL),
+(3058, 232, '45', 'Manisa', NULL),
+(3059, 232, '47', 'Mardin', NULL),
+(3060, 232, '33', 'Mersin', NULL),
+(3061, 232, '48', 'Muğla', NULL),
+(3062, 232, '49', 'Muş', NULL),
+(3063, 232, '50', 'Nevşehir', NULL),
+(3064, 232, '51', 'Niğde', NULL),
+(3065, 232, '52', 'Ordu', NULL),
+(3066, 232, '80', 'Osmaniye', NULL),
+(3067, 232, '53', 'Rize', NULL),
+(3068, 232, '54', 'Sakarya', NULL),
+(3069, 232, '55', 'Samsun', NULL),
+(3070, 232, '56', 'Siirt', NULL),
+(3071, 232, '57', 'Sinop', NULL),
+(3072, 232, '58', 'Sivas', NULL),
+(3073, 232, '59', 'Tekirdağ', NULL),
+(3074, 232, '60', 'Tokat', NULL),
+(3075, 232, '61', 'Trabzon', NULL),
+(3076, 232, '62', 'Tunceli', NULL),
+(3077, 232, '64', 'Uşak', NULL),
+(3078, 232, '65', 'Van', NULL),
+(3079, 232, '77', 'Yalova', NULL),
+(3080, 232, '66', 'Yozgat', NULL),
+(3081, 232, '67', 'Zonguldak', NULL),
+(3082, 232, '17', 'Çanakkale', NULL),
+(3083, 232, '18', 'Çankırı', NULL),
+(3084, 232, '19', 'Çorum', NULL),
+(3085, 232, '34', 'İstanbul', NULL),
+(3086, 232, '35', 'İzmir', NULL),
+(3087, 232, '63', 'Şanlıurfa', NULL),
+(3088, 232, '73', 'Şırnak', NULL),
+(3089, 233, 'A', 'Ahal', NULL),
+(3090, 233, 'S', 'Aşgabat', NULL),
+(3091, 233, 'B', 'Balkan', NULL),
+(3092, 233, 'D', 'Daşoguz', NULL),
+(3093, 233, 'L', 'Lebap', NULL),
+(3094, 233, 'M', 'Mary', NULL),
+(3095, 235, 'FUN', 'Funafuti', NULL),
+(3096, 235, 'NMG', 'Nanumanga', NULL),
+(3097, 235, 'NMA', 'Nanumea', NULL),
+(3098, 235, 'NIT', 'Niutao', NULL),
+(3099, 235, 'NUI', 'Nui', NULL),
+(3100, 235, 'NKF', 'Nukufetau', NULL),
+(3101, 235, 'NKL', 'Nukulaelae', NULL),
+(3102, 235, 'VAI', 'Vaitupu', NULL),
+(3103, 236, 'C', 'Central', NULL),
+(3104, 236, 'E', 'Eastern', NULL),
+(3105, 236, 'N', 'Northern', NULL),
+(3106, 236, 'W', 'Western', NULL),
+(3107, 237, '43', 'Avtonomna Respublika Krym', NULL),
+(3108, 237, '71', 'Cherkas\'ka Oblast\'', NULL),
+(3109, 237, '74', 'Chernihivs\'ka Oblast\'', NULL),
+(3110, 237, '77', 'Chernivets\'ka Oblast\'', NULL),
+(3111, 237, '12', 'Dnipropetrovs\'ka Oblast\'', NULL),
+(3112, 237, '14', 'Donets\'ka Oblast\'', NULL),
+(3113, 237, '26', 'Ivano-Frankivs\'ka Oblast\'', NULL),
+(3114, 237, '63', 'Kharkivs\'ka Oblast\'', NULL),
+(3115, 237, '65', 'Khersons\'ka Oblast\'', NULL),
+(3116, 237, '68', 'Khmel\'nyts\'ka Oblast\'', NULL),
+(3117, 237, '35', 'Kirovohrads\'ka Oblast\'', NULL),
+(3118, 237, '30', 'Kyïv', NULL),
+(3119, 237, '32', 'Kyïvs\'ka Oblast\'', NULL),
+(3120, 237, '46', 'L\'vivs\'ka Oblast\'', NULL),
+(3121, 237, '09', 'Luhans\'ka Oblast\'', NULL),
+(3122, 237, '48', 'Mykolaïvs\'ka Oblast\'', NULL),
+(3123, 237, '51', 'Odes\'ka Oblast\'', NULL),
+(3124, 237, '53', 'Poltavs\'ka Oblast\'', NULL),
+(3125, 237, '56', 'Rivnens\'ka Oblast\'', NULL),
+(3126, 237, '40', 'Sevastopol\'', NULL),
+(3127, 237, '59', 'Sums\'ka Oblast\'', NULL),
+(3128, 237, '61', 'Ternopil\'s\'ka Oblast\'', NULL),
+(3129, 237, '05', 'Vinnyts\'ka Oblast\'', NULL),
+(3130, 237, '07', 'Volyns\'ka Oblast\'', NULL),
+(3131, 237, '21', 'Zakarpats\'ka Oblast\'', NULL),
+(3132, 237, '23', 'Zaporiz\'ka Oblast\'', NULL),
+(3133, 237, '18', 'Zhytomyrs\'ka Oblast\'', NULL),
+(3134, 238, 'AJ', '\'Ajmān', NULL),
+(3135, 238, 'AZ', 'Abū Z̧aby', NULL),
+(3136, 238, 'FU', 'Al Fujayrah', NULL),
+(3137, 238, 'SH', 'Ash Shāriqah', NULL),
+(3138, 238, 'DU', 'Dubayy', NULL),
+(3139, 238, 'RK', 'Ra\'s al Khaymah', NULL),
+(3140, 238, 'UQ', 'Umm al Qaywayn', NULL),
+(3141, 239, 'EAW', 'England and Wales', 'Nation'),
+(3142, 239, 'GBN', 'Great Britain', 'Nation'),
+(3143, 239, 'UKM', 'United Kingdom', 'Nation'),
+(3144, 239, 'ENG', 'England', 'country'),
+(3145, 239, 'SCT', 'Scotland', 'country'),
+(3146, 239, 'WLS', 'Wales', 'country'),
+(3147, 239, 'NIR', 'Northern Ireland', 'province'),
+(3148, 240, 'DC', 'District of Columbia', 'district'),
+(3149, 240, 'AL', 'Alabama', 'state'),
+(3150, 240, 'AK', 'Alaska', 'state'),
+(3151, 240, 'AZ', 'Arizona', 'state'),
+(3152, 240, 'AR', 'Arkansas', 'state'),
+(3153, 240, 'CA', 'California', 'state'),
+(3154, 240, 'CO', 'Colorado', 'state'),
+(3155, 240, 'CT', 'Connecticut', 'state'),
+(3156, 240, 'DE', 'Delaware', 'state'),
+(3157, 240, 'FL', 'Florida', 'state'),
+(3158, 240, 'GA', 'Georgia', 'state'),
+(3159, 240, 'HI', 'Hawaii', 'state'),
+(3160, 240, 'ID', 'Idaho', 'state'),
+(3161, 240, 'IL', 'Illinois', 'state'),
+(3162, 240, 'IN', 'Indiana', 'state'),
+(3163, 240, 'IA', 'Iowa', 'state'),
+(3164, 240, 'KS', 'Kansas', 'state'),
+(3165, 240, 'KY', 'Kentucky', 'state'),
+(3166, 240, 'LA', 'Louisiana', 'state'),
+(3167, 240, 'ME', 'Maine', 'state'),
+(3168, 240, 'MD', 'Maryland', 'state'),
+(3169, 240, 'MA', 'Massachusetts', 'state'),
+(3170, 240, 'MI', 'Michigan', 'state'),
+(3171, 240, 'MN', 'Minnesota', 'state'),
+(3172, 240, 'MS', 'Mississippi', 'state'),
+(3173, 240, 'MO', 'Missouri', 'state'),
+(3174, 240, 'MT', 'Montana', 'state'),
+(3175, 240, 'NE', 'Nebraska', 'state'),
+(3176, 240, 'NV', 'Nevada', 'state'),
+(3177, 240, 'NH', 'New Hampshire', 'state'),
+(3178, 240, 'NJ', 'New Jersey', 'state'),
+(3179, 240, 'NM', 'New Mexico', 'state'),
+(3180, 240, 'NY', 'New York', 'state'),
+(3181, 240, 'NC', 'North Carolina', 'state'),
+(3182, 240, 'ND', 'North Dakota', 'state'),
+(3183, 240, 'OH', 'Ohio', 'state'),
+(3184, 240, 'OK', 'Oklahoma', 'state'),
+(3185, 240, 'OR', 'Oregon', 'state'),
+(3186, 240, 'PA', 'Pennsylvania', 'state'),
+(3187, 240, 'RI', 'Rhode Island', 'state'),
+(3188, 240, 'SC', 'South Carolina', 'state'),
+(3189, 240, 'SD', 'South Dakota', 'state'),
+(3190, 240, 'TN', 'Tennessee', 'state'),
+(3191, 240, 'TX', 'Texas', 'state'),
+(3192, 240, 'UT', 'Utah', 'state'),
+(3193, 240, 'VT', 'Vermont', 'state'),
+(3194, 240, 'VA', 'Virginia', 'state'),
+(3195, 240, 'WA', 'Washington', 'state'),
+(3196, 240, 'WV', 'West Virginia', 'state'),
+(3197, 240, 'WI', 'Wisconsin', 'state'),
+(3198, 240, 'WY', 'Wyoming', 'state'),
+(3199, 241, 'AR', 'Artigas', NULL),
+(3200, 241, 'CA', 'Canelones', NULL),
+(3201, 241, 'CL', 'Cerro Largo', NULL),
+(3202, 241, 'CO', 'Colonia', NULL),
+(3203, 241, 'DU', 'Durazno', NULL),
+(3204, 241, 'FS', 'Flores', NULL),
+(3205, 241, 'FD', 'Florida', NULL),
+(3206, 241, 'LA', 'Lavalleja', NULL),
+(3207, 241, 'MA', 'Maldonado', NULL),
+(3208, 241, 'MO', 'Montevideo', NULL),
+(3209, 241, 'PA', 'Paysandú', NULL),
+(3210, 241, 'RV', 'Rivera', NULL),
+(3211, 241, 'RO', 'Rocha', NULL),
+(3212, 241, 'RN', 'Río Negro', NULL),
+(3213, 241, 'SA', 'Salto', NULL),
+(3214, 241, 'SJ', 'San José', NULL),
+(3215, 241, 'SO', 'Soriano', NULL),
+(3216, 241, 'TA', 'Tacuarembó', NULL),
+(3217, 241, 'TT', 'Treinta y Tres', NULL),
+(3218, 242, 'AN', 'Andijon', NULL),
+(3219, 242, 'BU', 'Buxoro', NULL),
+(3220, 242, 'FA', 'Farg‘ona', NULL),
+(3221, 242, 'JI', 'Jizzax', NULL),
+(3222, 242, 'NG', 'Namangan', NULL),
+(3223, 242, 'NW', 'Navoiy', NULL),
+(3224, 242, 'QA', 'Qashqadaryo', NULL),
+(3225, 242, 'QR', 'Qoraqalpog‘iston Respublikasi', NULL),
+(3226, 242, 'SA', 'Samarqand', NULL),
+(3227, 242, 'SI', 'Sirdaryo', NULL),
+(3228, 242, 'SU', 'Surxondaryo', NULL),
+(3229, 242, 'TO', 'Toshkent', NULL),
+(3230, 242, 'TK', 'Toshkent', NULL),
+(3231, 242, 'XO', 'Xorazm', NULL),
+(3232, 243, 'MAP', 'Malampa', NULL),
+(3233, 243, 'PAM', 'Pénama', NULL),
+(3234, 243, 'SAM', 'Sanma', NULL),
+(3235, 243, 'SEE', 'Shéfa', NULL),
+(3236, 243, 'TAE', 'Taféa', NULL),
+(3237, 243, 'TOB', 'Torba', NULL),
+(3238, 244, 'Z', 'Amazonas', NULL),
+(3239, 244, 'B', 'Anzoátegui', NULL),
+(3240, 244, 'C', 'Apure', NULL),
+(3241, 244, 'D', 'Aragua', NULL),
+(3242, 244, 'E', 'Barinas', NULL),
+(3243, 244, 'F', 'Bolívar', NULL),
+(3244, 244, 'G', 'Carabobo', NULL),
+(3245, 244, 'H', 'Cojedes', NULL),
+(3246, 244, 'Y', 'Delta Amacuro', NULL),
+(3247, 244, 'W', 'Dependencias Federales', NULL),
+(3248, 244, 'A', 'Distrito Capital', NULL),
+(3249, 244, 'I', 'Falcón', NULL),
+(3250, 244, 'J', 'Guárico', NULL),
+(3251, 244, 'K', 'Lara', NULL),
+(3252, 244, 'M', 'Miranda', NULL),
+(3253, 244, 'N', 'Monagas', NULL),
+(3254, 244, 'L', 'Mérida', NULL),
+(3255, 244, 'O', 'Nueva Esparta', NULL),
+(3256, 244, 'P', 'Portuguesa', NULL),
+(3257, 244, 'R', 'Sucre', NULL),
+(3258, 244, 'T', 'Trujillo', NULL),
+(3259, 244, 'S', 'Táchira', NULL),
+(3260, 244, 'X', 'Vargas', NULL),
+(3261, 244, 'U', 'Yaracuy', NULL),
+(3262, 244, 'V', 'Zulia', NULL),
+(3263, 245, '44', 'An Giang', NULL),
+(3264, 245, '43', 'Bà Rịa–Vũng Tàu', NULL),
+(3265, 245, '57', 'Bình Dương', NULL),
+(3266, 245, '58', 'Bình Phước', NULL),
+(3267, 245, '40', 'Bình Thuận', NULL),
+(3268, 245, '31', 'Bình Định', NULL),
+(3269, 245, '55', 'Bạc Liêu', NULL),
+(3270, 245, '54', 'Bắc Giang', NULL),
+(3271, 245, '53', 'Bắc Kạn', NULL),
+(3272, 245, '56', 'Bắc Ninh', NULL),
+(3273, 245, '50', 'Bến Tre', NULL),
+(3274, 245, '04', 'Cao Bằng', NULL),
+(3275, 245, '59', 'Cà Mau', NULL),
+(3276, 245, 'CT', 'Cần Thơ', NULL),
+(3277, 245, '30', 'Gia Lai', NULL),
+(3278, 245, '03', 'Hà Giang', NULL),
+(3279, 245, '63', 'Hà Nam', NULL),
+(3280, 245, 'HN', 'Hà Nội', NULL),
+(3281, 245, '15', 'Hà Tây', NULL),
+(3282, 245, '23', 'Hà Tĩnh', NULL),
+(3283, 245, '14', 'Hòa Bình', NULL),
+(3284, 245, '66', 'Hưng Yên', NULL),
+(3285, 245, '61', 'Hải Dương', NULL),
+(3286, 245, 'HP', 'Hải Phòng', NULL),
+(3287, 245, '73', 'Hậu Giang', NULL),
+(3288, 245, 'SG', 'Hồ Chí Minh', NULL),
+(3289, 245, '34', 'Khánh Hòa', NULL),
+(3290, 245, '47', 'Kiên Giang', NULL),
+(3291, 245, '28', 'Kon Tum', NULL),
+(3292, 245, '01', 'Lai Châu', NULL),
+(3293, 245, '41', 'Long An', NULL),
+(3294, 245, '02', 'Lào Cai', NULL),
+(3295, 245, '35', 'Lâm Đồng', NULL),
+(3296, 245, '09', 'Lạng Sơn', NULL),
+(3297, 245, '67', 'Nam Định', NULL),
+(3298, 245, '22', 'Nghệ An', NULL),
+(3299, 245, '18', 'Ninh Bình', NULL),
+(3300, 245, '36', 'Ninh Thuận', NULL),
+(3301, 245, '68', 'Phú Thọ', NULL),
+(3302, 245, '32', 'Phú Yên', NULL),
+(3303, 245, '24', 'Quảng Bình', NULL),
+(3304, 245, '27', 'Quảng Nam', NULL),
+(3305, 245, '29', 'Quảng Ngãi', NULL),
+(3306, 245, '13', 'Quảng Ninh', NULL),
+(3307, 245, '25', 'Quảng Trị', NULL),
+(3308, 245, '52', 'Sóc Trăng', NULL),
+(3309, 245, '05', 'Sơn La', NULL),
+(3310, 245, '21', 'Thanh Hóa', NULL),
+(3311, 245, '20', 'Thái Bình', NULL),
+(3312, 245, '69', 'Thái Nguyên', NULL),
+(3313, 245, '26', 'Thừa Thiên–Huế', NULL),
+(3314, 245, '46', 'Tiền Giang', NULL),
+(3315, 245, '51', 'Trà Vinh', NULL),
+(3316, 245, '07', 'Tuyên Quang', NULL),
+(3317, 245, '37', 'Tây Ninh', NULL),
+(3318, 245, '49', 'Vĩnh Long', NULL),
+(3319, 245, '70', 'Vĩnh Phúc', NULL),
+(3320, 245, '06', 'Yên Bái', NULL),
+(3321, 245, '71', 'Điện Biên', NULL),
+(3322, 245, 'DN', 'Đà Nẵng', NULL),
+(3323, 245, '33', 'Đắk Lắk', NULL),
+(3324, 245, '72', 'Đắk Nông', NULL),
+(3325, 245, '39', 'Đồng Nai', NULL),
+(3326, 245, '45', 'Đồng Tháp', NULL),
+(3327, 248, 'AD', '\'Adan', NULL),
+(3328, 248, 'AM', '\'Amrān', NULL),
+(3329, 248, 'AB', 'Abyān', NULL),
+(3330, 248, 'BA', 'Al Bayḑā\'', NULL),
+(3331, 248, 'JA', 'Al Jawf', NULL),
+(3332, 248, 'MR', 'Al Mahrah', NULL),
+(3333, 248, 'MW', 'Al Maḩwīt', NULL),
+(3334, 248, 'HU', 'Al Ḩudaydah', NULL),
+(3335, 248, 'DA', 'Aḑ Ḑāli\'', NULL),
+(3336, 248, 'DH', 'Dhamār', NULL),
+(3337, 248, 'IB', 'Ibb', NULL),
+(3338, 248, 'LA', 'Laḩij', NULL),
+(3339, 248, 'MA', 'Ma\'rib', NULL),
+(3340, 248, 'RA', 'Raymah', NULL),
+(3341, 248, 'SH', 'Shabwah', NULL),
+(3342, 248, 'TA', 'Tā‘izz', NULL),
+(3343, 248, 'SA', 'Şan‘ā\'', NULL),
+(3344, 248, 'SN', 'Şan‘ā\'', NULL),
+(3345, 248, 'SD', 'Şā‘dah', NULL),
+(3346, 248, 'HJ', 'Ḩajjah', NULL),
+(3347, 248, 'HD', 'Ḩaḑramawt', NULL),
+(3348, 249, '02', 'Central', NULL),
+(3349, 249, '08', 'Copperbelt', NULL),
+(3350, 249, '03', 'Eastern', NULL),
+(3351, 249, '04', 'Luapula', NULL),
+(3352, 249, '09', 'Lusaka', NULL),
+(3353, 249, '06', 'North-Western', NULL),
+(3354, 249, '05', 'Northern', NULL),
+(3355, 249, '07', 'Southern', NULL),
+(3356, 249, '01', 'Western', NULL),
+(3357, 250, 'BU', 'Bulawayo', NULL),
+(3358, 250, 'HA', 'Harare', NULL),
+(3359, 250, 'MA', 'Manicaland', NULL),
+(3360, 250, 'MC', 'Mashonaland Central', NULL),
+(3361, 250, 'ME', 'Mashonaland East', NULL),
+(3362, 250, 'MW', 'Mashonaland West', NULL),
+(3363, 250, 'MV', 'Masvingo', NULL),
+(3364, 250, 'MN', 'Matabeleland North', NULL),
+(3365, 250, 'MS', 'Matabeleland South', NULL),
+(3366, 250, 'MI', 'Midlands', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscription_packages`
+--
+
+CREATE TABLE `subscription_packages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `duration` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `description` text,
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `subscription_packages`
+--
+
+INSERT INTO `subscription_packages` (`id`, `name`, `duration`, `price`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Monthly', 30, '99.99', 'Monthly subscription package for account managers', 1, '2024-07-18 19:43:43', '2024-07-18 19:43:43'),
+(2, '3 Months', 90, '274.99', 'Quarterly subscription package for account managers', 1, '2024-07-18 19:43:43', '2024-07-18 19:43:43'),
+(3, '6 Months', 180, '524.99', 'Semi-annual subscription package for account managers', 1, '2024-07-18 19:43:43', '2024-07-18 19:43:43'),
+(4, 'Yearly', 365, '999.99', 'Annual subscription package for account managers', 1, '2024-07-18 19:43:43', '2024-07-18 19:43:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscription_reminders`
+--
+
+CREATE TABLE `subscription_reminders` (
+  `id` int(11) NOT NULL,
+  `account_manager_subscription_id` int(11) NOT NULL,
+  `reminder_date` date NOT NULL,
+  `reminder_type` enum('expiration','renewal') NOT NULL,
+  `is_sent` tinyint(1) DEFAULT '0',
+  `sent_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `PSD2Consent`
+-- Table structure for table `transactions`
 --
 
-CREATE TABLE `PSD2Consent` (
-  `ConsentID` int(11) NOT NULL,
-  `ClientID` int(11) DEFAULT NULL,
-  `ThirdPartyProviderID` int(11) DEFAULT NULL,
-  `ConsentType` varchar(50) NOT NULL,
-  `Scope` varchar(255) NOT NULL,
-  `ExpirationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Status` varchar(20) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
+  `transaction_type` enum('mortgage','cash','loan','investment','business','transfer') NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `transaction_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `transaction_status` enum('Pending','Completed','Failed') NOT NULL,
+  `reference_id` int(11) NOT NULL,
+  `description` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `State`
+-- Table structure for table `transfers`
 --
 
-CREATE TABLE `State` (
-  `StateID` int(11) NOT NULL,
-  `StateName` varchar(100) NOT NULL,
-  `StateCode` varchar(10) NOT NULL,
-  `CountryID` int(11) DEFAULT NULL
+CREATE TABLE `transfers` (
+  `id` int(11) NOT NULL,
+  `from_account_number` varchar(20) NOT NULL,
+  `to_account_number` varchar(20) NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `transfer_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `transfer_status` enum('Pending','Completed','Failed') NOT NULL,
+  `reference_number` varchar(50) NOT NULL,
+  `description` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `transfers`
+--
+
+INSERT INTO `transfers` (`id`, `from_account_number`, `to_account_number`, `amount`, `transfer_date`, `transfer_status`, `reference_number`, `description`, `created_at`, `updated_at`) VALUES
+(1, '0123456789', '0123456781', '1000.00', '2024-07-19 09:04:50', 'Pending', 'fhsohvscohdco123vojhcs', 'New transfer', '2024-07-19 09:04:50', '2024-07-19 09:04:50');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ThirdPartyProvider`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `ThirdPartyProvider` (
-  `ThirdPartyProviderID` int(11) NOT NULL,
-  `ProviderName` varchar(100) NOT NULL,
-  `APIKey` varchar(255) NOT NULL,
-  `Status` varchar(20) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `access_level` enum('Superadmin','Admin','Client','Manager') DEFAULT 'Client',
+  `last_login` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `profileImage` varchar(300) DEFAULT NULL,
+  `country_id` int(11) DEFAULT NULL,
+  `state_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `Transaction`
+-- Dumping data for table `users`
 --
 
-CREATE TABLE `Transaction` (
-  `TransactionID` int(11) NOT NULL,
-  `FromAccountID` int(11) DEFAULT NULL,
-  `ToAccountID` int(11) DEFAULT NULL,
-  `Amount` decimal(15,2) NOT NULL,
-  `Currency` varchar(3) NOT NULL,
-  `TransactionType` varchar(50) NOT NULL,
-  `Status` varchar(20) NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `User`
---
-
-CREATE TABLE `User` (
-  `UserID` int(11) NOT NULL,
-  `Username` varchar(50) NOT NULL,
-  `PasswordHash` varchar(255) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `FirstName` varchar(50) NOT NULL,
-  `LastName` varchar(50) NOT NULL,
-  `DateOfBirth` date DEFAULT NULL,
-  `Address` varchar(255) DEFAULT NULL,
-  `PhoneNumber` varchar(20) DEFAULT NULL,
-  `UserType` enum('Admin','AccountManager','Client') NOT NULL,
-  `CreatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CreatedByUserID` int(11) DEFAULT NULL,
-  `AccountManagerID` int(11) DEFAULT NULL,
-  `ProfileImagePath` varchar(255) DEFAULT NULL,
-  `CountryID` int(11) DEFAULT NULL,
-  `StateID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstName`, `lastName`, `access_level`, `last_login`, `created_at`, `updated_at`, `profileImage`, `country_id`, `state_id`) VALUES
+(1, 'johndoe', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'john@example.com', 'John', 'Doe', 'Client', '2024-07-18 20:34:36', '2024-07-18 19:36:23', '2024-07-18 19:53:00', NULL, 1, 1),
+(2, 'bright', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'bright@gmail.com', 'Habeeb', 'Bright', 'Manager', '2024-07-18 21:15:05', '2024-07-18 20:15:05', '2024-07-18 20:30:57', NULL, NULL, NULL),
+(3, 'habeeb', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'habeeb@gmail.com', 'Bright', 'Habeeb', 'Admin', '2024-07-18 21:15:05', '2024-07-18 20:15:05', '2024-07-18 20:30:53', NULL, NULL, NULL),
+(4, 'biola', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'biola@gmail.com', 'Biola', 'Agbarigbe', 'Client', '2024-07-19 09:52:35', '2024-07-19 08:52:35', '2024-07-19 08:52:35', NULL, 163, 1957);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `Account`
+-- Indexes for table `account_managers`
 --
-ALTER TABLE `Account`
-  ADD PRIMARY KEY (`AccountID`),
-  ADD UNIQUE KEY `IBAN` (`IBAN`),
-  ADD KEY `ClientID` (`ClientID`);
+ALTER TABLE `account_managers`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `AccountManager`
+-- Indexes for table `account_manager_messages`
 --
-ALTER TABLE `AccountManager`
-  ADD PRIMARY KEY (`AccountManagerID`),
-  ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD KEY `CreatedByAdminID` (`CreatedByAdminID`);
+ALTER TABLE `account_manager_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `account_manager_id` (`account_manager_id`);
 
 --
--- Indexes for table `Admin`
+-- Indexes for table `account_manager_subscriptions`
 --
-ALTER TABLE `Admin`
-  ADD PRIMARY KEY (`AdminID`),
-  ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `Email` (`Email`);
+ALTER TABLE `account_manager_subscriptions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_manager_id` (`account_manager_id`),
+  ADD KEY `package_id` (`package_id`);
 
 --
--- Indexes for table `Client`
+-- Indexes for table `account_manager_support_requests`
 --
-ALTER TABLE `Client`
-  ADD PRIMARY KEY (`ClientID`),
-  ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD KEY `AccountManagerID` (`AccountManagerID`);
+ALTER TABLE `account_manager_support_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_manager_id` (`account_manager_id`);
 
 --
--- Indexes for table `Country`
+-- Indexes for table `account_manager_support_responses`
 --
-ALTER TABLE `Country`
-  ADD PRIMARY KEY (`CountryID`),
-  ADD UNIQUE KEY `CountryCode` (`CountryCode`);
+ALTER TABLE `account_manager_support_responses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `request_id` (`request_id`),
+  ADD KEY `responder_id` (`responder_id`);
 
 --
--- Indexes for table `CreditCard`
+-- Indexes for table `audit_log`
 --
-ALTER TABLE `CreditCard`
-  ADD PRIMARY KEY (`CardID`),
-  ADD UNIQUE KEY `CardNumber` (`CardNumber`),
-  ADD KEY `creditcard_ibfk_1` (`ClientID`);
+ALTER TABLE `audit_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `CreditCardTransaction`
+-- Indexes for table `businesses`
 --
-ALTER TABLE `CreditCardTransaction`
-  ADD PRIMARY KEY (`CreditCardTransactionID`),
-  ADD KEY `CardID` (`CardID`);
+ALTER TABLE `businesses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`);
 
 --
--- Indexes for table `Loan`
+-- Indexes for table `cards`
 --
-ALTER TABLE `Loan`
-  ADD PRIMARY KEY (`LoanID`),
-  ADD KEY `loan_ibfk_1` (`ClientID`);
+ALTER TABLE `cards`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `card_number` (`card_number`),
+  ADD KEY `account_number` (`account_number`);
 
 --
--- Indexes for table `PSD2Consent`
+-- Indexes for table `card_transactions`
 --
-ALTER TABLE `PSD2Consent`
-  ADD PRIMARY KEY (`ConsentID`),
-  ADD KEY `psd2consent_ibfk_1` (`ClientID`);
+ALTER TABLE `card_transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `card_number` (`card_number`),
+  ADD KEY `account_number` (`account_number`);
 
 --
--- Indexes for table `State`
+-- Indexes for table `cash_loans`
 --
-ALTER TABLE `State`
-  ADD PRIMARY KEY (`StateID`),
-  ADD KEY `CountryID` (`CountryID`);
+ALTER TABLE `cash_loans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`);
 
 --
--- Indexes for table `ThirdPartyProvider`
+-- Indexes for table `client_accounts`
 --
-ALTER TABLE `ThirdPartyProvider`
-  ADD PRIMARY KEY (`ThirdPartyProviderID`),
-  ADD UNIQUE KEY `APIKey` (`APIKey`);
+ALTER TABLE `client_accounts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `account_number` (`account_number`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `account_manager_id` (`account_manager_id`);
 
 --
--- Indexes for table `Transaction`
+-- Indexes for table `client_profiles`
 --
-ALTER TABLE `Transaction`
-  ADD PRIMARY KEY (`TransactionID`),
-  ADD KEY `FromAccountID` (`FromAccountID`),
-  ADD KEY `ToAccountID` (`ToAccountID`);
+ALTER TABLE `client_profiles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD KEY `account_manager_id` (`account_manager_id`),
+  ADD KEY `state` (`state`),
+  ADD KEY `country` (`country`),
+  ADD KEY `nationality` (`nationality`);
 
 --
--- Indexes for table `User`
+-- Indexes for table `client_support_requests`
 --
-ALTER TABLE `User`
-  ADD PRIMARY KEY (`UserID`),
-  ADD UNIQUE KEY `Username` (`Username`),
-  ADD UNIQUE KEY `Email` (`Email`),
-  ADD KEY `CreatedByUserID` (`CreatedByUserID`),
-  ADD KEY `AccountManagerID` (`AccountManagerID`),
-  ADD KEY `CountryID` (`CountryID`),
-  ADD KEY `StateID` (`StateID`);
+ALTER TABLE `client_support_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `account_manager_id` (`account_manager_id`);
+
+--
+-- Indexes for table `client_support_responses`
+--
+ALTER TABLE `client_support_responses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `request_id` (`request_id`),
+  ADD KEY `responder_id` (`responder_id`);
+
+--
+-- Indexes for table `country`
+--
+ALTER TABLE `country`
+  ADD PRIMARY KEY (`idcountry`);
+
+--
+-- Indexes for table `facility_loans`
+--
+ALTER TABLE `facility_loans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`);
+
+--
+-- Indexes for table `investments`
+--
+ALTER TABLE `investments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`);
+
+--
+-- Indexes for table `loan_applications`
+--
+ALTER TABLE `loan_applications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`),
+  ADD KEY `approved_by` (`approved_by`);
+
+--
+-- Indexes for table `mortgage_loans`
+--
+ALTER TABLE `mortgage_loans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`);
+
+--
+-- Indexes for table `pending_updates`
+--
+ALTER TABLE `pending_updates`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `approved_by` (`approved_by`);
+
+--
+-- Indexes for table `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`idstate`),
+  ADD KEY `state_country_fk_idx` (`country`);
+
+--
+-- Indexes for table `subscription_packages`
+--
+ALTER TABLE `subscription_packages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `subscription_reminders`
+--
+ALTER TABLE `subscription_reminders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_manager_subscription_id` (`account_manager_subscription_id`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_number` (`account_number`);
+
+--
+-- Indexes for table `transfers`
+--
+ALTER TABLE `transfers`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `reference_number` (`reference_number`),
+  ADD KEY `from_account_number` (`from_account_number`),
+  ADD KEY `to_account_number` (`to_account_number`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `country_id` (`country_id`),
+  ADD KEY `state_id` (`state_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `Account`
+-- AUTO_INCREMENT for table `account_managers`
 --
-ALTER TABLE `Account`
-  MODIFY `AccountID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `account_managers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `AccountManager`
+-- AUTO_INCREMENT for table `account_manager_messages`
 --
-ALTER TABLE `AccountManager`
-  MODIFY `AccountManagerID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `account_manager_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Admin`
+-- AUTO_INCREMENT for table `account_manager_subscriptions`
 --
-ALTER TABLE `Admin`
-  MODIFY `AdminID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `account_manager_subscriptions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Client`
+-- AUTO_INCREMENT for table `account_manager_support_requests`
 --
-ALTER TABLE `Client`
-  MODIFY `ClientID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `account_manager_support_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `CreditCard`
+-- AUTO_INCREMENT for table `account_manager_support_responses`
 --
-ALTER TABLE `CreditCard`
-  MODIFY `CardID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `account_manager_support_responses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `CreditCardTransaction`
+-- AUTO_INCREMENT for table `audit_log`
 --
-ALTER TABLE `CreditCardTransaction`
-  MODIFY `CreditCardTransactionID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `audit_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Loan`
+-- AUTO_INCREMENT for table `businesses`
 --
-ALTER TABLE `Loan`
-  MODIFY `LoanID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `businesses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `Transaction`
+-- AUTO_INCREMENT for table `cards`
 --
-ALTER TABLE `Transaction`
-  MODIFY `TransactionID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `cards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `card_transactions`
+--
+ALTER TABLE `card_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `cash_loans`
+--
+ALTER TABLE `cash_loans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `client_accounts`
+--
+ALTER TABLE `client_accounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `client_profiles`
+--
+ALTER TABLE `client_profiles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `client_support_requests`
+--
+ALTER TABLE `client_support_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `client_support_responses`
+--
+ALTER TABLE `client_support_responses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `country`
+--
+ALTER TABLE `country`
+  MODIFY `idcountry` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+
+--
+-- AUTO_INCREMENT for table `facility_loans`
+--
+ALTER TABLE `facility_loans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `investments`
+--
+ALTER TABLE `investments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `loan_applications`
+--
+ALTER TABLE `loan_applications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `mortgage_loans`
+--
+ALTER TABLE `mortgage_loans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `pending_updates`
+--
+ALTER TABLE `pending_updates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `state`
+--
+ALTER TABLE `state`
+  MODIFY `idstate` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3367;
+
+--
+-- AUTO_INCREMENT for table `subscription_packages`
+--
+ALTER TABLE `subscription_packages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `subscription_reminders`
+--
+ALTER TABLE `subscription_reminders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `transfers`
+--
+ALTER TABLE `transfers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `Account`
+-- Constraints for table `account_managers`
 --
-ALTER TABLE `Account`
-  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`ClientID`) REFERENCES `Client` (`ClientID`);
+ALTER TABLE `account_managers`
+  ADD CONSTRAINT `account_managers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `AccountManager`
+-- Constraints for table `account_manager_messages`
 --
-ALTER TABLE `AccountManager`
-  ADD CONSTRAINT `accountmanager_ibfk_1` FOREIGN KEY (`CreatedByAdminID`) REFERENCES `Admin` (`AdminID`);
+ALTER TABLE `account_manager_messages`
+  ADD CONSTRAINT `account_manager_messages_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_manager_messages_ibfk_2` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `Client`
+-- Constraints for table `account_manager_subscriptions`
 --
-ALTER TABLE `Client`
-  ADD CONSTRAINT `client_ibfk_1` FOREIGN KEY (`AccountManagerID`) REFERENCES `AccountManager` (`AccountManagerID`);
+ALTER TABLE `account_manager_subscriptions`
+  ADD CONSTRAINT `account_manager_subscriptions_ibfk_1` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_manager_subscriptions_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `subscription_packages` (`id`);
 
 --
--- Constraints for table `CreditCard`
+-- Constraints for table `account_manager_support_requests`
 --
-ALTER TABLE `CreditCard`
-  ADD CONSTRAINT `creditcard_ibfk_1` FOREIGN KEY (`ClientID`) REFERENCES `User` (`UserID`);
+ALTER TABLE `account_manager_support_requests`
+  ADD CONSTRAINT `account_manager_support_requests_ibfk_1` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `CreditCardTransaction`
+-- Constraints for table `account_manager_support_responses`
 --
-ALTER TABLE `CreditCardTransaction`
-  ADD CONSTRAINT `creditcardtransaction_ibfk_1` FOREIGN KEY (`CardID`) REFERENCES `CreditCard` (`CardID`);
+ALTER TABLE `account_manager_support_responses`
+  ADD CONSTRAINT `account_manager_support_responses_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `account_manager_support_requests` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_manager_support_responses_ibfk_2` FOREIGN KEY (`responder_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `Loan`
+-- Constraints for table `audit_log`
 --
-ALTER TABLE `Loan`
-  ADD CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`ClientID`) REFERENCES `User` (`UserID`);
+ALTER TABLE `audit_log`
+  ADD CONSTRAINT `audit_log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `PSD2Consent`
+-- Constraints for table `businesses`
 --
-ALTER TABLE `PSD2Consent`
-  ADD CONSTRAINT `psd2consent_ibfk_1` FOREIGN KEY (`ClientID`) REFERENCES `User` (`UserID`);
+ALTER TABLE `businesses`
+  ADD CONSTRAINT `businesses_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
 
 --
--- Constraints for table `State`
+-- Constraints for table `cards`
 --
-ALTER TABLE `State`
-  ADD CONSTRAINT `state_ibfk_1` FOREIGN KEY (`CountryID`) REFERENCES `Country` (`CountryID`);
+ALTER TABLE `cards`
+  ADD CONSTRAINT `cards_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
 
 --
--- Constraints for table `Transaction`
+-- Constraints for table `card_transactions`
 --
-ALTER TABLE `Transaction`
-  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`FromAccountID`) REFERENCES `Account` (`AccountID`),
-  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`ToAccountID`) REFERENCES `Account` (`AccountID`);
+ALTER TABLE `card_transactions`
+  ADD CONSTRAINT `card_transactions_ibfk_1` FOREIGN KEY (`card_number`) REFERENCES `cards` (`card_number`),
+  ADD CONSTRAINT `card_transactions_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
 
 --
--- Constraints for table `User`
+-- Constraints for table `cash_loans`
 --
-ALTER TABLE `User`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`CreatedByUserID`) REFERENCES `User` (`UserID`),
-  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`AccountManagerID`) REFERENCES `User` (`UserID`),
-  ADD CONSTRAINT `user_ibfk_3` FOREIGN KEY (`CountryID`) REFERENCES `Country` (`CountryID`),
-  ADD CONSTRAINT `user_ibfk_4` FOREIGN KEY (`StateID`) REFERENCES `State` (`StateID`);
+ALTER TABLE `cash_loans`
+  ADD CONSTRAINT `cash_loans_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `client_accounts`
+--
+ALTER TABLE `client_accounts`
+  ADD CONSTRAINT `client_accounts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `client_accounts_ibfk_2` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`);
+
+--
+-- Constraints for table `client_profiles`
+--
+ALTER TABLE `client_profiles`
+  ADD CONSTRAINT `client_profiles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `client_profiles_ibfk_2` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`),
+  ADD CONSTRAINT `client_profiles_ibfk_3` FOREIGN KEY (`state`) REFERENCES `state` (`idstate`),
+  ADD CONSTRAINT `client_profiles_ibfk_4` FOREIGN KEY (`country`) REFERENCES `country` (`idcountry`),
+  ADD CONSTRAINT `client_profiles_ibfk_5` FOREIGN KEY (`nationality`) REFERENCES `country` (`idcountry`);
+
+--
+-- Constraints for table `client_support_requests`
+--
+ALTER TABLE `client_support_requests`
+  ADD CONSTRAINT `client_support_requests_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `client_support_requests_ibfk_2` FOREIGN KEY (`account_manager_id`) REFERENCES `account_managers` (`id`);
+
+--
+-- Constraints for table `client_support_responses`
+--
+ALTER TABLE `client_support_responses`
+  ADD CONSTRAINT `client_support_responses_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `client_support_requests` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `client_support_responses_ibfk_2` FOREIGN KEY (`responder_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `facility_loans`
+--
+ALTER TABLE `facility_loans`
+  ADD CONSTRAINT `facility_loans_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `investments`
+--
+ALTER TABLE `investments`
+  ADD CONSTRAINT `investments_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `loan_applications`
+--
+ALTER TABLE `loan_applications`
+  ADD CONSTRAINT `loan_applications_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`),
+  ADD CONSTRAINT `loan_applications_ibfk_2` FOREIGN KEY (`approved_by`) REFERENCES `account_managers` (`id`);
+
+--
+-- Constraints for table `mortgage_loans`
+--
+ALTER TABLE `mortgage_loans`
+  ADD CONSTRAINT `mortgage_loans_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `pending_updates`
+--
+ALTER TABLE `pending_updates`
+  ADD CONSTRAINT `pending_updates_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `pending_updates_ibfk_2` FOREIGN KEY (`approved_by`) REFERENCES `account_managers` (`id`);
+
+--
+-- Constraints for table `state`
+--
+ALTER TABLE `state`
+  ADD CONSTRAINT `state_country_fk` FOREIGN KEY (`country`) REFERENCES `country` (`idcountry`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `subscription_reminders`
+--
+ALTER TABLE `subscription_reminders`
+  ADD CONSTRAINT `subscription_reminders_ibfk_1` FOREIGN KEY (`account_manager_subscription_id`) REFERENCES `account_manager_subscriptions` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `transfers`
+--
+ALTER TABLE `transfers`
+  ADD CONSTRAINT `transfers_ibfk_1` FOREIGN KEY (`from_account_number`) REFERENCES `client_accounts` (`account_number`),
+  ADD CONSTRAINT `transfers_ibfk_2` FOREIGN KEY (`to_account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `country` (`idcountry`),
+  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`state_id`) REFERENCES `state` (`idstate`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
