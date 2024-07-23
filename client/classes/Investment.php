@@ -22,4 +22,13 @@ class Investment extends Db
     $inv = $stmt->fetch(PDO::FETCH_ASSOC);
     return $inv;
   }
+
+  public function getInvTransactions($userAccount)
+  {
+    $sql = "SELECT * FROM inv_transactions WHERE account_number = ?";
+    $stmt = $this->dbconn->prepare($sql);
+    $stmt->execute([$userAccount]);
+    $inv = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $inv;
+  }
 }

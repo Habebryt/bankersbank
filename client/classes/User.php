@@ -14,6 +14,12 @@ class User extends Db
     $this->dbconn = $this->connect();
   }
 
+  public function logoutUser()
+  {
+    session_unset();
+    session_destroy();
+  }
+
   public function getUser($userId)
   {
     $sql = "SELECT *

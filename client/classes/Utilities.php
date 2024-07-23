@@ -80,4 +80,18 @@ class Utilities
 
     return $masked;
   }
+
+  public static function generateReferenceNumber()
+  {
+    $length = 20;
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+      $index = rand(0, strlen($characters) - 1);
+      $randomString .= 'TRX' . $characters[$index];
+    }
+
+    return $randomString;
+  }
 }

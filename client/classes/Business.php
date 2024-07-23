@@ -22,4 +22,13 @@ class Business extends Db
     $biz = $stmt->fetch(PDO::FETCH_ASSOC);
     return $biz;
   }
+
+  public function getBizTransactions($userAccount)
+  {
+    $sql = "SELECT * FROM biz_transactions WHERE account_number = ?";
+    $stmt = $this->dbconn->prepare($sql);
+    $stmt->execute([$userAccount]);
+    $biz = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $biz;
+  }
 }

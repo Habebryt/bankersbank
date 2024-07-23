@@ -26,6 +26,53 @@
 <?php require_once "../partials/modals.php" ?>
 
 <!-- Core JS -->
+<!-- Transaction Dispute and Receipt -->
+
+<script>
+  function printReceipt() {
+    // Copy transaction details to receipt
+    document.getElementById('receiptTransactionId').textContent = document.getElementById('transactionId').textContent;
+    document.getElementById('receiptTransactionDate').textContent = document.getElementById('transactionDate').textContent;
+    document.getElementById('receiptTransactionAmount').textContent = document.getElementById('transactionAmount').textContent;
+    document.getElementById('receiptTransactionCurrency').textContent = document.getElementById('transactionCurrency').textContent;
+    document.getElementById('receiptTransactionType').textContent = document.getElementById('transactionType').textContent;
+    document.getElementById('receiptTransactionStatus').textContent = document.getElementById('transactionStatus').textContent;
+    document.getElementById('receiptSenderName').textContent = document.getElementById('senderName').textContent;
+    document.getElementById('receiptSenderAccount').textContent = document.getElementById('senderAccount').textContent;
+    document.getElementById('receiptReceiverName').textContent = document.getElementById('receiverName').textContent;
+    document.getElementById('receiptReceiverAccount').textContent = document.getElementById('receiverAccount').textContent;
+
+    // Show the receipt content
+    var receiptContent = document.getElementById('transactionReceipt').innerHTML;
+
+    // Create a new window and print
+    var printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>Transaction Receipt</title></head><body>');
+    printWindow.document.write(receiptContent);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+  }
+
+  function submitDispute() {
+    const disputeReason = document.getElementById('disputeReason').value;
+    const additionalInfo = document.getElementById('additionalInfo').value;
+
+    if (disputeReason.trim() === '') {
+      alert('Please provide a reason for the dispute.');
+      return;
+    }
+
+    // Simulate submitting the dispute (replace with actual implementation)
+    alert('Dispute submitted successfully!\n\nReason: ' + disputeReason + '\nAdditional Information: ' + additionalInfo);
+
+    // Reset the form and close the modal
+    document.getElementById('disputeForm').reset();
+    const modal = bootstrap.Modal.getInstance(document.getElementById('disputeTransaction'));
+    modal.hide();
+  }
+</script>
+
 <!-- build:js assets/vendor/js/core.js -->
 
 <script src="../assets/vendor/libs/jquery/jquery.js"></script>

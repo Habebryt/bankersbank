@@ -1,6 +1,7 @@
 <?php
 ini_set("display_errors", "1");
 session_start();
+require_once "../guard.php";
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
 require_once "../classes/Investment.php";
@@ -41,6 +42,11 @@ $balance = Utilities::convertToCurrency($inv['portfolio_balance']);
 $savings = Utilities::convertToCurrency($inv['business_savings']);
 $loss = Utilities::convertToCurrency($inv['investment_loss']);
 $expense = Utilities::convertToCurrency($inv['expense']);
+
+// Investment Transactions
+$invTransactions = $getInv->getInvTransactions($accountNumber);
+
+// var_dump($invTransactions);
 ?>
 <?php
 
@@ -205,102 +211,42 @@ require_once "../partials/hstart.php";
               </div>
               <div class="card-body">
                 <ul class="p-0 m-0 list-group">
-                  <li class="d-flex mb-4 pb-1 list-group-item">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Paypal</small>
-                        <h6 class="mb-0">Sent money</h6>
+                  <?php foreach ($invTransactions as $invtrans) :
+
+                    $refNum = $invtrans['transaction_ref'];
+                    $type = $invtrans['transaction_type'];
+                    $desc = $invtrans['transaction_description'];
+                    $amount = Utilities::convertToCurrency($invtrans['amount']);
+                    // $type = $invtrans['transaction_ref'];
+                    $currency = $invtrans['currency']; ?>
+
+                    <li class="d-flex mb-4 pb-1 list-group-item">
+                      <div class="avatar flex-shrink-0 me-3">
+                        <?php if ($type === 'Wire Deposit') : ?>
+                          <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
+                        <?php else : ?>
+                          <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
+                        <?php endif ?>
                       </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0"><span class="text-danger">-2,456</span></h6>
-                        <span class="text-muted">USD</span>
-                        <button class="btn btn-primary">View</button>
+                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="me-2">
+                          <small class="text-muted d-block mb-1"><?php echo $desc ?></small>
+                          <h6 class="mb-0"><?php echo $type ?></h6>
+                        </div>
+                        <div class="user-progress d-flex align-items-center gap-1">
+                          <?php if ($type === 'Wire Deposit') : ?>
+                            <h6 class="mb-0"><span class="text-success"><?php echo $amount ?></span></h6>
+                          <?php else : ?>
+                            <h6 class="mb-0"><span class="text-danger">-<?php echo $amount ?></span></h6>
+                          <?php endif ?>
+                          <span class="text-muted"><?php echo $currency ?></span></span>
+                          <button class="btn btn-primary">View</button>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                  <li class="d-flex mb-4 pb-1 list-group-item">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Wire Deposit</small>
-                        <h6 class="mb-0">Habeeb Bright</h6>
-                      </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0"><span class="text-success">+14,857</span></h6>
-                        <span class="text-muted">USD</span>
-                        <button class="btn btn-primary">View</button>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="d-flex mb-4 pb-1 list-group-item">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <img src="../assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Transfer</small>
-                        <h6 class="mb-0">Refund</h6>
-                      </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0"><span class="text-success">+637.91</span></h6>
-                        <span class="text-muted">USD</span>
-                        <button class="btn btn-primary">View</button>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="d-flex mb-4 pb-1 list-group-item">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Credit Card</small>
-                        <h6 class="mb-0">Ordered Food</h6>
-                      </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0"><span class="text-danger">-838.71</span></h6>
-                        <span class="text-muted">USD</span>
-                        <button class="btn btn-primary">View</button>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="d-flex mb-4 pb-1 list-group-item">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Wallet</small>
-                        <h6 class="mb-0">Starbucks</h6>
-                      </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0"><span class="text-danger">-203.33</span></h6>
-                        <span class="text-muted">USD</span>
-                        <button class="btn btn-primary">View</button>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="d-flex list-group-item">
-                    <div class="avatar flex-shrink-0 me-3">
-                      <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                    </div>
-                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="me-2">
-                        <small class="text-muted d-block mb-1">Mastercard</small>
-                        <h6 class="mb-0">Ordered Food</h6>
-                      </div>
-                      <div class="user-progress d-flex align-items-center gap-1">
-                        <h6 class="mb-0"><span class="text-danger">-92.45</span></h6>
-                        <span class="text-muted">USD</span>
-                        <button class="btn btn-primary">View</button>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+
+
+                  <?php endforeach ?>
                 </ul>
                 <p class="text-muted text-center">
                   <a href="transactions.html" class="link-primary">View More</a>

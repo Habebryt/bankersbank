@@ -1,6 +1,7 @@
 <?php
 ini_set("display_errors", "1");
 session_start();
+require_once "../guard.php";
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
 
@@ -63,7 +64,7 @@ require_once "../partials/hstart.php";
     <div class="container-xxl flex-grow-1 container-p-y">
 
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTransfer">
+      <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalTransfer">
         Transfer
       </button>
 

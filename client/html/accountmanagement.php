@@ -1,6 +1,7 @@
 <?php
 ini_set("display_errors", "1");
 session_start();
+require_once "../guard.php";
 require_once "../classes/Utilities.php";
 require_once "../classes/User.php";
 require_once "../classes/Account.php";
@@ -89,7 +90,7 @@ require_once "../partials/hstart.php";
           <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
               <h5 class="mb-0">Personal Profile</h5>
-              <small class="text-muted float-end"><span class="text-danger">*</span>Contact Support for Updates <a href="support.html">Here</a></small>
+              <small class="text-muted float-end"><span class="text-danger">*</span>Contact Support for Updates <a href="contactsupport.php">Here</a></small>
             </div>
             <div class="card-body">
               <form>

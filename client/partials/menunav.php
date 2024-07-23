@@ -67,7 +67,7 @@
             <div class="dropdown-divider"></div>
           </li>
           <li>
-            <a class="dropdown-item" href="javascript:void(0);">
+            <a class="dropdown-item" href="#" onclick="confirmLogout()">
               <i class="bx bx-power-off me-2"></i>
               <span class="align-middle">Log Out</span>
             </a>
@@ -78,3 +78,45 @@
     </ul>
   </div>
 </nav>
+
+<!-- Logout JS -->
+<script>
+  let inactivityTime = 5 * 60 * 1000;
+  let warningTime = 30 * 1000;
+  let timeoutId;
+  let warningId;
+
+  function resetTimer() {
+    clearTimeout(timeoutId);
+    clearTimeout(warningId);
+
+    warningId = setTimeout(() => {
+      alert('You will be logged out in 30 seconds due to inactivity.');
+    }, inactivityTime - warningTime);
+
+    timeoutId = setTimeout(() => {
+      alert('You have been logged out due to inactivity.');
+      window.location.href = '../exit.php';
+    }, inactivityTime);
+  }
+
+  // Function to confirm logout on button click
+  function confirmLogout() {
+    const confirmLogout = confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      window.location.href = '../exit.php';
+    }
+  }
+
+  // Event listeners to detect user activity and reset the timer
+  window.onload = function() {
+    document.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onmousedown = resetTimer; // Catch touchpad/mouse activity
+    document.ontouchstart = resetTimer; // Catch touch event
+    document.onclick = resetTimer; // Catch click event
+    document.onkeypress = resetTimer; // Catch keyboard activity
+    document.onscroll = resetTimer; // Catch scrolling
+    document.onkeydown = resetTimer; // Catch any key down activity
+  };
+</script>

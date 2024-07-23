@@ -5210,6 +5210,48 @@ fieldset:disabled .btn {
   overflow-y: auto;
 }
 
+/* Transaction style and Receipt */
+
+#transactionReceipt {
+  display: none;
+  /* Hidden by default */
+}
+
+.transaction-detail {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.transaction-label {
+  font-weight: bold;
+  color: #495057;
+}
+
+.receipt {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.receipt-header {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.receipt-content {
+  font-size: 16px;
+}
+
+.receipt-label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
 @media (max-width: 575.98px) {
   .modal-fullscreen-sm-down {
     width: 100vw;

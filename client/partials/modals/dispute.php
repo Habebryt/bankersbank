@@ -7,36 +7,31 @@
        <div class="modal-dialog modal-dialog-centered" role="document">
          <div class="modal-content">
            <div class="modal-header">
-             <h5 class="modal-title" id="modalCenterTitle">Dispute Transaction</h5>
+             <h5 class="modal-title">Dispute Transaction</h5>
              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
            </div>
            <div class="modal-body">
-             <div class="row">
-               <div class="col mb-3">
-                 <label for="nameWithTitle" class="form-label">Name</label>
-                 <input type="text" id="nameWithTitle" class="form-control" placeholder="Enter Name" />
+             <form id="disputeForm">
+               <div class="mb-3">
+                 <label for="disputeReason" class="form-label">Reason for Dispute</label>
+                 <textarea id="disputeReason" class="form-control" placeholder="Enter reason for dispute" rows="3" required></textarea>
                </div>
-             </div>
-             <div class="row g-2">
-               <div class="col mb-0">
-                 <label for="emailWithTitle" class="form-label">Email</label>
-                 <input type="email" id="emailWithTitle" class="form-control" placeholder="xxxx@xxx.xx" />
+               <div class="mb-3">
+                 <label for="additionalInfo" class="form-label">Additional Information</label>
+                 <textarea id="additionalInfo" class="form-control" placeholder="Additional information" rows="3"></textarea>
                </div>
-               <div class="col mb-0">
-                 <label for="dobWithTitle" class="form-label">DOB</label>
-                 <input type="date" id="dobWithTitle" class="form-control" />
-               </div>
-             </div>
+             </form>
            </div>
            <div class="modal-footer">
              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-               Close
+               Cancel
              </button>
-             <button type="button" class="btn btn-primary">Submit</button>
+             <button type="button" class="btn btn-primary" onclick="submitDispute()">
+               Submit Dispute
+             </button>
            </div>
          </div>
        </div>
      </div>
    </div>
- </div>
- <!-- / Dispute Transaction Modal -->
+   <!-- / Dispute Transaction Modal -->
