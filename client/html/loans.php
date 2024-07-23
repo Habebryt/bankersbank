@@ -34,10 +34,34 @@ $accountLevel = $userAccount['Level'];
 // Loans for Mortgage
 $mortgage = $getMortgage->mortgageLoans($accountNumber);
 
-$balance = '$' . Utilities::convertToCurrency($mortgage['mortgage_balance']);
-$payment = '$' . Utilities::convertToCurrency($mortgage['monthly_payment']);
-$rate = $mortgage['interest_rate'] . '%';
-$term = $mortgage['remaining_terms'];
+if (empty($mortgage['mortgage_balance'])) {
+  $morBalance = 0.00;
+} else {
+  $morBalance = $mortgage['mortgage_balance'];
+};
+
+if (empty($mortgage['monthly_payment'])) {
+  $morPayment = 0.00;
+} else {
+  $morPayment = $mortgage['monthly_payment'];
+};
+
+if (empty($mortgage['monthly_payment'])) {
+  $morTerm = 0;
+} else {
+  $morTerm = $mortgage['remaining_terms'];
+};
+
+if (empty($mortgage['monthly_payment'])) {
+  $morRate = 0;
+} else {
+  $morRate = $mortgage['interest_rate'];
+};
+
+$balance = '$' . Utilities::convertToCurrency($morBalance);
+$payment = '$' . Utilities::convertToCurrency($morPayment);
+$rate = $morRate . '%';
+$term = $morTerm;
 ?>
 <?php
 

@@ -42,18 +42,14 @@ $biz = $getBiz->getBizTransactions($accountNumber);
 $inv = $getInv->getInvTransactions($accountNumber);
 $allTransactions = $transactions->getTransactions($accountNumber);
 
-$generalTransactions = array_merge($biz, $inv, $allTransactions);
+$myTransactions = array_merge($biz, $inv, $allTransactions);
+// $sortTransactions = array_
+$generalTransactions = array_slice($myTransactions, 0, 5);
+// print_r($transLimit);
 
-foreach ($generalTransactions as $transaction) {
-  // Check for transaction description and transaction reference
-  $description = isset($transaction['transaction_description']) ? $transaction['transaction_description'] : (isset($transaction['description']) ? $transaction['description'] : '');
-  $transactionRef = isset($transaction['transaction_ref']) ? $transaction['transaction_ref'] : (isset($transaction['reference_id']) ? $transaction['reference_id'] : '');
+// print_r($generalTransactions);
 
-  echo "Description: " . $description . "\n";
-  echo "Transaction Ref: " . $transactionRef . "\n";
-  echo "Amount: " . $transaction['amount'] . "\n";
-  echo "Transaction Type: " . $transaction['transaction_type'] . "\n\n";
-}
+
 ?>
 <?php
 require_once "../partials/hstart.php";
@@ -191,6 +187,8 @@ require_once "../partials/hstart.php";
             </div>
           </div>
         </div>
+
+
         <!-- Transactions -->
         <div class="col-md-6 col-lg-6 order-2 mb-4">
           <div class="card h-100">
@@ -209,124 +207,79 @@ require_once "../partials/hstart.php";
             </div>
             <div class="card-body">
               <ul class="p-0 m-0 list-group">
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Paypal</small>
-                      <h6 class="mb-0">Sent money</h6>
+                <?php
+                foreach ($generalTransactions as $transaction) :
+                  $description = isset($transaction['transaction_description']) ? $transaction['transaction_description'] : (isset($transaction['description']) ? $transaction['description'] : '');
+                  $transactionRef = isset($transaction['transaction_ref']) ? $transaction['transaction_ref'] : (isset($transaction['reference_id']) ? $transaction['reference_id'] : '');
+                  $amount = Utilities::convertToCurrency($transaction['amount']);
+                  $type = $transaction['transaction_type'];
+                ?>
+                  <li class="d-flex mb-4 pb-1 list-group-item">
+                    <div class="avatar flex-shrink-0 me-3">
+                      <?php if ($type === 'Wire Deposit' || $type === 'Transfer' || $type === 'credit') : ?>
+                        <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
+                      <?php else : ?>
+                        <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
+                      <?php endif ?>
                     </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-2,456</span></h6>
-                      <span class="text-muted">USD</span>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                        View
-                      </button>
+                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                      <div class="me-2">
+                        <small class="text-muted d-block mb-1"><?php echo $description ?></small>
+                        <h6 class="mb-0"><?php echo ucfirst($type) ?></h6>
+                      </div>
+                      <div class="user-progress d-flex align-items-center gap-1">
+                        <h6 class="mb-0">
+                          <?php if ($type === 'Wire Deposit' || $type === 'Transfer' || $type === 'credit') : ?>
+                            <span class="text-success"><?php echo $amount ?></span>
+                          <?php else : ?>
+                            <span class="text-danger">-<?php echo $amount ?></span>
+                          <?php endif ?>
+
+                        </h6>
+                        <span class="text-muted">USD</span>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction" data-transRef="<?php echo $transactionRef ?>">
+                          View
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Wire Deposit</small>
-                      <h6 class="mb-0">Habeeb Bright</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-success">+14,857</span></h6>
-                      <span class="text-muted">USD</span>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Transfer</small>
-                      <h6 class="mb-0">Refund</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-success">+637.91</span></h6>
-                      <span class="text-muted">USD</span>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Credit Card</small>
-                      <h6 class="mb-0">Ordered Food</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-838.71</span></h6>
-                      <span class="text-muted">USD</span>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Wallet</small>
-                      <h6 class="mb-0">Starbucks</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-203.33</span></h6>
-                      <span class="text-muted">USD</span>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Mastercard</small>
-                      <h6 class="mb-0">Ordered Food</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-92.45</span></h6>
-                      <span class="text-muted">USD</span>
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                <?php endforeach ?>
               </ul>
-              <p class="text-muted text-center">
-                <a href="transactions.php" class="link-primary">View More</a>
-              </p>
+              <?php if (empty($generalTransactions)) : ?>
+                <p class="text-primary text-center">
+                  You Presently Have no Recent Transaction.
+                </p>
+              <?php else : ?>
+                <nav aria-label="Page navigation">
+                  <ul class="pagination pagination-sm">
+                    <li class="page-item prev">
+                      <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="javascript:void(0);">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="javascript:void(0);">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="javascript:void(0);">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="javascript:void(0);">4</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="javascript:void(0);">5</a>
+                    </li>
+                    <li class="page-item next">
+                      <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                    </li>
+                  </ul>
+                </nav>
+                <p class="text-muted text-center">
+                  <a href="transactions.php" class="link-primary">View More</a>
+                </p>
+              <?php endif ?>
             </div>
           </div>
         </div>

@@ -36,9 +36,27 @@ $accountLevel = $userAccount['Level'];
 
 $mycashloans = $loan->cashLoans($accountNumber);
 
-$balance = $mycashloans['available_credit'];
-$apr = $mycashloans['current_apr'];
-$method = $mycashloans['repayment_method'];
+if (empty($mycashloans['available_credit'])) {
+  $cashBalance = 0.00;
+} else {
+  $cashBalance = $mycashloans['available_credit'];
+};
+
+if (empty($mycashloans['repayment_method'])) {
+  $cashRepayment = 'N/A';
+} else {
+  $cashRepayment = $mycashloans['repayment_method'];
+};
+
+if (empty($mycashloans['current_apr'])) {
+  $cashApr = 0;
+} else {
+  $cashApr = $mycashloans['current_apr'];
+};
+
+$balance = $cashBalance;
+$apr = $cashApr;
+$method = $cashRepayment;
 ?>
 <?php
 
@@ -175,7 +193,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                   </div>
-                  <span class="fw-medium d-block mb-1">Repayment Method</span>
+                  <span class="fw-medium d-block mb-1">Payment Method</span>
                   <h3 class="card-title mb-2"><?php echo $method; ?></h3>
                 </div>
               </div>

@@ -38,10 +38,34 @@ $accountLevel = $userAccount['Level'];
 
 $inv = $getInv->getInv($accountNumber);
 
-$balance = Utilities::convertToCurrency($inv['portfolio_balance']);
-$savings = Utilities::convertToCurrency($inv['business_savings']);
-$loss = Utilities::convertToCurrency($inv['investment_loss']);
-$expense = Utilities::convertToCurrency($inv['expense']);
+if (empty($inv['portfolio_balance'])) {
+  $portBalance = 0;
+} else {
+  $portBalance = Utilities::convertToCurrency($inv['portfolio_balance']);
+}
+
+if (empty($inv['business_savings'])) {
+  $portSavings = 0;
+} else {
+  $portSavings = Utilities::convertToCurrency($inv['business_savings']);
+}
+
+if (empty($inv['investment_loss'])) {
+  $portLoss = 0;
+} else {
+  $portLoss = Utilities::convertToCurrency($inv['investment_loss']);
+}
+
+if (empty($inv['expense'])) {
+  $portExpense = 0;
+} else {
+  $portExpense = Utilities::convertToCurrency($inv['expense']);
+}
+
+$balance = $portBalance;
+$savings = $portSavings;
+$loss = $portLoss;
+$expense = $portExpense;
 
 // Investment Transactions
 $invTransactions = $getInv->getInvTransactions($accountNumber);
@@ -194,66 +218,68 @@ require_once "../partials/hstart.php";
         </div>
         <!-- Investment -->
         <div class="col-md-6">
-          <div class="col-md-12 col-lg-12 order-2 mb-4">
-            <div class="card h-100">
-              <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="card-title m-0 me-2">Recent Investment</h5>
-                <div class="dropdown">
-                  <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="bx bx-dots-vertical-rounded"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
-                    <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                    <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+          <?php if (!empty($invTransactions)) : ?>
+            <div class="col-md-12 col-lg-12 order-2 mb-4">
+              <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                  <h5 class="card-title m-0 me-2">Recent Investment</h5>
+                  <div class="dropdown">
+                    <button class="btn p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+                      <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                      <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                      <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="card-body">
-                <ul class="p-0 m-0 list-group">
-                  <?php foreach ($invTransactions as $invtrans) :
+                <div class="card-body">
+                  <ul class="p-0 m-0 list-group">
+                    <?php foreach ($invTransactions as $invtrans) :
 
-                    $refNum = $invtrans['transaction_ref'];
-                    $type = $invtrans['transaction_type'];
-                    $desc = $invtrans['transaction_description'];
-                    $amount = Utilities::convertToCurrency($invtrans['amount']);
-                    // $type = $invtrans['transaction_ref'];
-                    $currency = $invtrans['currency']; ?>
+                      $refNum = $invtrans['transaction_ref'];
+                      $type = $invtrans['transaction_type'];
+                      $desc = $invtrans['transaction_description'];
+                      $amount = Utilities::convertToCurrency($invtrans['amount']);
+                      // $type = $invtrans['transaction_ref'];
+                      $currency = $invtrans['currency']; ?>
 
-                    <li class="d-flex mb-4 pb-1 list-group-item">
-                      <div class="avatar flex-shrink-0 me-3">
-                        <?php if ($type === 'Wire Deposit') : ?>
-                          <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                        <?php else : ?>
-                          <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                        <?php endif ?>
-                      </div>
-                      <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                        <div class="me-2">
-                          <small class="text-muted d-block mb-1"><?php echo $desc ?></small>
-                          <h6 class="mb-0"><?php echo $type ?></h6>
-                        </div>
-                        <div class="user-progress d-flex align-items-center gap-1">
+                      <li class="d-flex mb-4 pb-1 list-group-item">
+                        <div class="avatar flex-shrink-0 me-3">
                           <?php if ($type === 'Wire Deposit') : ?>
-                            <h6 class="mb-0"><span class="text-success"><?php echo $amount ?></span></h6>
+                            <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
                           <?php else : ?>
-                            <h6 class="mb-0"><span class="text-danger">-<?php echo $amount ?></span></h6>
+                            <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
                           <?php endif ?>
-                          <span class="text-muted"><?php echo $currency ?></span></span>
-                          <button class="btn btn-primary">View</button>
                         </div>
-                      </div>
-                    </li>
-
-
-                  <?php endforeach ?>
-                </ul>
-                <p class="text-muted text-center">
-                  <a href="transactions.html" class="link-primary">View More</a>
-                </p>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                          <div class="me-2">
+                            <small class="text-muted d-block mb-1"><?php echo $desc ?></small>
+                            <h6 class="mb-0"><?php echo $type ?></h6>
+                          </div>
+                          <div class="user-progress d-flex align-items-center gap-1">
+                            <?php if ($type === 'Wire Deposit') : ?>
+                              <h6 class="mb-0"><span class="text-success"><?php echo $amount ?></span></h6>
+                            <?php else : ?>
+                              <h6 class="mb-0"><span class="text-danger">-<?php echo $amount ?></span></h6>
+                            <?php endif ?>
+                            <span class="text-muted"><?php echo $currency ?></span></span>
+                            <button class="btn btn-primary">View</button>
+                          </div>
+                        </div>
+                      </li>
+                    <?php endforeach ?>
+                  </ul>
+                  <p class="text-muted text-center">
+                    <a href="transactions.html" class="link-primary">View More</a>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          <?php else : ?>
+            <p class="text-center text-primary">No New Investment Transactions!.</p>
+          <?php endif ?>
         </div>
         <!--/ Investment -->
       </div>

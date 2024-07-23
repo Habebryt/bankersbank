@@ -15,6 +15,8 @@ $fullname = $firstname . ' ' . $lastname;
 
 $userId = $activeUser['id'];
 
+echo "New User" . $userId;
+
 $getUser = new User;
 $getCard = new Card;
 $getAcct = new Account;
@@ -30,13 +32,6 @@ $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
-// card info
-$num = Utilities::maskCardNumber($cardInfo['card_number']);
-$cvv = $cardInfo['cvv'];
-$date = $cardInfo['expiration_date'];
-$balance = Utilities::convertToCurrency($cardInfo['card_balance']);
-$type = $cardInfo['card_type'];
-$name = $cardInfo['cardholder_name'];
 
 ?>
 <?php
@@ -81,22 +76,35 @@ require_once "../partials/hstart.php";
 
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="row mb-5">
-        <div class="col-md-12 col-lg-6 mb-3">
-          <div class="card">
-            <div class="card-body">
-              <div class="card-type">Card Balance</div>
-              <div class="card-balance"><span class="text-dark">$<?php echo $balance ?></span></div>
-              <div class="card-number"><?php echo $num ?></div>
-              <div class="text-muted"><?php echo $name ?></div>
-              <div class="card-expiry"><?php echo $date ?></div>
-              <div class="card-logo">
-                <div class="card-logo-circle"></div>
-                <div class="card-logo-circle"></div>
+        <?php if (!empty($cardInfo)) :
+          // card info
+          $num = Utilities::maskCardNumber($cardInfo['card_number']);
+          $cvv = $cardInfo['cvv'];
+          $date = $cardInfo['expiration_date'];
+          $balance = Utilities::convertToCurrency($cardInfo['card_balance']);
+          $type = $cardInfo['card_type'];
+          $name = $cardInfo['cardholder_name'];
+        ?>
+          <div class="col-md-12 col-lg-6 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-type">Card Balance</div>
+                <div class="card-balance"><span class="text-dark">$<?php echo $balance ?></span></div>
+                <div class="card-number"><?php echo $num ?></div>
+                <div class="text-muted"><?php echo $name ?></div>
+                <div class="card-expiry"><?php echo $date ?></div>
+                <div class="card-logo">
+                  <div class="card-logo-circle"></div>
+                  <div class="card-logo-circle"></div>
+                </div>
               </div>
             </div>
           </div>
 
-        </div>
+        <?php else : ?>
+          <p class="text-primary text-center">No Card Activated. Contact Support for card Application.<a class="text-info" href="contactsupport.php">Here</a></p>
+        <?php endif ?>
+
         <div class="col-md-12 col-lg-6 mb-3">
           <div class="card shadow">
             <div class="card-body">
