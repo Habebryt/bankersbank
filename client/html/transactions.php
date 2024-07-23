@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
+require_once "../classes/Transaction.php";
 
 // echo "<pre>";
 // print_r($_SESSION);
@@ -17,17 +18,34 @@ $fullname = $firstname . ' ' . $lastname;
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
+$transactions = new Transaction;
 $userAccount = $getAcct->getAccount($userId);
 
-// echo "<pre>";
-// print_r($userAccount);
-// echo "</pre>";
+
 
 $accountBalance = $userAccount['balance'];
 $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
+
+$allTransactions = $transactions->getTransactions($accountNumber);
+
+$creditSum = 0;
+$debitSum = 0;
+$totalSum = 0;
+
+foreach ($allTransactions as $transaction) {
+  if ($transaction['transaction_type'] === 'credit') {
+    $creditSum += $transaction['amount'];
+  }
+  if ($transaction['transaction_type'] === 'debit') {
+    $debitSum += $transaction['amount'];
+  }
+  $totalSum += $transaction['amount'];
+}
+
+
 ?>
 <?php
 
@@ -88,10 +106,10 @@ require_once "../partials/hstart.php";
             <table class="table table-hover">
               <caption class="ms-4">
                 Transaction Summary: Debit:
-                <span class="text-danger">$5,750.00</span>
+                <span class="text-danger">$<?php echo $debitSum; ?></span>
                 | Credit:
-                <span class="text-success">$3,200.00</span>
-                | Total: $2,550.00
+                <span class="text-success">$<?php echo $creditSum; ?></span>
+                | Total: $<?php echo $totalSum; ?>
               </caption>
               <thead>
                 <tr>
@@ -105,118 +123,52 @@ require_once "../partials/hstart.php";
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <i class="bx bx-transfer text-danger me-3"></i>
-                    <span class="fw-medium">TRX-001</span>
-                  </td>
-                  <td>2023-07-01</td>
-                  <td>Salary Deposit</td>
-                  <td></td>
-                  <td>$3,000.00</td>
-                  <td>$3,000.00</td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                          View
+                <?php foreach ($allTransactions as $transaction) :
+
+                  $transRef = 'TRX' . '-' . $transaction['reference_id'];
+                  $transDate = Utilities::convertToDate($transaction['transaction_date']);
+                  $transDesc = $transaction['description'];
+                  $transType = $transaction['transaction_type'];
+                  $transAmount = '$' . '' . $transaction['amount'];
+
+                ?>
+                  <tr>
+                    <td>
+                      <?php if ($transType === 'credit') {
+                        echo "<i class='bx bx-transfer text-success me-3'></i>";
+                      } elseif ($transType === 'debit') {
+                        echo "<i class='bx bx-transfer text-danger me-3'></i>";
+                      } ?>
+                      <span class="fw-medium"><?php echo $transRef; ?></span>
+                    </td>
+                    <td><?php echo $transDate; ?></td>
+                    <td><?php echo $transDesc; ?></td>
+                    <td class="text-danger"><?php if ($transType === 'debit') {
+                                              echo $transAmount;
+                                            } ?></td>
+                    <td class="text-success"><?php if ($transType === 'credit') {
+                                                echo $transAmount;
+                                              } ?></td>
+                    <td>$3,000.00</td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#disputeTransaction">
-                          Dispute
-                        </button>
+                        <div class="dropdown-menu">
+                          <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
+                            View
+                          </button>
+                          <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#disputeTransaction">
+                            Dispute
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <i class="bx bx-shopping-bag text-info me-3"></i>
-                    <span class="fw-medium">TRX-002</span>
-                  </td>
-                  <td>2023-07-02</td>
-                  <td>Grocery Shopping</td>
-                  <td>$150.00</td>
-                  <td></td>
-                  <td>$2,850.00</td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                          View
-                        </button>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#disputeTransaction">
-                          Dispute
-                        </button>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <i class="bx bx-home text-success me-3"></i>
-                    <span class="fw-medium">TRX-003</span>
-                  </td>
-                  <td>2023-07-05</td>
-                  <td>Rent Payment</td>
-                  <td>$1,200.00</td>
-                  <td></td>
-                  <td>$1,650.00</td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                          View
-                        </button>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#disputeTransaction">
-                          Dispute
-                        </button>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <i class="bx bx-credit-card text-primary me-3"></i>
-                    <span class="fw-medium">TRX-004</span>
-                  </td>
-                  <td>2023-07-10</td>
-                  <td>Credit Card Payment</td>
-                  <td>$400.00</td>
-                  <td></td>
-                  <td>$1,250.00</td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                        <i class="bx bx-dots-vertical-rounded"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewTransaction">
-                          View
-                        </button>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#disputeTransaction">
-                          Dispute
-                        </button>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
+                <?php endforeach ?>
               </tbody>
             </table>
             <nav aria-label="Page navigation">
@@ -224,13 +176,13 @@ require_once "../partials/hstart.php";
                 <li class="page-item prev">
                   <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
                 </li>
-                <li class="page-item">
+                <li class="page-item active">
                   <a class="page-link" href="javascript:void(0);">1</a>
                 </li>
                 <li class="page-item">
                   <a class="page-link" href="javascript:void(0);">2</a>
                 </li>
-                <li class="page-item active">
+                <li class="page-item">
                   <a class="page-link" href="javascript:void(0);">3</a>
                 </li>
                 <li class="page-item">

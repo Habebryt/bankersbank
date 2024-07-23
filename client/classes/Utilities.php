@@ -42,4 +42,10 @@ class Utilities
     $cleanPhone = preg_replace('/[^0-9]/', '', $cleanPhone);
     return $cleanPhone;
   }
+
+  public static function convertToDate(string $datetime): string
+  {
+    $dateObject = new DateTime($datetime);
+    return $dateObject->format('Y-m-d');
+  }
 }

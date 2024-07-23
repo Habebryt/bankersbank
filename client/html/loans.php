@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
+require_once "../classes/Loan.php";
 
 // echo "<pre>";
 // print_r($_SESSION);
@@ -17,6 +18,7 @@ $fullname = $firstname . ' ' . $lastname;
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
+$getMortgage = new Loan;
 $userAccount = $getAcct->getAccount($userId);
 
 // echo "<pre>";
@@ -28,6 +30,14 @@ $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
+
+// Loans for Mortgage
+$mortgage = $getMortgage->mortgageLoans($accountNumber);
+
+$balance = '$' . $mortgage['mortgage_balance'];
+$payment = '$' . $mortgage['monthly_payment'];
+$rate = $mortgage['interest_rate'] . '%';
+$term = $mortgage['remaining_terms'];
 ?>
 <?php
 
@@ -95,7 +105,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Mortgage Balance</span>
-                    <h3 class="card-title mb-2">$320,628.89</h3>
+                    <h3 class="card-title mb-2"><?php echo $balance; ?></h3>
                   </div>
                 </div>
               </div>
@@ -117,7 +127,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span>Monthly Payment</span>
-                    <h3 class="card-title text-nowrap mb-1">$1,845.67</h3>
+                    <h3 class="card-title text-nowrap mb-1"><?php echo $payment; ?></h3>
                   </div>
                 </div>
               </div>
@@ -143,7 +153,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Interest Rate</span>
-                    <h3 class="card-title mb-2">3.75%</h3>
+                    <h3 class="card-title mb-2"><?php echo $rate; ?></h3>
                   </div>
                 </div>
               </div>
@@ -165,7 +175,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="d-block mb-1">Remaining Term</span>
-                    <h3 class="card-title text-nowrap mb-2">28 Years</h3>
+                    <h3 class="card-title text-nowrap mb-2"><?php echo $term; ?> Years</h3>
                   </div>
                 </div>
               </div>
@@ -279,9 +289,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </li>
                 </ul>
-                <p class="text-muted text-center">
-                  <a href="mortgage_details.html" class="link-primary">View Full Mortgage Details</a>
-                </p>
+
               </div>
             </div>
           </div>

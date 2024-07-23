@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
+require_once "../classes/Loan.php";
 
 // echo "<pre>";
 // print_r($_SESSION);
@@ -17,7 +18,9 @@ $fullname = $firstname . ' ' . $lastname;
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
+$loan = new Loan;
 $userAccount = $getAcct->getAccount($userId);
+
 
 // echo "<pre>";
 // print_r($userAccount);
@@ -28,6 +31,16 @@ $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
+
+// Loans
+
+$mycashloans = $loan->cashLoans($accountNumber);
+
+// print_r($mycashloans);
+
+$balance = $mycashloans['available_credit'];
+$apr = $mycashloans['current_apr'];
+$method = $mycashloans['repayment_method'];
 ?>
 <?php
 
@@ -97,7 +110,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </div>
                   <span class="fw-medium d-block mb-1">Available Credit</span>
-                  <h3 class="card-title mb-2">$5,000</h3>
+                  <h3 class="card-title mb-2">$<?php echo $balance; ?></h3>
                 </div>
               </div>
             </div>
@@ -119,7 +132,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </div>
                   <span>Current APR</span>
-                  <h3 class="card-title text-nowrap mb-1">29.99%</h3>
+                  <h3 class="card-title text-nowrap mb-1"><?php echo $apr; ?>%</h3>
                 </div>
               </div>
             </div>
@@ -165,7 +178,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </div>
                   <span class="fw-medium d-block mb-1">Repayment Method</span>
-                  <h3 class="card-title mb-2">Direct Debit</h3>
+                  <h3 class="card-title mb-2"><?php echo $method; ?></h3>
                 </div>
               </div>
             </div>
