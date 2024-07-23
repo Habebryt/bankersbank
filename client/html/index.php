@@ -4,6 +4,9 @@ session_start();
 require_once "../guard.php";
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
+require_once "../classes/Business.php";
+require_once "../classes/Investment.php";
+require_once "../classes/Transaction.php";
 
 // echo "<pre>";
 // print_r($_SESSION);
@@ -18,6 +21,10 @@ $fullname = $firstname . ' ' . $lastname;
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
+$getBiz = new Business;
+$getInv = new Investment;
+$transactions = new Transaction;
+
 $userAccount = $getAcct->getAccount($userId);
 
 // echo "<pre>";
@@ -29,6 +36,24 @@ $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
+
+// All transactions
+$biz = $getBiz->getBizTransactions($accountNumber);
+$inv = $getInv->getInvTransactions($accountNumber);
+$allTransactions = $transactions->getTransactions($accountNumber);
+
+$generalTransactions = array_merge($biz, $inv, $allTransactions);
+
+foreach ($generalTransactions as $transaction) {
+  // Check for transaction description and transaction reference
+  $description = isset($transaction['transaction_description']) ? $transaction['transaction_description'] : (isset($transaction['description']) ? $transaction['description'] : '');
+  $transactionRef = isset($transaction['transaction_ref']) ? $transaction['transaction_ref'] : (isset($transaction['reference_id']) ? $transaction['reference_id'] : '');
+
+  echo "Description: " . $description . "\n";
+  echo "Transaction Ref: " . $transactionRef . "\n";
+  echo "Amount: " . $transaction['amount'] . "\n";
+  echo "Transaction Type: " . $transaction['transaction_type'] . "\n\n";
+}
 ?>
 <?php
 require_once "../partials/hstart.php";
