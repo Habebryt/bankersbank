@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/User.php";
+require_once "../classes/Account.php";
 
 $activeUser = ($_SESSION['useronline']);
 $firstname = $activeUser['firstName'];
@@ -13,8 +14,18 @@ $activeUser = ($_SESSION['useronline']);
 
 $userId = $activeUser['id'];
 
-$getAcct = new User;
-$userInfo = $getAcct->getUser($userId);
+$getUser = new User;
+$getAcct = new Account;
+$userAccount = $getAcct->getAccount($userId);
+$userInfo = $getUser->getUser($userId);
+
+// Menu Info
+$accountNumber = $userAccount['account_number'];
+$accountType = $userAccount['account_type'];
+$accountStatus = $userAccount['status'];
+$accountLevel = $userAccount['Level'];
+
+// Profile info
 
 $fullname = $userInfo['first_name'] . ' ' . $userInfo['last_name'];
 $dob = $userInfo['date_of_birth'];

@@ -4,11 +4,16 @@ session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
 
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
+
 $activeUser = ($_SESSION['useronline']);
+
+// All pages needed
 $firstname = $activeUser['firstName'];
 $lastname = $activeUser['lastName'];
 $fullname = $firstname . ' ' . $lastname;
-
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
@@ -18,12 +23,11 @@ $userAccount = $getAcct->getAccount($userId);
 // print_r($userAccount);
 // echo "</pre>";
 
+$accountBalance = $userAccount['balance'];
 $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
-$accountBalance = $userAccount['balance'];
-
 ?>
 <?php
 require_once "../partials/hstart.php";
@@ -44,7 +48,7 @@ require_once "../partials/hstart.php";
 <!-- Settings -->
 <?php require_once "../partials/inactivesettings.php"; ?>
 <!-- Support -->
-<?php require_once "../partials/activesupportmenu1.php"; ?>
+<?php require_once "../partials/inactivesupport.php"; ?>
 
 <!-- / Menu -->
 <!-- Layout container -->
@@ -337,7 +341,7 @@ require_once "../partials/hstart.php";
                 </li>
               </ul>
               <p class="text-muted text-center">
-                <a href="transactions.html" class="link-primary">View More</a>
+                <a href="transactions.php" class="link-primary">View More</a>
               </p>
             </div>
           </div>

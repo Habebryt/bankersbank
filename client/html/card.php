@@ -3,18 +3,33 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/User.php";
+require_once "../classes/Account.php";
 require_once "../classes/Card.php";
-$activeUser = ($_SESSION['useronline']);
 
+$activeUser = ($_SESSION['useronline']);
+// All pages needed
+$firstname = $activeUser['firstName'];
+$lastname = $activeUser['lastName'];
+$fullname = $firstname . ' ' . $lastname;
 
 $userId = $activeUser['id'];
 
-$getAcct = new User;
+$getUser = new User;
 $getCard = new Card;
-$userInfo = $getAcct->getUser($userId);
+$getAcct = new Account;
+$userAccount = $getAcct->getAccount($userId);
+$userInfo = $getUser->getUser($userId);
 $accountnum = $userInfo['account_number'];
 $cardInfo = $getCard->getCard($accountnum);
 
+
+// account info
+$accountBalance = $userAccount['balance'];
+$accountNumber = $userAccount['account_number'];
+$accountType = $userAccount['account_type'];
+$accountStatus = $userAccount['status'];
+$accountLevel = $userAccount['Level'];
+// card info
 $num = $cardInfo['card_number'];
 $cvv = $cardInfo['cvv'];
 $date = $cardInfo['expiration_date'];

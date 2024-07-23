@@ -1,5 +1,33 @@
 <?php
-$name = "John Paul";
+ini_set("display_errors", "1");
+session_start();
+require_once "../classes/Utilities.php";
+require_once "../classes/Account.php";
+
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
+
+$activeUser = ($_SESSION['useronline']);
+
+// All pages needed
+$firstname = $activeUser['firstName'];
+$lastname = $activeUser['lastName'];
+$fullname = $firstname . ' ' . $lastname;
+$userId = $activeUser['id'];
+
+$getAcct = new Account;
+$userAccount = $getAcct->getAccount($userId);
+
+// echo "<pre>";
+// print_r($userAccount);
+// echo "</pre>";
+
+$accountBalance = $userAccount['balance'];
+$accountNumber = $userAccount['account_number'];
+$accountType = $userAccount['account_type'];
+$accountStatus = $userAccount['status'];
+$accountLevel = $userAccount['Level'];
 ?>
 <?php
 
