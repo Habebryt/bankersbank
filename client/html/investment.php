@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
+require_once "../classes/Investment.php";
 
 // echo "<pre>";
 // print_r($_SESSION);
@@ -17,6 +18,7 @@ $fullname = $firstname . ' ' . $lastname;
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
+$getInv = new Investment;
 $userAccount = $getAcct->getAccount($userId);
 
 // echo "<pre>";
@@ -28,6 +30,17 @@ $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
+
+
+// Investment
+
+
+$inv = $getInv->getInv($accountNumber);
+
+$balance = Utilities::convertToCurrency($inv['portfolio_balance']);
+$savings = Utilities::convertToCurrency($inv['business_savings']);
+$loss = Utilities::convertToCurrency($inv['investment_loss']);
+$expense = Utilities::convertToCurrency($inv['expense']);
 ?>
 <?php
 
@@ -96,7 +109,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Portfolio Balance</span>
-                    <h3 class="card-title mb-2">$120,628.89</h3>
+                    <h3 class="card-title mb-2">$<?php echo $balance; ?></h3>
                   </div>
                 </div>
               </div>
@@ -118,7 +131,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span>Investment Loss</span>
-                    <h3 class="card-title text-nowrap text-danger mb-1">-$14,679.23</h3>
+                    <h3 class="card-title text-nowrap text-danger mb-1">-$<?php echo $loss; ?></h3>
                   </div>
                 </div>
               </div>
@@ -144,7 +157,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Business Savings</span>
-                    <h3 class="card-title mb-2">$14,857</h3>
+                    <h3 class="card-title mb-2">$<?php echo $savings; ?></h3>
                   </div>
                 </div>
               </div>
@@ -166,7 +179,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="d-block mb-1">Expense</span>
-                    <h3 class="card-title text-nowrap mb-2">$2,456</h3>
+                    <h3 class="card-title text-nowrap mb-2">$<?php echo $expense; ?></h3>
                   </div>
                 </div>
               </div>

@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 session_start();
 require_once "../classes/Utilities.php";
 require_once "../classes/Account.php";
+require_once "../classes/Business.php";
 
 // echo "<pre>";
 // print_r($_SESSION);
@@ -17,17 +18,26 @@ $fullname = $firstname . ' ' . $lastname;
 $userId = $activeUser['id'];
 
 $getAcct = new Account;
+$getBiz = new Business;
 $userAccount = $getAcct->getAccount($userId);
 
 // echo "<pre>";
 // print_r($userAccount);
 // echo "</pre>";
 
-$accountBalance = $userAccount['balance'];
 $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
+
+$biz = $getBiz->getBiz($accountNumber);
+
+$balance = Utilities::convertToCurrency($biz['business_balance']);
+$credit = Utilities::convertToCurrency($biz['business_credit']);
+$debit = Utilities::convertToCurrency($biz['business_debit']);
+$pending = Utilities::convertToCurrency($biz['pending']);
+$expense = Utilities::convertToCurrency($biz['expense']);
+
 ?>
 <?php
 
@@ -96,7 +106,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Business Account</span>
-                    <h3 class="card-title mb-2">$320,628.89</h3>
+                    <h3 class="card-title mb-2">$<?php echo $balance ?></h3>
                   </div>
                 </div>
               </div>
@@ -118,7 +128,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span>Business Credit</span>
-                    <h3 class="card-title text-nowrap mb-1">$1,094,679.23</h3>
+                    <h3 class="card-title text-nowrap mb-1">$<?php echo $credit ?></h3>
                   </div>
                 </div>
               </div>
@@ -144,7 +154,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Business Debit</span>
-                    <h3 class="card-title text-danger mb-2">-$614,857</h3>
+                    <h3 class="card-title text-danger mb-2">-$<?php echo $debit ?></h3>
                   </div>
                 </div>
               </div>
@@ -166,7 +176,7 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                     <span class="d-block mb-1">Pending</span>
-                    <h3 class="card-title text-nowrap text-warning mb-2">-$102,456</h3>
+                    <h3 class="card-title text-nowrap text-warning mb-2">-$<?php echo $pending ?></h3>
                   </div>
                 </div>
               </div>

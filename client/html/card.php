@@ -30,14 +30,12 @@ $accountType = $userAccount['account_type'];
 $accountStatus = $userAccount['status'];
 $accountLevel = $userAccount['Level'];
 // card info
-$num = $cardInfo['card_number'];
+$num = Utilities::maskCardNumber($cardInfo['card_number']);
 $cvv = $cardInfo['cvv'];
 $date = $cardInfo['expiration_date'];
-$balance = $cardInfo['card_balance'];
+$balance = Utilities::convertToCurrency($cardInfo['card_balance']);
 $type = $cardInfo['card_type'];
 $name = $cardInfo['cardholder_name'];
-
-
 
 ?>
 <?php

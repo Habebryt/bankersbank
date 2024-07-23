@@ -48,4 +48,36 @@ class Utilities
     $dateObject = new DateTime($datetime);
     return $dateObject->format('Y-m-d');
   }
+
+  public static function formatCurrency($amount)
+  {
+    return number_format($amount, 2, '.', ',');
+  }
+
+  public static function maskCardNumber($cardNumber)
+  {
+    $cardNumber = strval($cardNumber);
+
+    $lastFour = substr($cardNumber, -4);
+
+    $length = strlen($cardNumber);
+
+    $asteriskGroups = floor(($length - 1) / 4);
+
+    $masked = '';
+    for ($i = 0; $i < $length - 4; $i++) {
+      if ($i % 4 == 0 && $i != 0) {
+        $masked .= ' '; // Add a space every 4 characters
+      }
+      $masked .= '*';
+    }
+
+    if ($masked !== '') {
+      $masked .= ' ';
+    }
+
+    $masked .= $lastFour;
+
+    return $masked;
+  }
 }
