@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 19, 2024 at 09:08 AM
+-- Generation Time: Jul 23, 2024 at 09:51 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -131,6 +131,35 @@ CREATE TABLE `audit_log` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `biz_transactions`
+--
+
+CREATE TABLE `biz_transactions` (
+  `biztransactionid` int(11) NOT NULL,
+  `transaction_ref` varchar(50) DEFAULT NULL,
+  `account_number` varchar(20) DEFAULT NULL,
+  `transaction_type` enum('Sent money','Wire Deposit','Transfer','Credit Card','Wallet','Mastercard') DEFAULT NULL,
+  `transaction_description` varchar(255) DEFAULT NULL,
+  `amount` decimal(15,2) DEFAULT NULL,
+  `currency` char(3) DEFAULT NULL,
+  `transaction_date` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `biz_transactions`
+--
+
+INSERT INTO `biz_transactions` (`biztransactionid`, `transaction_ref`, `account_number`, `transaction_type`, `transaction_description`, `amount`, `currency`, `transaction_date`) VALUES
+(1, 'A9C8Z7X4Y2', '0123456789', 'Sent money', 'Paypal', '2456.00', 'USD', '2024-07-23 13:43:14'),
+(2, 'B7F6A1R3P5', '0123456789', 'Wire Deposit', 'Habeeb Bright', '14857.00', 'USD', '2024-07-23 13:43:14'),
+(3, 'Q5R9F3J6U7', '0123456789', 'Transfer', 'Refund', '637.91', 'USD', '2024-07-23 13:43:14'),
+(4, 'K3W5R1M8O4', '0123456789', 'Credit Card', 'Ordered Food', '838.71', 'USD', '2024-07-23 13:43:14'),
+(5, 'L2D7G6J1Y9', '0123456789', 'Wallet', 'Starbucks', '203.33', 'USD', '2024-07-23 13:43:14'),
+(6, 'F9E2D8Q3Z5', '0123456789', 'Mastercard', 'Ordered Food', '92.45', 'USD', '2024-07-23 13:43:14');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `businesses`
 --
 
@@ -154,7 +183,7 @@ CREATE TABLE `businesses` (
 --
 
 INSERT INTO `businesses` (`id`, `account_number`, `business_balance`, `business_credit`, `business_debit`, `pending`, `expense`, `business_name`, `business_address`, `business_contact`, `created_at`, `updated_at`) VALUES
-(1, '0123456789', '200000.00', '20000.00', '100.00', '1200.00', '3000.00', 'Bankers Bank', '11 Onadeko', '09067023823', '2024-07-19 08:41:04', '2024-07-19 08:41:04');
+(1, '0123456789', '320628.89', '1094679.23', '1002456.09', '102456.00', '614857.00', 'Bankers Bank', '11 Onadeko', '09067023823', '2024-07-19 08:41:04', '2024-07-23 10:11:35');
 
 -- --------------------------------------------------------
 
@@ -182,7 +211,8 @@ CREATE TABLE `cards` (
 --
 
 INSERT INTO `cards` (`id`, `account_number`, `card_number`, `cvv`, `issued_date`, `expiration_date`, `card_balance`, `card_type`, `status`, `cardholder_name`, `created_at`, `updated_at`) VALUES
-(1, '0123456789', '123456789012345', '334', '2024-07-02', '2027-07-07', '34555.00', 'Credit', 'Active', 'John Doe', '2024-07-19 08:43:31', '2024-07-19 08:43:31');
+(1, '0123456789', '123456789012345', '334', '2024-07-02', '2027-07-07', '34555.00', 'Credit', 'Active', 'Bright Doe', '2024-07-19 08:43:31', '2024-07-23 10:30:30'),
+(2, '0123456781', '123456789012344', '334', '2024-07-23', '2024-07-23', '40000.75', 'Credit', 'Active', 'Biola Ade', '2024-07-23 19:29:42', '2024-07-23 19:29:42');
 
 -- --------------------------------------------------------
 
@@ -191,7 +221,7 @@ INSERT INTO `cards` (`id`, `account_number`, `card_number`, `cvv`, `issued_date`
 --
 
 CREATE TABLE `card_transactions` (
-  `id` int(11) NOT NULL,
+  `cardtransactionid` int(11) NOT NULL,
   `card_number` varchar(20) NOT NULL,
   `account_number` varchar(20) NOT NULL,
   `transaction_type` enum('Purchase','Withdrawal','Deposit','Transfer') NOT NULL,
@@ -208,7 +238,7 @@ CREATE TABLE `card_transactions` (
 -- Dumping data for table `card_transactions`
 --
 
-INSERT INTO `card_transactions` (`id`, `card_number`, `account_number`, `transaction_type`, `amount`, `transaction_date`, `transaction_status`, `description`, `merchant_name`, `created_at`, `updated_at`) VALUES
+INSERT INTO `card_transactions` (`cardtransactionid`, `card_number`, `account_number`, `transaction_type`, `amount`, `transaction_date`, `transaction_status`, `description`, `merchant_name`, `created_at`, `updated_at`) VALUES
 (1, '123456789012345', '0123456789', 'Deposit', '1000.00', '2024-07-19 08:44:20', 'Pending', 'Deposit of Cash', 'PayPal', '2024-07-19 08:44:20', '2024-07-19 08:44:20');
 
 -- --------------------------------------------------------
@@ -245,6 +275,7 @@ CREATE TABLE `client_accounts` (
   `user_id` int(11) NOT NULL,
   `account_manager_id` int(11) NOT NULL,
   `account_number` varchar(20) NOT NULL,
+  `taxid` int(50) NOT NULL,
   `balance` decimal(15,2) NOT NULL DEFAULT '0.00',
   `account_type` enum('savings','checking','investment') NOT NULL,
   `Level` enum('Tier 1','Tier 2','Tier 3') DEFAULT NULL,
@@ -261,9 +292,9 @@ CREATE TABLE `client_accounts` (
 -- Dumping data for table `client_accounts`
 --
 
-INSERT INTO `client_accounts` (`id`, `user_id`, `account_manager_id`, `account_number`, `balance`, `account_type`, `Level`, `currency`, `interest_rate`, `status`, `opening_date`, `last_activity_date`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '0123456789', '12000.50', 'savings', 'Tier 2', 'USD', '2.00', 'active', '2024-07-01', '2024-07-09', '2024-07-18 20:17:47', '2024-07-18 22:31:48'),
-(2, 4, 1, '0123456781', '0.00', 'checking', 'Tier 2', 'USD', '0.00', 'active', '2024-07-19', NULL, '2024-07-19 08:53:36', '2024-07-19 08:53:36');
+INSERT INTO `client_accounts` (`id`, `user_id`, `account_manager_id`, `account_number`, `taxid`, `balance`, `account_type`, `Level`, `currency`, `interest_rate`, `status`, `opening_date`, `last_activity_date`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '0123456789', 12345, '12000.50', 'savings', 'Tier 2', 'USD', '2.00', 'active', '2024-07-01', '2024-07-09', '2024-07-18 20:17:47', '2024-07-19 20:22:47'),
+(2, 4, 1, '0123456781', 123445, '0.00', 'checking', 'Tier 2', 'USD', '0.00', 'active', '2024-07-19', NULL, '2024-07-19 08:53:36', '2024-07-19 20:22:51');
 
 -- --------------------------------------------------------
 
@@ -299,7 +330,8 @@ CREATE TABLE `client_profiles` (
 --
 
 INSERT INTO `client_profiles` (`id`, `user_id`, `account_manager_id`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone`, `address_line1`, `address_line2`, `city`, `state`, `postal_code`, `country`, `nationality`, `id_type`, `id_number`, `occupation`, `employer`, `annual_income`) VALUES
-(1, 1, 1, 'John', 'Doe', '2024-07-03', 'Male', '09067023823', '11, Onadeko', NULL, 'Lawanson', 1953, NULL, 163, 163, 'Passport', 'A349023', 'Software Developer', 'Bankers Bank', '30000.00');
+(1, 1, 1, 'Bright', 'Doe', '2024-07-03', 'Male', '09067023823', '11, Onadeko', NULL, 'Lawanson', 1953, NULL, 163, 163, 'Passport', 'A349023', 'Software Developer', 'Bankers Bank', '30000.00'),
+(2, 4, 1, 'Biola', 'Ade', '2024-07-03', 'Male', '0835039089', 'No Ilepeju', NULL, 'Lagos', 1953, '33222', 163, 163, 'National ID', 'A349023', 'Tech Bro', 'Data', '40000.00');
 
 -- --------------------------------------------------------
 
@@ -310,6 +342,7 @@ INSERT INTO `client_profiles` (`id`, `user_id`, `account_manager_id`, `first_nam
 CREATE TABLE `client_support_requests` (
   `id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
+  `account_number` varchar(20) NOT NULL,
   `account_manager_id` int(11) NOT NULL,
   `subject` varchar(255) NOT NULL,
   `message` text NOT NULL,
@@ -324,8 +357,9 @@ CREATE TABLE `client_support_requests` (
 -- Dumping data for table `client_support_requests`
 --
 
-INSERT INTO `client_support_requests` (`id`, `client_id`, `account_manager_id`, `subject`, `message`, `status`, `priority`, `created_at`, `updated_at`, `resolved_at`) VALUES
-(1, 1, 1, 'Checker', 'Text filler', 'open', 'medium', '2024-07-19 09:05:44', '2024-07-19 09:05:44', NULL);
+INSERT INTO `client_support_requests` (`id`, `client_id`, `account_number`, `account_manager_id`, `subject`, `message`, `status`, `priority`, `created_at`, `updated_at`, `resolved_at`) VALUES
+(2, 4, '0123456781', 1, 'This is a support Message', 'This is a support Message', 'in_progress', 'medium', '2024-07-23 20:03:19', '2024-07-23 20:03:57', NULL),
+(3, 1, '0123456780', 1, 'This is a support Message', 'This is a support Message', 'open', 'medium', '2024-07-23 20:03:48', '2024-07-23 20:03:48', NULL);
 
 -- --------------------------------------------------------
 
@@ -634,7 +668,7 @@ CREATE TABLE `facility_loans` (
 --
 
 INSERT INTO `facility_loans` (`id`, `account_number`, `facility_limit`, `current_utilization`, `interest_rate`, `maturity_date`, `interest_payment`) VALUES
-(1, '0123456789', '1000.00', '200.00', '10.00', '2024-07-31', '100.00');
+(1, '0123456789', '10000000.00', '3500000.00', '2.50', '2026-12-26', '100.00');
 
 -- --------------------------------------------------------
 
@@ -648,6 +682,7 @@ CREATE TABLE `investments` (
   `portfolio_balance` decimal(15,2) NOT NULL,
   `business_savings` decimal(15,2) NOT NULL,
   `expense` decimal(15,2) NOT NULL,
+  `investment_loss` decimal(15,2) NOT NULL,
   `investment_options` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -657,8 +692,37 @@ CREATE TABLE `investments` (
 -- Dumping data for table `investments`
 --
 
-INSERT INTO `investments` (`id`, `account_number`, `portfolio_balance`, `business_savings`, `expense`, `investment_options`, `created_at`, `updated_at`) VALUES
-(1, '0123456789', '12000.00', '30000.00', '3000.00', 'Bankers Group', '2024-07-19 08:46:22', '2024-07-19 08:46:22');
+INSERT INTO `investments` (`id`, `account_number`, `portfolio_balance`, `business_savings`, `expense`, `investment_loss`, `investment_options`, `created_at`, `updated_at`) VALUES
+(1, '0123456789', '120628.89', '14857.00', '2456.00', '14679.23', 'Bankers Group', '2024-07-19 08:46:22', '2024-07-23 10:17:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inv_transactions`
+--
+
+CREATE TABLE `inv_transactions` (
+  `invtransactionid` int(11) NOT NULL,
+  `transaction_ref` varchar(50) DEFAULT NULL,
+  `account_number` varchar(20) DEFAULT NULL,
+  `transaction_type` enum('Sent money','Wire Deposit','Transfer','Credit Card','Wallet','Mastercard') DEFAULT NULL,
+  `transaction_description` varchar(255) DEFAULT NULL,
+  `amount` decimal(15,2) DEFAULT NULL,
+  `currency` char(3) DEFAULT NULL,
+  `transaction_date` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `inv_transactions`
+--
+
+INSERT INTO `inv_transactions` (`invtransactionid`, `transaction_ref`, `account_number`, `transaction_type`, `transaction_description`, `amount`, `currency`, `transaction_date`) VALUES
+(1, 'A9C8Z7X4Y2', '0123456789', 'Sent money', 'Paypal', '2456.00', 'USD', '2024-07-23 13:43:14'),
+(2, 'B7F6A1R3P5', '0123456789', 'Wire Deposit', 'Habeeb Bright', '14857.00', 'USD', '2024-07-23 13:43:14'),
+(3, 'Q5R9F3J6U7', '0123456789', 'Transfer', 'Refund', '637.91', 'USD', '2024-07-23 13:43:14'),
+(4, 'K3W5R1M8O4', '0123456789', 'Credit Card', 'Ordered Food', '838.71', 'USD', '2024-07-23 13:43:14'),
+(5, 'L2D7G6J1Y9', '0123456789', 'Wallet', 'Starbucks', '203.33', 'USD', '2024-07-23 13:43:14'),
+(6, 'F9E2D8Q3Z5', '0123456789', 'Mastercard', 'Ordered Food', '92.45', 'USD', '2024-07-23 13:43:14');
 
 -- --------------------------------------------------------
 
@@ -713,7 +777,7 @@ CREATE TABLE `mortgage_loans` (
 --
 
 INSERT INTO `mortgage_loans` (`id`, `account_number`, `mortgage_balance`, `monthly_payment`, `interest_rate`, `remaining_terms`, `mortgage_options`, `repayment_dates`, `previous_payments`, `next_payment`) VALUES
-(1, '0123456789', '12000.00', '1200.00', '10.00', 10, 'House', '2024-07-19', '1500.00', '2024-08-19');
+(1, '0123456789', '320628.89', '1845.67', '3.75', 28, 'House', '2024-07-19', '1500.00', '2024-08-19');
 
 -- --------------------------------------------------------
 
@@ -4171,9 +4235,9 @@ CREATE TABLE `subscription_reminders` (
 --
 
 CREATE TABLE `transactions` (
-  `id` int(11) NOT NULL,
+  `transactionid` int(11) NOT NULL,
   `account_number` varchar(20) NOT NULL,
-  `transaction_type` enum('mortgage','cash','loan','investment','business','transfer') NOT NULL,
+  `transaction_type` enum('credit','debit') NOT NULL,
   `amount` decimal(15,2) NOT NULL,
   `transaction_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `transaction_status` enum('Pending','Completed','Failed') NOT NULL,
@@ -4182,6 +4246,16 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`transactionid`, `account_number`, `transaction_type`, `amount`, `transaction_date`, `transaction_status`, `reference_id`, `description`, `created_at`, `updated_at`) VALUES
+(1, '0123456789', 'credit', '3000.00', '2024-07-23 06:42:25', 'Pending', 1, 'Salary Deposit', '2024-07-23 06:42:25', '2024-07-23 06:42:25'),
+(2, '0123456789', 'debit', '150.00', '2024-07-23 06:42:25', 'Completed', 2, 'Grocery Shopping', '2024-07-23 06:42:25', '2024-07-23 06:42:25'),
+(3, '0123456789', 'debit', '1200.00', '2024-07-23 06:42:25', 'Completed', 3, 'Rent Payment', '2024-07-23 06:42:25', '2024-07-23 06:42:25'),
+(4, '0123456789', 'debit', '400.00', '2024-07-23 06:42:25', 'Completed', 4, 'Credit Card', '2024-07-23 06:42:25', '2024-07-23 17:51:42');
 
 -- --------------------------------------------------------
 
@@ -4236,7 +4310,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `firstName`, `lastName`, `access_level`, `last_login`, `created_at`, `updated_at`, `profileImage`, `country_id`, `state_id`) VALUES
-(1, 'johndoe', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'john@example.com', 'John', 'Doe', 'Client', '2024-07-18 20:34:36', '2024-07-18 19:36:23', '2024-07-18 19:53:00', NULL, 1, 1),
+(1, 'johndoe', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'john@example.com', 'Bright', 'Doe', 'Client', '2024-07-18 20:34:36', '2024-07-18 19:36:23', '2024-07-23 10:28:07', NULL, 1, 1),
 (2, 'bright', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'bright@gmail.com', 'Habeeb', 'Bright', 'Manager', '2024-07-18 21:15:05', '2024-07-18 20:15:05', '2024-07-18 20:30:57', NULL, NULL, NULL),
 (3, 'habeeb', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'habeeb@gmail.com', 'Bright', 'Habeeb', 'Admin', '2024-07-18 21:15:05', '2024-07-18 20:15:05', '2024-07-18 20:30:53', NULL, NULL, NULL),
 (4, 'biola', '$2y$10$UUDABer.qBcU2s2c0PF6Y..XT9nJNT0yuvBbiLVbSqkyR.5lfT1.i', 'biola@gmail.com', 'Biola', 'Agbarigbe', 'Client', '2024-07-19 09:52:35', '2024-07-19 08:52:35', '2024-07-19 08:52:35', NULL, 163, 1957);
@@ -4291,6 +4365,14 @@ ALTER TABLE `audit_log`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `biz_transactions`
+--
+ALTER TABLE `biz_transactions`
+  ADD PRIMARY KEY (`biztransactionid`),
+  ADD UNIQUE KEY `trans_ref` (`transaction_ref`),
+  ADD KEY `account_number` (`account_number`);
+
+--
 -- Indexes for table `businesses`
 --
 ALTER TABLE `businesses`
@@ -4309,7 +4391,7 @@ ALTER TABLE `cards`
 -- Indexes for table `card_transactions`
 --
 ALTER TABLE `card_transactions`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`cardtransactionid`),
   ADD KEY `card_number` (`card_number`),
   ADD KEY `account_number` (`account_number`);
 
@@ -4377,6 +4459,14 @@ ALTER TABLE `investments`
   ADD KEY `account_number` (`account_number`);
 
 --
+-- Indexes for table `inv_transactions`
+--
+ALTER TABLE `inv_transactions`
+  ADD PRIMARY KEY (`invtransactionid`),
+  ADD UNIQUE KEY `trans_ref` (`transaction_ref`),
+  ADD KEY `account_number` (`account_number`);
+
+--
 -- Indexes for table `loan_applications`
 --
 ALTER TABLE `loan_applications`
@@ -4423,7 +4513,7 @@ ALTER TABLE `subscription_reminders`
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`transactionid`),
   ADD KEY `account_number` (`account_number`);
 
 --
@@ -4484,6 +4574,12 @@ ALTER TABLE `audit_log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `biz_transactions`
+--
+ALTER TABLE `biz_transactions`
+  MODIFY `biztransactionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `businesses`
 --
 ALTER TABLE `businesses`
@@ -4493,13 +4589,13 @@ ALTER TABLE `businesses`
 -- AUTO_INCREMENT for table `cards`
 --
 ALTER TABLE `cards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `card_transactions`
 --
 ALTER TABLE `card_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cardtransactionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `cash_loans`
@@ -4517,13 +4613,13 @@ ALTER TABLE `client_accounts`
 -- AUTO_INCREMENT for table `client_profiles`
 --
 ALTER TABLE `client_profiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `client_support_requests`
 --
 ALTER TABLE `client_support_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `client_support_responses`
@@ -4548,6 +4644,12 @@ ALTER TABLE `facility_loans`
 --
 ALTER TABLE `investments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `inv_transactions`
+--
+ALTER TABLE `inv_transactions`
+  MODIFY `invtransactionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `loan_applications`
@@ -4589,7 +4691,7 @@ ALTER TABLE `subscription_reminders`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transactionid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `transfers`
@@ -4713,6 +4815,12 @@ ALTER TABLE `facility_loans`
 --
 ALTER TABLE `investments`
   ADD CONSTRAINT `investments_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
+
+--
+-- Constraints for table `inv_transactions`
+--
+ALTER TABLE `inv_transactions`
+  ADD CONSTRAINT `inv_transactions_ibfk_1` FOREIGN KEY (`account_number`) REFERENCES `client_accounts` (`account_number`);
 
 --
 -- Constraints for table `loan_applications`
