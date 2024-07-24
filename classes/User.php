@@ -42,7 +42,7 @@ class User extends Db
           if ($result['access_level'] === 'Admin') {
             header("Location: ../admin/html/index.html");
           } elseif ($result['access_level'] === 'Manager') {
-            header("Location: ../manager/html/index.html");
+            header("Location: ../manager/html/index.php");
           } elseif ($result['access_level'] === 'Client') {
             header("Location: ../client/html/index.php");
           } else {
