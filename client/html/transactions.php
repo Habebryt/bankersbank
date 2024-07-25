@@ -22,8 +22,6 @@ $getAcct = new Account;
 $transactions = new Transaction;
 $userAccount = $getAcct->getAccount($userId);
 
-
-
 $accountBalance = $userAccount['balance'];
 $accountNumber = $userAccount['account_number'];
 $accountType = $userAccount['account_type'];
