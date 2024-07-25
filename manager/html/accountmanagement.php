@@ -1,4 +1,73 @@
 <?php
+ini_set("display_errors", "1");
+session_start();
+require_once "../guard.php";
+require_once "../classes/Client.php";
+require_once "../classes/Account.php";
+require_once "../classes/Utilities.php";
+require_once "../classes/Country.php";
+
+$country = new Country();
+$countries = $country->getCountries();
+
+
+$manager = $_SESSION['useronline'];
+$clientCode = $_GET['accountowner'];
+$accountNumber = $_GET['accountnumber'];
+$managerId = $manager['id'];
+$fromClients = new Client;
+$clientAccount = new Account;
+
+
+$myClientX = $fromClients->getUser($clientCode);
+$userId = $myClientX['id'];
+
+// Attempt to get client details
+$myClient = $fromClients->getUser($clientCode);
+if (is_array($myClient)) {
+  // If the client is found, assign it to a variable
+  $fClient = $myClient;
+} else {
+  // If no client profile is found, get User by UserCode
+  $fClient = null;
+}
+
+// Attempt to get account details
+$myAccount = $clientAccount->getAccount($userId, $accountNumber);
+
+if (is_array($myAccount)) {
+  // If the account is found, assign it to a variable
+  $fAccount = $myAccount;
+} else {
+  // If no account is found, display a message
+  $fAccount = null; // Assign null if no account is found
+}
+// var_dump($myClientY);
+
+// Merge data if both account and client are found and user IDs match
+if (!empty($fAccount) && !empty($fClient)) {
+  if (($fAccount['user_id'] === $fClient['user_id']) && isset($myClientX) && ($fAccount['user_id'] === $myClientX['id'])) {
+    // Merge the arrays if the user IDs match
+    $clientData = $mergedData = array_merge($fAccount, $fClient, $myClientX);
+    //print_r($clientData);
+  } else {
+    // If user IDs do not match, just print the client data
+    // print_r($myClientX);
+  }
+} else {
+  // Print separate information if either account or client data is missing
+  if (empty($fAccount) && empty($fClient)) {
+    return $myClientX;
+  }
+}
+
+
+// if (empty($clientData)) {
+//   print_r($myClientX);
+// } else {
+//   print_r($clientData);
+// }
+
 require_once "../partials/headertop.php";
 ?>
 <!-- Menu -->
@@ -64,8 +133,8 @@ require_once "../partials/asidetop.php";
           <li class="breadcrumb-item">
             <a href="accounts.php">All Clients</a>
           </li>
-          <li class="breadcrumb-item">
-            <a href="javascript:void(0);">Client Name</a>
+          <li class="breadcrumb-item active lead">
+            <a href="javascript:void(0);"><?php echo empty($clientData) ? $myClientX['firstName'] . ' ' . $myClientX['lastName'] : $clientData['first_name'] . ' ' . $clientData['last_name']; ?></a>
           </li>
         </ol>
       </nav>
@@ -80,13 +149,13 @@ require_once "../partials/asidetop.php";
             <div>
               <div class="card-body">
                 <div class="d-flex align-items-start align-items-sm-center gap-4">
-                  <img src="../assets/img/avatars/1.png" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                  <img src="../profileimage/<?php echo isset($mergedData['profileImage']) ? $mergedData['profileImage'] : 'default.jpg'; ?>" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
                   <div class="button-wrapper">
                     <form action="">
                       <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                         <span class="d-none d-sm-block">Upload new photo</span>
                         <i class="bx bx-upload d-block d-sm-none"></i>
-                        <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
+                        <input type="file" name="profileImage" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
                       </label>
                       <button type="submit" class="btn btn-success account-image-upload mb-4">Upload</button>
                       <button type="reset" class="btn btn-outline-secondary account-image-reset mb-4">
@@ -111,13 +180,14 @@ require_once "../partials/asidetop.php";
                       <div class="mb-3 d-block">
                         <div class="mb-3 col-md-12">
                           <label for="firstName" class="form-label">First Name</label>
-                          <input class="form-control" type="text" id="firstName" name="firstName" value="Habeeb" autofocus />
+                          <input class="form-control" type="text" id="firstName" name="firstName" value="<?php echo empty($clientData) ? $myClientX['firstName'] : $clientData['first_name']; ?>" autofocus />
+
                         </div>
                         <div class="mb-3 col-md-12">
                           <label for="lastName" class="form-label">Last Name</label>
-                          <input class="form-control" type="text" name="lastName" id="lastName" value="Bright" />
+                          <input class="form-control" type="text" name="lastName" id="lastName" value="<?php echo empty($clientData) ? $myClientX['lastName'] : $clientData['last_name']; ?>" />
                         </div>
-                        <div class="mb-3 col-md-12">
+                        <div class="mb-3 col-md-12 d-none">
                           <label for="otherName" class="form-label">Other Name</label>
                           <input class="form-control" type="text" name="otherName" id="otherName" value="Bright" />
                         </div>
@@ -127,38 +197,36 @@ require_once "../partials/asidetop.php";
                         <label class="form-label" for="basic-icon-default-dob">Date of Birth</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                          <input type="date" class="form-control" id="basic-icon-default-dob" />
+                          <input type="date" class="form-control" name="dob" id="basic-icon-default-dob" value="<?php echo empty($clientData) ?: $clientData['date_of_birth']; ?>" />
                         </div>
                       </div>
 
                       <div class="mb-3 col-md-12">
                         <label class="form-label" for="country">Country of Nationality</label>
-                        <select id="country" class="select2 form-select">
-                          <option value="">Select</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Bangladesh">Bangladesh</option>
-                          <option value="Belarus">Belarus</option>
-                          <option value="Brazil">Brazil</option>
-                          <option value="Canada">Canada</option>
-                          <option value="China">China</option>
-                          <option value="France">France</option>
-                          <option value="Germany">Germany</option>
-                          <option value="India">India</option>
-                          <option value="Indonesia">Indonesia</option>
-                          <option value="Israel">Israel</option>
-                          <option value="Italy">Italy</option>
-                          <option value="Japan">Japan</option>
-                          <option value="Korea">Korea, Republic of</option>
-                          <option value="Mexico">Mexico</option>
-                          <option value="Philippines">Philippines</option>
-                          <option value="Russia">Russian Federation</option>
-                          <option value="South Africa">South Africa</option>
-                          <option value="Thailand">Thailand</option>
-                          <option value="Turkey">Turkey</option>
-                          <option value="Ukraine">Ukraine</option>
-                          <option value="United Arab Emirates">United Arab Emirates</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="United States">United States</option>
+                        <select id="nationality" name="nationality" class="select2 form-select">
+                          <?php
+                          // Determine the selected nationality value and name
+                          $selectedNationalityId = '';
+                          $selectedNationalityName = '';
+
+                          if (!empty($clientData)) {
+                            $selectedNationalityId = $clientData['nationality'] ?? '';
+                            $selectedNationalityName = $clientData['nationality_name'] ?? '';
+                          } else {
+                            $selectedNationalityId = ''; // Use empty or another fallback
+                            $selectedNationalityName = ''; // No name available if $clientData is empty
+                          }
+                          ?>
+                          <!-- Display the selected nationality option if available -->
+                          <option value="<?php echo htmlspecialchars($selectedNationalityId); ?>" selected>
+                            <?php echo htmlspecialchars($selectedNationalityName ?: 'Select Nationality'); ?>
+                          </option>
+                          <!-- Populate the dropdown with countries -->
+                          <?php foreach ($countries as $country) : ?>
+                            <option value="<?php echo htmlspecialchars($country['idcountry']); ?>">
+                              <?php echo htmlspecialchars($country['country_name']); ?>
+                            </option>
+                          <?php endforeach; ?>
                         </select>
                       </div>
 
@@ -166,7 +234,7 @@ require_once "../partials/asidetop.php";
                         <label class="form-label" for="basic-icon-default-id">National ID / Passport Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-id-card"></i></span>
-                          <input type="text" class="form-control" id="basic-icon-default-id" placeholder="AB123456" />
+                          <input type="text" class="form-control" name="passNumber" id="basic-icon-default-id" placeholder="AB123456" value="<?php echo empty($clientData) ? '' : $clientData['id_number']; ?>" />
                         </div>
                       </div>
                     </fieldset>
@@ -186,7 +254,7 @@ require_once "../partials/asidetop.php";
                         <label class="form-label" for="basic-icon-default-hash">Account Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-hash"></i></span>
-                          <input type="number" id="basic-icon-default-hash" class="form-control" placeholder="0123456789" />
+                          <input type="text" id="basic-icon-default-hash" class="form-control" placeholder="0123456789" name="accountNumber" value="<?php echo empty($clientData) ? '' : $clientData['account_number']; ?>" />
                         </div>
                       </div>
 
@@ -194,110 +262,33 @@ require_once "../partials/asidetop.php";
                         <label class="form-label" for="basic-icon-default-income">Annual Income</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-dollar"></i></span>
-                          <input type="number" id="basic-icon-default-income" class="form-control" placeholder="50000" />
+                          <input type="text" id="basic-icon-default-income" class="form-control" placeholder="50000" name="annual_income" value="<?php echo empty($clientData) ? '' : Utilities::convertToCurrency($clientData['annual_income']); ?>" />
                         </div>
-                      </div>
 
-                      <div class="mb-3 col-md-12">
-                        <label class="form-label" for="country">Country of Residence</label>
-                        <select id="country" class="select2 form-select">
-                          <option value="">Select</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Bangladesh">Bangladesh</option>
-                          <option value="Belarus">Belarus</option>
-                          <option value="Brazil">Brazil</option>
-                          <option value="Canada">Canada</option>
-                          <option value="China">China</option>
-                          <option value="France">France</option>
-                          <option value="Germany">Germany</option>
-                          <option value="India">India</option>
-                          <option value="Indonesia">Indonesia</option>
-                          <option value="Israel">Israel</option>
-                          <option value="Italy">Italy</option>
-                          <option value="Japan">Japan</option>
-                          <option value="Korea">Korea, Republic of</option>
-                          <option value="Mexico">Mexico</option>
-                          <option value="Philippines">Philippines</option>
-                          <option value="Russia">Russian Federation</option>
-                          <option value="South Africa">South Africa</option>
-                          <option value="Thailand">Thailand</option>
-                          <option value="Turkey">Turkey</option>
-                          <option value="Ukraine">Ukraine</option>
-                          <option value="United Arab Emirates">United Arab Emirates</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="United States">United States</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3 col-md-12">
-                        <label class="form-label" for="state">State of Residence</label>
-                        <select id="state" class="select2 form-select">
-                          <option value="">Select</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Bangladesh">Bangladesh</option>
-                          <option value="Belarus">Belarus</option>
-                          <option value="Brazil">Brazil</option>
-                          <option value="Canada">Canada</option>
-                          <option value="China">China</option>
-                          <option value="France">France</option>
-                          <option value="Germany">Germany</option>
-                          <option value="India">India</option>
-                          <option value="Indonesia">Indonesia</option>
-                          <option value="Israel">Israel</option>
-                          <option value="Italy">Italy</option>
-                          <option value="Japan">Japan</option>
-                          <option value="Korea">Korea, Republic of</option>
-                          <option value="Mexico">Mexico</option>
-                          <option value="Philippines">Philippines</option>
-                          <option value="Russia">Russian Federation</option>
-                          <option value="South Africa">South Africa</option>
-                          <option value="Thailand">Thailand</option>
-                          <option value="Turkey">Turkey</option>
-                          <option value="Ukraine">Ukraine</option>
-                          <option value="United Arab Emirates">United Arab Emirates</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="United States">United States</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3 col-md-12">
-                        <label class="form-label" for="country">Tax Residence</label>
-                        <select id="taxResidence" class="select2 form-select">
-                          <option value="">Select</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Bangladesh">Bangladesh</option>
-                          <option value="Belarus">Belarus</option>
-                          <option value="Brazil">Brazil</option>
-                          <option value="Canada">Canada</option>
-                          <option value="China">China</option>
-                          <option value="France">France</option>
-                          <option value="Germany">Germany</option>
-                          <option value="India">India</option>
-                          <option value="Indonesia">Indonesia</option>
-                          <option value="Israel">Israel</option>
-                          <option value="Italy">Italy</option>
-                          <option value="Japan">Japan</option>
-                          <option value="Korea">Korea, Republic of</option>
-                          <option value="Mexico">Mexico</option>
-                          <option value="Philippines">Philippines</option>
-                          <option value="Russia">Russian Federation</option>
-                          <option value="South Africa">South Africa</option>
-                          <option value="Thailand">Thailand</option>
-                          <option value="Turkey">Turkey</option>
-                          <option value="Ukraine">Ukraine</option>
-                          <option value="United Arab Emirates">United Arab Emirates</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="United States">United States</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label class="form-label" for="basic-icon-default-tax-id">Tax Identification Number</label>
-                        <div class="input-group input-group-merge">
-                          <span class="input-group-text"><i class="bx bx-file"></i></span>
-                          <input type="text" id="basic-icon-default-tax-id" class="form-control" placeholder="123456789" />
+                        <div class="mb-3 mt-3 col-md-12">
+                          <label class="form-label" for="country">Country of Residence</label>
+                          <select id="country" name="countryOfResidence" class="select2 form-select">
+                            <option value="<?php echo isset($clientData['country']) ? $clientData['country'] : ''; ?>" selected><?php echo isset($clientData['country_name']) ? $clientData['country_name'] : ''; ?></option>
+                            <?php foreach ($countries as $country) : ?>
+                              <option value="<?php echo $country['idcountry']; ?>"><?php echo $country['country_name']; ?></option>
+                            <?php endforeach; ?>
+                          </select>
                         </div>
-                      </div>
+
+                        <div class="mb-3 col-md-12">
+                          <label class="form-label" for="state">State of Residence</label>
+                          <select name="stateOfOrigin" id="state" class="select2 form-select">
+                            <option value="" <?php echo isset($clientData['state']) ? $clientData['state'] : ''; ?>"" selected><?php echo isset($clientData['state_name']) ? $clientData['state_name'] : ''; ?></option>
+                          </select>
+                        </div>
+
+                        <div class="mb-3">
+                          <label class="form-label" for="basic-icon-default-tax-id">Tax Identification Number</label>
+                          <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="bx bx-file"></i></span>
+                            <input type="text" name="taxId" id="basic-icon-default-tax-id" class="form-control" placeholder="123456789" value="<?php echo empty($clientData) ? '' : $clientData['taxid']; ?>" />
+                          </div>
+                        </div>
                     </fieldset>
                     <div class="mt-2">
                       <button type="submit" class="btn btn-primary me-2">Save changes</button>
@@ -319,13 +310,13 @@ require_once "../partials/asidetop.php";
                             <label class="form-label" for="basic-icon-default-address">Residential Address</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-home"></i></span>
-                              <input type="text" class="form-control" id="basic-icon-default-address" placeholder="123 Main St, 12345 City" />
+                              <input type="text" class="form-control" id="basic-icon-default-address" placeholder="123 Main St, 12345 City" name="address" value="<?php echo empty($clientData) ? '' : $clientData['address_line1'] . ', ' . $clientData['address_line2'] . '' . $clientData['city']; ?>" />
                             </div>
                           </div>
 
                           <div class="mb-3 col-md-12">
                             <label for="timeZones" class="form-label">Timezone</label>
-                            <select id="timeZones" class="select2 form-select">
+                            <select id="timeZones" name="timeZone" class="select2 form-select">
                               <option value="">Select Timezone</option>
                               <option value="-12">(GMT-12:00) International Date Line West</option>
                               <option value="-11">(GMT-11:00) Midway Island, Samoa</option>
@@ -352,7 +343,7 @@ require_once "../partials/asidetop.php";
                             <label class="form-label" for="basic-icon-default-email">Email</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                              <input type="email" id="basic-icon-default-email" class="form-control" placeholder="john.doe@example.com" />
+                              <input type="email" name="accountEmail" id="basic-icon-default-email" class="form-control" placeholder="account.email@example.com" value="<?php echo empty($clientData) ? $myClientX['email'] : $clientData['email']; ?>" />
                             </div>
                           </div>
                         </div>
@@ -361,21 +352,22 @@ require_once "../partials/asidetop.php";
                           <div class="mb-3 col-md-12">
                             <label class="form-label" for="phoneNumber">Phone Number</label>
                             <div class="input-group input-group-merge">
-                              <span class="input-group-text">US (+1)</span>
-                              <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="202 555 0111" />
+                              <!-- <span class="input-group-text">US (+1)</span> -->
+                              <span class="input-group-text"></span>
+                              <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="202 555 0111" value="<?php echo empty($clientData) ? '' : $clientData['phone']; ?>" />
                             </div>
                           </div>
 
                           <div class="mb-3 col-md-12">
                             <label for="zipCode" class="form-label">Zip Code</label>
-                            <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="231465" maxlength="6" />
+                            <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="231465" maxlength="6" value="<?php echo empty($clientData) ? '' : $clientData['postal_code']; ?>" />
                           </div>
 
                           <div class="mb-3">
                             <label class="form-label" for="basic-icon-default-occupation">Occupation</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
-                              <input type="text" id="basic-icon-default-occupation" class="form-control" placeholder="Software Engineer" />
+                              <input type="text" id="basic-icon-default-occupation" class="form-control" placeholder="Software Engineer" value="<?php echo empty($clientData) ? '' : $clientData['occupation']; ?>" />
                             </div>
                           </div>
                         </div>
@@ -391,23 +383,23 @@ require_once "../partials/asidetop.php";
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 d-none">
           <form action="">
             <div class="form-password-toggle">
               <h5 class="mb-4">Change Password</h5>
               <label class="form-label" for="basic-default-password12">Old Password</label>
               <div class="input-group">
-                <input type="password" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
+                <input type="password" name="oldPassword" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
                 <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               </div>
               <label class="form-label" for="basic-default-password12">New Password</label>
               <div class="input-group">
-                <input type="password" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
+                <input type="password" name="newPassword" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
                 <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               </div>
               <label class="form-label" for="basic-default-password12">Confirm Password</label>
               <div class="input-group">
-                <input type="password" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
+                <input type="password" name="confirmNewPassword" class="form-control" id="basic-default-password12" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="basic-default-password2" />
                 <span id="basic-default-password2" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               </div>
             </div>

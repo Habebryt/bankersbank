@@ -1,5 +1,11 @@
 <?php
+ini_set("display_errors", "1");
+session_start();
+require_once "../guard.php";
 require_once "../partials/headertop.php";
+
+$manager = $_SESSION['useronline'];
+$fullname = $manager['firstName'] . ' ' . $manager['lastName'];
 ?>
 <!-- Menu -->
 <!-- Aside Top -->
@@ -55,10 +61,18 @@ require_once "../partials/asidetop.php";
     <!-- Content -->
 
     <div class="container-xxl flex-grow-1 container-p-y">
+      <div class="row alert-fly">
+        <div class="col-md-12">
+          <?php if (isset($_SESSION['user_welcome'])) : ?>
+            <div class="alert alert-primary alert-fly"><?php echo $_SESSION['user_welcome'] . " " . $manager['firstName']; ?></div>
+            <?php unset($_SESSION['user_welcome']); ?>
+          <?php endif; ?>
+        </div>
+      </div>
       <div class="mb-2">
         <button class="btn btn-success disabled">3 Months left</button>
-        <button class="btn btn-primary">Add Account</button>
-        <button class="btn btn-secondary">Credit Account</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClient">Add Client</button>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTransfer">Credit Account</button>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 order-1">
@@ -107,7 +121,7 @@ require_once "../partials/asidetop.php";
                       </button>
                       <div class="dropdown-menu" aria-labelledby="cardOpt1">
                         <a class="dropdown-item" href="accounts.php">View Accounts</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Add Account</a>
+                        <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#addClient">Add Client</a>
                       </div>
                     </div>
                   </div>

@@ -93,4 +93,4 @@ session_start();
   </div>
 </div>
 
-<?php require_once "footer.php"; ?>
+<?php require_once "partials/footer.php"; ?>

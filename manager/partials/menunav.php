@@ -1,3 +1,7 @@
+<?php
+$manager = $_SESSION['useronline'];
+$fullname = $manager['firstName'] . ' ' . $manager['lastName'];
+?>
 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
   <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
     <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
@@ -32,7 +36,7 @@
                   </div>
                 </div>
                 <div class="flex-grow-1">
-                  <span class="fw-medium d-block">Habeeb Bright</span>
+                  <span class="fw-medium d-block"><?php echo $fullname; ?></span>
                   <small class="text-muted">Acct No: 1234567890</small>
                   <br />
                   <small class="text-muted">Level: Gold</small>
@@ -68,7 +72,7 @@
             <div class="dropdown-divider"></div>
           </li>
           <li>
-            <a class="dropdown-item" href="javascript:void(0);">
+            <a class="dropdown-item" href="#" onclick="confirmLogout()">
               <i class="bx bx-power-off me-2"></i>
               <span class="align-middle">Log Out</span>
             </a>
@@ -79,3 +83,46 @@
     </ul>
   </div>
 </nav>
+
+
+<!-- Logout JS -->
+<script>
+  let inactivityTime = 20 * 60 * 1000;
+  let warningTime = 60 * 1000;
+  let timeoutId;
+  let warningId;
+
+  function resetTimer() {
+    clearTimeout(timeoutId);
+    clearTimeout(warningId);
+
+    warningId = setTimeout(() => {
+      alert('You will be logged out in 30 seconds due to inactivity.');
+    }, inactivityTime - warningTime);
+
+    timeoutId = setTimeout(() => {
+      alert('You have been logged out due to inactivity.');
+      window.location.href = '../exit.php';
+    }, inactivityTime);
+  }
+
+  // Function to confirm logout on button click
+  function confirmLogout() {
+    const confirmLogout = confirm('Are you sure you want to logout?');
+    if (confirmLogout) {
+      window.location.href = '../exit.php';
+    }
+  }
+
+  // Event listeners to detect user activity and reset the timer
+  window.onload = function() {
+    document.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onmousedown = resetTimer; // Catch touchpad/mouse activity
+    document.ontouchstart = resetTimer; // Catch touch event
+    document.onclick = resetTimer; // Catch click event
+    document.onkeypress = resetTimer; // Catch keyboard activity
+    document.onscroll = resetTimer; // Catch scrolling
+    document.onkeydown = resetTimer; // Catch any key down activity
+  };
+</script>

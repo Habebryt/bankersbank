@@ -81,8 +81,8 @@
 
 <!-- Logout JS -->
 <script>
-  let inactivityTime = 5 * 60 * 1000;
-  let warningTime = 30 * 1000;
+  let inactivityTime = 20 * 60 * 1000;
+  let warningTime = 60 * 1000;
   let timeoutId;
   let warningId;
 
