@@ -23,12 +23,12 @@ require_once "../partials/asidetop.php";
         <div data-i18n="transaction">My Transactions</div>
       </a>
     </li>
-    <li class="menu-item active">
+    <li class="menu-item">
       <a href="confirmedtransactions.php" class="menu-link">
         <div data-i18n="transaction">Confirmed</div>
       </a>
     </li>
-    <li class="menu-item">
+    <li class="menu-item active">
       <a href="pendingtransactions.php" class="menu-link">
         <div data-i18n="transaction">Pending</div>
       </a>
@@ -95,7 +95,7 @@ require_once "../partials/asidetop.php";
               <a href="javascript:void(0);">Transactions</a>
             </li>
             <li class="breadcrumb-item">
-              <a href="confirmedtransactions.php">Confirmed Transactions</a>
+              <a href="pendingtransactions.php">Pending Transactions</a>
             </li>
             <li class="breadcrumb-item active">TRX-100</li>
           </ol>

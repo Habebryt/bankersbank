@@ -26,10 +26,6 @@
         <div data-i18n="Container">Credit Facility</div>
       </a>
     </li>
-    <li class="menu-item">
-      <a href="layouts-blank.php" class="menu-link">
-        <div data-i18n="Blank">Blank</div>
-      </a>
-    </li>
+
   </ul>
 </li>

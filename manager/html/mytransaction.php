@@ -168,8 +168,78 @@ require_once "../partials/headertop.php";
     </li>
   </ul>
 </aside>
-<!-- / Menu -->
+<!-- / Menu --><?php
+                require_once "../partials/headertop.php";
+                ?>
+<!-- Menu -->
+<!-- Aside Top -->
+<?php
+require_once "../partials/asidetop.php";
+?>
 
+<!-- Dashboards -->
+<?php require_once "../partials/aside/inactivedashboard.php"; ?>
+
+<!-- Transactions -->
+
+<li class="menu-item active">
+  <a href="javascript:void(0);" class="menu-link menu-toggle">
+    <i class="menu-icon tf-icons bx bx-wallet"></i>
+    <div data-i18n="transaction">Transactions</div>
+  </a>
+  <ul class="menu-sub">
+    <li class="menu-item active">
+      <a href="transactions.php" class="menu-link">
+        <div data-i18n="transaction">My Transactions</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="confirmedtransactions.php" class="menu-link">
+        <div data-i18n="transaction">Confirmed</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="pendingtransactions.php" class="menu-link">
+        <div data-i18n="transaction">Pending</div>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="declinedtransactions.php" class="menu-link">
+        <div data-i18n="transaction">Declined</div>
+      </a>
+    </li>
+  </ul>
+</li>
+
+<!-- Loans and Mortgages -->
+<?php require_once "../partials/aside/inactiveloansandmortages.php"; ?>
+
+<!-- Card -->
+<?php require_once "../partials/aside/inactivecard.php"; ?>
+
+<!-- Account Management -->
+<?php require_once "../partials/aside/inactiveaccountmanagement.php";
+?>
+
+<!-- Accounts  -->
+
+<?php require_once "../partials/aside/inactiveaccounts.php"; ?>
+
+<!-- Settings -->
+
+<?php require_once "../partials/aside/inactivesettings.php"; ?>
+
+<!-- Subscription -->
+<?php require_once "../partials/aside/inactivesub.php"; ?>
+
+<!-- Support -->
+
+<?php require_once "../partials/aside/inactivesupport.php"; ?>
+
+<!-- Aside Bottom -->
+
+<?php require_once "../partials/asidebottom.php"; ?>
+<!-- / Menu -->
 <!-- Layout container -->
 <div class="layout-page">
   <!-- Navbar -->

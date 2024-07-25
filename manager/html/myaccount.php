@@ -42,7 +42,6 @@ require_once "../partials/asidetop.php";
 <?php require_once "../partials/asidebottom.php"; ?>
 <!-- / Menu -->
 
-<!-- / Menu -->
 
 <!-- Layout container -->
 <div class="layout-page">
