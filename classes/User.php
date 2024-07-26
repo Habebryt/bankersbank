@@ -40,10 +40,16 @@ class User extends Db
 
           // Redirect based on access level
           if ($result['access_level'] === 'Admin') {
+            $successMessage = "Welcome Back to BankersBank..";
+            $_SESSION["login_success"] = $successMessage;
             header("Location: ../admin/html/index.html");
           } elseif ($result['access_level'] === 'Manager') {
-            header("Location: ../manager/html/index.html");
+            $successMessage = "Welcome Back to BankersBank..";
+            $_SESSION["login_success"] = $successMessage;
+            header("Location: ../manager/html/index.php");
           } elseif ($result['access_level'] === 'Client') {
+            $successMessage = "Welcome Back to BankerBanker..";
+            $_SESSION["login_success"] = $successMessage;
             header("Location: ../client/html/index.php");
           } else {
             header("Location: ../welcome.php");

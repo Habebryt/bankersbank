@@ -9,7 +9,6 @@ $UserAuthentication = new User;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $userdetail = Utilities::firstName($_POST['email-username']);
   $password = $_POST['password'];
-
   $loginResult = $UserAuthentication->loginUser($userdetail, $password);
 
   if ($loginResult === 0) {

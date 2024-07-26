@@ -22,6 +22,9 @@
   <a href="#" target="_blank" class="btn btn-danger btn-cont-sup">Support?</a>
 </div>
 
+<!-- Modals -->
+<?php require_once "../partials/modals.php" ?>
+
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
 
@@ -30,6 +33,8 @@
 <script src="../assets/vendor/js/bootstrap.js"></script>
 <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="../assets/vendor/js/menu.js"></script>
+<script src="../assets/vendor/js/state.js"></script>
+<script src="../assets/vendor/js/alert.js"></script>
 
 <!-- endbuild -->
 
