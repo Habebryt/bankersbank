@@ -2,6 +2,32 @@
 ini_set("display_errors", "1");
 session_start();
 require_once "../guard.php";
+
+
+require_once "../classes/Transaction.php";
+require_once "../classes/Utilities.php";
+
+$transRef = $_GET['transactionRef'];
+
+$user = $_SESSION['useronline'];
+$managerId = $user['id'];
+
+$transactions = new Transaction;
+$data = $transactions->getTransaction($transRef);
+
+// print_r($data);
+
+$ref = $data['reference_id'];
+$accountNumber = $data['account_number'];
+$amount = Utilities::convertToCurrency($data['amount']);
+$fullname = $data['first_name'] . ' ' . $data['last_name'];
+$date = $data['created_at'];
+$status = $data['transaction_status'];
+$balance = Utilities::convertToCurrency($data['balance']);
+$desc = $data['description'];
+
+
+
 require_once "../partials/headertop.php";
 ?>
 <!-- Menu -->
@@ -100,7 +126,7 @@ require_once "../partials/asidetop.php";
             <li class="breadcrumb-item">
               <a href="declinedtransactions.php">Declined Transaction</a>
             </li>
-            <li class="breadcrumb-item active">TRX-100</li>
+            <li class="breadcrumb-item active text-danger">TRX-<?php echo $ref; ?></li>
           </ol>
         </nav>
       </div>
@@ -113,28 +139,35 @@ require_once "../partials/asidetop.php";
               </div>
               <div class="row">
                 <div class="col-md-6 col-lg-3 mb-3">
-                  <strong>Transaction ID:</strong>
-                  <div><i class="bx bx-transfer text-danger me-2"></i>TRX-001</div>
+                  <strong>Transaction Reference:</strong>
+                  <div><?php if ($status === 'Pending') : ?>
+                      <i class="bx bx-transfer text-warning me-3"></i>
+                    <?php elseif ($status === 'Completed') : ?>
+                      <i class="bx bx-transfer text-success me-3"></i>
+                    <?php elseif ($status === 'Failed') : ?>
+                      <i class="bx bx-transfer text-danger me-3"></i>
+                    <?php endif ?></i>TRX-<?php echo $ref; ?>
+                  </div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Date:</strong>
-                  <div>2023-07-01</div>
+                  <div><?php echo $date; ?></div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Account:</strong>
-                  <div>Habeeb Bright</div>
+                  <div><?php echo $fullname; ?></div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Amount:</strong>
-                  <div>$3,000.00</div>
+                  <div>$<?php echo $amount; ?></div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Description:</strong>
-                  <div>House Rental</div>
+                  <div><?php echo $desc; ?></div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Balance:</strong>
-                  <div>$39,000.00</div>
+                  <div>$<?php echo $balance; ?></div>
                 </div>
               </div>
               <div class="text-end">

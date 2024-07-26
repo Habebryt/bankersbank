@@ -63,9 +63,9 @@ require_once "../partials/asidetop.php";
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="row alert-fly">
         <div class="col-md-12">
-          <?php if (isset($_SESSION['user_welcome'])) : ?>
-            <div class="alert alert-primary alert-fly"><?php echo $_SESSION['user_welcome'] . " " . $manager['firstName']; ?></div>
-            <?php unset($_SESSION['user_welcome']); ?>
+          <?php if (isset($_SESSION['login_success'])) : ?>
+            <div class="alert alert-primary alert-dismissible text-center alert-fly"><?php echo $_SESSION['login_success'] . " " . $manager['firstName']; ?></div>
+            <?php unset($_SESSION['login_success']); ?>
           <?php endif; ?>
         </div>
       </div>

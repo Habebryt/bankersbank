@@ -44,7 +44,6 @@ foreach ($allTransactions as $transaction) {
   $totalSum += $transaction['amount'];
 }
 
-
 ?>
 <?php
 
