@@ -2,6 +2,75 @@
 ini_set("display_errors", "1");
 session_start();
 require_once "../guard.php";
+require_once "../classes/Client.php";
+require_once "../classes/Account.php";
+require_once "../classes/Utilities.php";
+require_once "../classes/Mortgage.php";
+
+$mortgage = new Mortgage();
+
+
+
+$manager = $_SESSION['useronline'];
+$clientCode = $_GET['accountowner'];
+$accountNumber = $_GET['accountnumber'];
+$managerId = $manager['id'];
+$fromClients = new Client;
+$clientAccount = new Account;
+
+
+$data = $mortgage->getMortgage($accountNumber);
+//$cdata = $card->getCardTransactions($accountNumber);
+
+print_r($data);
+
+$myClientX = $fromClients->getUser($clientCode);
+$userId = $myClientX['id'];
+
+// Attempt to get client details
+$myClient = $fromClients->getUser($clientCode);
+if (is_array($myClient)) {
+  // If the client is found, assign it to a variable
+  $fClient = $myClient;
+} else {
+  // If no client profile is found, get User by UserCode
+  $fClient = null;
+}
+
+// Attempt to get account details
+$myAccount = $clientAccount->getAccount($userId, $accountNumber);
+
+if (is_array($myAccount)) {
+  // If the account is found, assign it to a variable
+  $fAccount = $myAccount;
+} else {
+  // If no account is found, display a message
+  $fAccount = null; // Assign null if no account is found
+}
+// var_dump($myClientY);
+
+// Merge data if both account and client are found and user IDs match
+if (!empty($fAccount) && !empty($fClient)) {
+  if (($fAccount['user_id'] === $fClient['user_id']) && isset($myClientX) && ($fAccount['user_id'] === $myClientX['id'])) {
+    // Merge the arrays if the user IDs match
+    $clientData = $mergedData = array_merge($fAccount, $fClient, $myClientX);
+    //print_r($clientData);
+  } else {
+    // If user IDs do not match, just print the client data
+    // print_r($myClientX);
+  }
+} else {
+  // Print separate information if either account or client data is missing
+  if (empty($fAccount) && empty($fClient)) {
+    return $myClientX;
+  }
+}
+
+
+
+
+
+
 require_once "../partials/headertop.php";
 ?>
 <!-- Menu -->
@@ -98,7 +167,7 @@ require_once "../partials/asidetop.php";
           <li class="breadcrumb-item">
             <a href="loans.php">House Mortgage</a>
           </li>
-          <li class="breadcrumb-item active">Client Name</li>
+          <li class="breadcrumb-item active"><?php echo $myClientX['firstName'] . ' ' . $myClientX['lastName'] ?></li>
         </ol>
       </nav>
       <div class="row">
@@ -123,7 +192,12 @@ require_once "../partials/asidetop.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Mortgage Balance</span>
-                    <h3 class="card-title mb-2">$320,628.89</h3>
+                    <h3 class="card-title mb-2">$<?php if (isset($data['mortgage_balance'])) : ?>
+                      <?php echo Utilities::convertToCurrency($data['mortgage_balance']) ?>
+                    <?php else : ?>
+                      <button class="btn btn-primary">Add Amount</button>
+                    <?php endif ?>
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -145,7 +219,12 @@ require_once "../partials/asidetop.php";
                       </div>
                     </div>
                     <span>Monthly Payment</span>
-                    <h3 class="card-title text-nowrap mb-1">$1,845.67</h3>
+                    <h3 class="card-title text-nowrap mb-1">$<?php if (isset($data['monthly_payment'])) : ?>
+                      <?php echo Utilities::convertToCurrency($data['monthly_payment']) ?>
+                    <?php else : ?>
+                      <button class="btn btn-primary">Add Amount</button>
+                    <?php endif ?>
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -171,7 +250,12 @@ require_once "../partials/asidetop.php";
                       </div>
                     </div>
                     <span class="fw-medium d-block mb-1">Interest Rate</span>
-                    <h3 class="card-title mb-2">3.75%</h3>
+                    <h3 class="card-title mb-2"><?php if (isset($data['interest_rate'])) : ?>
+                        <?php echo $data['interest_rate'] ?>
+                      <?php else : ?>
+                        <button class="btn btn-primary">Add Rate</button>
+                        <?php endif ?>%
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -193,7 +277,12 @@ require_once "../partials/asidetop.php";
                       </div>
                     </div>
                     <span class="d-block mb-1">Remaining Term</span>
-                    <h3 class="card-title text-nowrap mb-2">28 Years</h3>
+                    <h3 class="card-title text-nowrap mb-2"><?php if (!isset($data['monthly_payment'])) : ?> <button class="btn btn-primary">Add Repayment</button>
+                      <?php else : ?>
+                        <?php echo $data['remaining_terms'] ?> Years
+
+                      <?php endif ?>
+                    </h3>
                   </div>
                 </div>
               </div>

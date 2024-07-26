@@ -20,11 +20,13 @@ $data = $transactions->getTransaction($transRef);
 $ref = $data['reference_id'];
 $accountNumber = $data['account_number'];
 $amount = Utilities::convertToCurrency($data['amount']);
-$fullname = $data['first_name'] . ' ' . $data['last_name'];
+$acctName = $data['first_name'] . ' ' . $data['last_name'];
 $date = $data['created_at'];
 $status = $data['transaction_status'];
 $balance = Utilities::convertToCurrency($data['balance']);
 $desc = $data['description'];
+
+// print_r($acctName);
 
 
 
@@ -153,7 +155,7 @@ require_once "../partials/asidetop.php";
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Account:</strong>
-                  <div><?php echo $fullname; ?></div>
+                  <div><?php echo $acctName; ?></div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                   <strong>Amount:</strong>
