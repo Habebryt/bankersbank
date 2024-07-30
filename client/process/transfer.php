@@ -23,6 +23,7 @@ try {
     // First, get account balance
     $userAccount = $getAcct->getAccount($sender);
     $senderBalance = $userAccount['balance'];
+    $senderAccount = $userAccount['account_number'];
 
     // Check if account balance can afford to make the necessary transfer
     if ($senderBalance < $amount) {
@@ -33,7 +34,7 @@ try {
     $ref = Utilities::generateReferenceNumber();
 
     // Make the transfer
-    $addTransfer = $trs->addTransfer($sender, $account, $bank, $receiver, $amount, $ref, $desc);
+    $addTransfer = $trs->addTransfer($senderAccount, $account, $bank, $receiver, $amount, $ref, $desc);
 
     if ($addTransfer) {
         // If transfer is successful, update account balance
@@ -43,7 +44,7 @@ try {
         if ($updateAccount) {
             // Add the transfer to transactions
             $type = 'debit'; // or whatever type you use for transfers
-            $addTransaction = $tr->addTransaction($sender, $type, $amount, $ref, $desc);
+            $addTransaction = $tr->addTransaction($senderAccount, $type, $amount, $ref, $desc);
 
             if ($addTransaction) {
                 $_SESSION['feedback'] = "Transfer successful. Reference: $ref";

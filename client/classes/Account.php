@@ -25,9 +25,9 @@ class Account extends Db
 
   public function updateBalance($sender, $newBalance)
   {
-    $sql = "UPDATE `client_accounts` SET `balance` = ? WHERE `client_accounts`.`id` = ?";
+    $sql = "UPDATE client_accounts SET balance = ? WHERE user_id = ?";
     $stmt = $this->dbconn->prepare($sql);
-    $result = $stmt->execute([$sender, $newBalance]);
+    $result = $stmt->execute([$newBalance, $sender]);
     if($result){
       return true;
     }else{

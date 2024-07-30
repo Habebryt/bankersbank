@@ -14,15 +14,6 @@ class Transfer extends Db
     $this->dbconn = $this->connect();
   }
 
-  // public function getTransactions($userAccount)
-  // {
-  //   $sql = "SELECT * FROM transactions WHERE account_number = ?";
-  //   $stmt = $this->dbconn->prepare($sql);
-  //   $stmt->execute([$userAccount]);
-  //   $card = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  //   return $card;
-  // }
-
   public function addTransfer($senderAcct, $receiverAcct, $bank, $receiverName, $amt, $ref, $desc)
   {
     $sql = "INSERT INTO `transfers` (from_account_number, to_account_number, bank_name, receiver, amount, reference_number, description) VALUES (?,?,?,?,?,?,?)";

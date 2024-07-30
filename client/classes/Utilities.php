@@ -67,7 +67,7 @@ class Utilities
     $masked = '';
     for ($i = 0; $i < $length - 4; $i++) {
       if ($i % 4 == 0 && $i != 0) {
-        $masked .= ' '; // Add a space every 4 characters
+        $masked .= ' ';
       }
       $masked .= '*';
     }
@@ -83,7 +83,7 @@ class Utilities
 
   public static function generateReferenceNumber()
   {
-    $length = 20;
+    $length = 10;
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $randomString = '';
 
