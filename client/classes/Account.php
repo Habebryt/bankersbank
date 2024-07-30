@@ -22,4 +22,16 @@ class Account extends Db
     $account = $stmt->fetch(PDO::FETCH_ASSOC);
     return $account;
   }
+
+  public function updateBalance($sender, $newBalance)
+  {
+    $sql = "UPDATE `client_accounts` SET `balance` = ? WHERE `client_accounts`.`id` = ?";
+    $stmt = $this->dbconn->prepare($sql);
+    $result = $stmt->execute([$sender, $newBalance]);
+    if($result){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }

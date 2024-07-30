@@ -22,4 +22,16 @@ class Transaction extends Db
     $card = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $card;
   }
+
+  public function addTransaction($userAccount, $type, $amt, $ref, $desc)
+  {
+    $sql = "INSERT INTO `transactions` (account_number, transaction_type, amount, reference_id, description) VALUES (?,?,?,?,?)";
+    $stmt = $this->dbconn->prepare($sql);
+    $transaction = $stmt->execute([$userAccount, $type, $amt, $ref, $desc]);
+    if ($transaction) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
