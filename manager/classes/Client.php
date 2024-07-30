@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 error_reporting(E_ALL);
 
 require_once "Db.php";
+require_once "Utilities.php";
 
 
 class Client extends Db
@@ -14,17 +15,43 @@ class Client extends Db
     $this->dbconn = $this->connect();
   }
 
-  public function addClient($username, $password, $email, $firstname, $lastname, $access)
-  {
-    $sql = "INSERT INTO users (username, password, email, firstName, lastName, access_level) VALUES (?,?,?,?,?,?)";
-    $stmt = $this->dbconn->prepare($sql);
-    $result = $stmt->execute([$username, $password, $email, $firstname, $lastname, $access]);
-    if ($result) {
-      return true;
-    } else {
-      return false;
+  public function isCodeUnique($code) {
+    $stmt = $this->dbconn->prepare("SELECT COUNT(*) FROM users WHERE usercode = :code");
+    $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+    return $count === 0;
+}
+
+  public function generateUniqueCode($maxAttempts = 5) {
+    $attempts = 0;
+
+    do {
+        $code = Utilities::generateUniqueUserCode();
+        $isUnique = $this->isCodeUnique($code);
+        $attempts++;
+    } while (!$isUnique && $attempts < $maxAttempts);
+
+    if (!$isUnique) {
+        throw new Exception("Failed to generate a unique code after $maxAttempts attempts.");
     }
+
+    return $code;
+}
+
+public function addClient($username, $password, $email, $firstname, $lastname, $access, $managerId)
+{
+  $uniqueCode = $this->generateUniqueCode();
+
+  $sql = "INSERT INTO users (created_by, username, usercode, password, email, firstName, lastName, access_level) VALUES (?, ?, ?,?,?,?,?,?)";
+  $stmt = $this->dbconn->prepare($sql);
+  $result = $stmt->execute([$managerId, $username, $uniqueCode, $password, $email, $firstname, $lastname, $access]);
+  if ($result) {
+    return true;
+  } else {
+    return false;
   }
+}
 
   public function getClients($managerId)
   {

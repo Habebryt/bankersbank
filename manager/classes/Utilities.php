@@ -104,4 +104,14 @@ class Utilities
 
     return $randomString;
   }
+  public static function generateUniqueUserCode($length = 30) {
+    $characters = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $code = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $code .= $characters[rand(0, strlen($characters) - 1)];
+    }
+
+    return $code;
+}
 }

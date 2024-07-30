@@ -6,6 +6,8 @@ require_once "../classes/Client.php";
 require_once "../classes/Account.php";
 require_once "../classes/Utilities.php";
 
+//$userCode = Utilities::generateUniqueUserCode();
+
 $manager = $_SESSION['useronline'];
 $managerId = $manager['id'];
 $myClients = new Client;
@@ -117,6 +119,7 @@ require_once "../partials/asidetop.php";
                   <th>Balance</th>
                   <th>Status</th>
                   <th>Actions</th>
+
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
@@ -178,6 +181,7 @@ require_once "../partials/asidetop.php";
                         <a class="dropdown-item" href="accountmanagement.php?accountowner=<?php echo $code; ?>&accountnumber=<?php echo $accountNumber; ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                       <?php endif ?>
                     </td>
+
                   </tr>
                 <?php endforeach ?>
 

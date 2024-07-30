@@ -5,4 +5,4 @@ error_reporting(E_ALL);
 define("DBHOST", "localhost");
 define("DBNAME", "bankersbank");
 define("DBUSER", "root");
-define("DBPASS", "root");
+define("DBPASS", "");

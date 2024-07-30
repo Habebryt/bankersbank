@@ -32,12 +32,11 @@
               <input type="text" id="lastname" name="lastname" class="form-control" placeholder="Enter Lastname" required />
             </div>
           </div>
-
-          <h6 class="mb-3">Password</h6>
+          <h6 class="mb-3">Set Password</h6>
           <div class="row">
             <div class="col mb-3">
               <label for="password" class="form-label">Password</label>
-              <input type="password" id="password" name="password" class="password" placeholder="Enter Password" required />
+              <input type="password" id="password" name="password" class="password form-control" placeholder="Enter Password" required />
             </div>
           </div>
           <button type="submit" class="btn btn-primary" form="addClientForm" name="addClient" value="addClient" onclick="addClient()">

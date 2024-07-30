@@ -16,7 +16,7 @@ if (isset($_POST['addClient']) && $_POST['addClient'] === "addClient") {
   $password = $_POST['password'];
   $access = 'client';
 
-  $client = $addClient->addClient($username, $password, $email, $firstname, $lastname, $access);
+  $client = $addClient->addClient($username, $password, $email, $firstname, $lastname, $access, $managerId);
 
   if ($client === true) {
     $_SESSION['feedback'] = 'User Added Successfully';
