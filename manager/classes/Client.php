@@ -15,43 +15,58 @@ class Client extends Db
     $this->dbconn = $this->connect();
   }
 
-  public function isCodeUnique($code) {
+  public function isCodeUnique($code)
+  {
     $stmt = $this->dbconn->prepare("SELECT COUNT(*) FROM users WHERE usercode = :code");
     $stmt->bindParam(':code', $code, PDO::PARAM_STR);
     $stmt->execute();
     $count = $stmt->fetchColumn();
     return $count === 0;
-}
+  }
 
-  public function generateUniqueCode($maxAttempts = 5) {
+  public function generateUniqueCode($maxAttempts = 5)
+  {
     $attempts = 0;
 
     do {
-        $code = Utilities::generateUniqueUserCode();
-        $isUnique = $this->isCodeUnique($code);
-        $attempts++;
+      $code = Utilities::generateUniqueUserCode();
+      $isUnique = $this->isCodeUnique($code);
+      $attempts++;
     } while (!$isUnique && $attempts < $maxAttempts);
 
     if (!$isUnique) {
-        throw new Exception("Failed to generate a unique code after $maxAttempts attempts.");
+      throw new Exception("Failed to generate a unique code after $maxAttempts attempts.");
     }
 
     return $code;
-}
-
-public function addClient($username, $password, $email, $firstname, $lastname, $access, $managerId)
-{
-  $uniqueCode = $this->generateUniqueCode();
-
-  $sql = "INSERT INTO users (created_by, username, usercode, password, email, firstName, lastName, access_level) VALUES (?, ?, ?,?,?,?,?,?)";
-  $stmt = $this->dbconn->prepare($sql);
-  $result = $stmt->execute([$managerId, $username, $uniqueCode, $password, $email, $firstname, $lastname, $access]);
-  if ($result) {
-    return true;
-  } else {
-    return false;
   }
-}
+
+  public function addClient($username, $password, $email, $firstname, $lastname, $access, $managerId)
+  {
+    $uniqueCode = $this->generateUniqueCode();
+
+    $sql = "INSERT INTO users (created_by, username, usercode, password, email, firstName, lastName, access_level) VALUES (?, ?, ?,?,?,?,?,?)";
+    $stmt = $this->dbconn->prepare($sql);
+    $result = $stmt->execute([$managerId, $username, $uniqueCode, $password, $email, $firstname, $lastname, $access]);
+    if ($result) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function clientProfile($clientId, $managerId, $firstName, $lastName, $dob, $gender, $nat, $passType, $pass)
+  {
+    $sql = "INSERT INTO client_profiles (user_id, account_manager_id, first_name, last_name, date_of_birth, gender, nationality, id_type, id_number) VALUES (?, ?, ?,?,?,?,?,?,?)";
+    $stmt = $this->dbconn->prepare($sql);
+    $result = $stmt->execute([$clientId, $managerId, $firstName, $lastName, $dob, $gender, $nat, $passType, $pass]);
+    if ($result) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
   public function getClients($managerId)
   {

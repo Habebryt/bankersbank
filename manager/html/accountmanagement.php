@@ -7,6 +7,9 @@ require_once "../classes/Account.php";
 require_once "../classes/Utilities.php";
 require_once "../classes/Country.php";
 
+$manager = $_SESSION['useronline'];
+$managerId = $manager['id'];
+
 $country = new Country();
 $countries = $country->getCountries();
 
@@ -49,7 +52,7 @@ if (!empty($fAccount) && !empty($fClient)) {
   if (($fAccount['user_id'] === $fClient['user_id']) && isset($myClientX) && ($fAccount['user_id'] === $myClientX['id'])) {
     // Merge the arrays if the user IDs match
     $clientData = $mergedData = array_merge($fAccount, $fClient, $myClientX);
-    //print_r($clientData);
+    // print_r($clientData);
   } else {
     // If user IDs do not match, just print the client data
     // print_r($myClientX);
@@ -60,6 +63,7 @@ if (!empty($fAccount) && !empty($fClient)) {
     return $myClientX;
   }
 }
+
 
 
 // if (empty($clientData)) {
@@ -143,7 +147,8 @@ require_once "../partials/asidetop.php";
           <div class="card mb-4">
             <div class="card-header d-flex align-items-center justify-content-between">
               <h5 class="mb-0">Personal Profile</h5>
-              <small class="text-muted float-end"><span class="text-danger">*</span>Contact Support for Updates
+              <small class="text-muted float-end"><span class="text-danger">*</span>Contact Support for
+                Updates
                 <a href="support.php">Here</a></small>
             </div>
             <div>
@@ -173,7 +178,7 @@ require_once "../partials/asidetop.php";
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
-                  <form action="">
+                  <form action="../process/personalData.php" method='post'>
                     <fieldset>
                       <legend>Personal Data</legend>
 
@@ -181,23 +186,35 @@ require_once "../partials/asidetop.php";
                         <div class="mb-3 col-md-12">
                           <label for="firstName" class="form-label">First Name</label>
                           <input class="form-control" type="text" id="firstName" name="firstName" value="<?php echo empty($clientData) ? $myClientX['firstName'] : $clientData['first_name']; ?>" autofocus />
-
                         </div>
                         <div class="mb-3 col-md-12">
                           <label for="lastName" class="form-label">Last Name</label>
                           <input class="form-control" type="text" name="lastName" id="lastName" value="<?php echo empty($clientData) ? $myClientX['lastName'] : $clientData['last_name']; ?>" />
                         </div>
-                        <div class="mb-3 col-md-12 d-none">
-                          <label for="otherName" class="form-label">Other Name</label>
-                          <input class="form-control" type="text" name="otherName" id="otherName" value="Bright" />
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-dob">Date of
+                          Birth</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                          <input type="date" class="form-control" name="dob" id="basic-icon-default-dob" value="<?php echo empty($clientData) ?: $clientData['date_of_birth']; ?>" />
                         </div>
                       </div>
 
                       <div class="mb-3">
-                        <label class="form-label" for="basic-icon-default-dob">Date of Birth</label>
+                        <label class="form-label" for="basic-icon-default-gender">Gender</label>
                         <div class="input-group input-group-merge">
-                          <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                          <input type="date" class="form-control" name="dob" id="basic-icon-default-dob" value="<?php echo empty($clientData) ?: $clientData['date_of_birth']; ?>" />
+                          <span class="input-group-text"><i class="bx bx-male-female"></i></span>
+                          <select class="form-select" name="gender" id="basic-icon-default-gender">
+                            <option value="">Select Gender</option>
+                            <option value="Male" <?php echo (!empty($clientData) && $clientData['gender'] == 'Male') ? 'selected' : ''; ?>>
+                              Male</option>
+                            <option value="Female" <?php echo (!empty($clientData) && $clientData['gender'] == 'Female') ? 'selected' : ''; ?>>
+                              Female</option>
+                            <option value="Other" <?php echo (!empty($clientData) && $clientData['gender'] == 'Other') ? 'selected' : ''; ?>>
+                              Other</option>
+                          </select>
                         </div>
                       </div>
 
@@ -231,7 +248,25 @@ require_once "../partials/asidetop.php";
                       </div>
 
                       <div class="mb-3">
-                        <label class="form-label" for="basic-icon-default-id">National ID / Passport Number</label>
+                        <label class="form-label" for="basic-icon-default-passType">Passport
+                          Type</label>
+                        <div class="input-group input-group-merge">
+                          <span class="input-group-text"><i class="bx bx-id-card"></i></span>
+                          <select class="form-select" name="passType" id="basic-icon-default-passType">
+                            <option value="">Select Passport</option>
+                            <option value="Passport" <?php echo (!empty($clientData) && $clientData['id_type'] == 'Passport') ? 'selected' : ''; ?>>
+                              Passport</option>
+                            <option value="National ID" <?php echo (!empty($clientData) && $clientData['id_type'] == 'National ID') ? 'selected' : ''; ?>>
+                              National ID</option>
+                            <option value="Driver's License" <?php echo (!empty($clientData) && $clientData['id_type'] == 'Drivers Licence') ? 'selected' : ''; ?>>
+                              Driver's License</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label" for="basic-icon-default-id">National ID /
+                          Passport Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-id-card"></i></span>
                           <input type="text" class="form-control" name="passNumber" id="basic-icon-default-id" placeholder="AB123456" value="<?php echo empty($clientData) ? '' : $clientData['id_number']; ?>" />
@@ -239,7 +274,9 @@ require_once "../partials/asidetop.php";
                       </div>
                     </fieldset>
                     <div class="mt-2">
-                      <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                      <input type="hidden" name='managerId' value="<?php echo $managerId ?>">
+                      <input type="hidden" name='clientId' value="<?php echo empty($clientData) ? $myClientX['id'] : $clientData['first_name']; ?>">
+                      <button type="submit" name="clientProfile" value="clientProfile" class="btn btn-primary me-2">Save changes</button>
                       <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                     </div>
                   </form>
@@ -251,7 +288,8 @@ require_once "../partials/asidetop.php";
                       <legend>Bank Data</legend>
 
                       <div class="mb-3">
-                        <label class="form-label" for="basic-icon-default-hash">Account Number</label>
+                        <label class="form-label" for="basic-icon-default-hash">Account
+                          Number</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-hash"></i></span>
                           <input type="text" id="basic-icon-default-hash" class="form-control" placeholder="0123456789" name="accountNumber" value="<?php echo empty($clientData) ? '' : $clientData['account_number']; ?>" />
@@ -259,7 +297,8 @@ require_once "../partials/asidetop.php";
                       </div>
 
                       <div class="mb-3">
-                        <label class="form-label" for="basic-icon-default-income">Annual Income</label>
+                        <label class="form-label" for="basic-icon-default-income">Annual
+                          Income</label>
                         <div class="input-group input-group-merge">
                           <span class="input-group-text"><i class="bx bx-dollar"></i></span>
                           <input type="text" id="basic-icon-default-income" class="form-control" placeholder="50000" name="annual_income" value="<?php echo empty($clientData) ? '' : Utilities::convertToCurrency($clientData['annual_income']); ?>" />
@@ -268,9 +307,12 @@ require_once "../partials/asidetop.php";
                         <div class="mb-3 mt-3 col-md-12">
                           <label class="form-label" for="country">Country of Residence</label>
                           <select id="country" name="countryOfResidence" class="select2 form-select">
-                            <option value="<?php echo isset($clientData['country']) ? $clientData['country'] : ''; ?>" selected><?php echo isset($clientData['country_name']) ? $clientData['country_name'] : ''; ?></option>
+                            <option value="<?php echo isset($clientData['country']) ? $clientData['country'] : ''; ?>" selected>
+                              <?php echo isset($clientData['country_name']) ? $clientData['country_name'] : ''; ?>
+                            </option>
                             <?php foreach ($countries as $country) : ?>
-                              <option value="<?php echo $country['idcountry']; ?>"><?php echo $country['country_name']; ?></option>
+                              <option value="<?php echo $country['idcountry']; ?>">
+                                <?php echo $country['country_name']; ?></option>
                             <?php endforeach; ?>
                           </select>
                         </div>
@@ -278,12 +320,15 @@ require_once "../partials/asidetop.php";
                         <div class="mb-3 col-md-12">
                           <label class="form-label" for="state">State of Residence</label>
                           <select name="stateOfOrigin" id="state" class="select2 form-select">
-                            <option value="" <?php echo isset($clientData['state']) ? $clientData['state'] : ''; ?>"" selected><?php echo isset($clientData['state_name']) ? $clientData['state_name'] : ''; ?></option>
+                            <option value="" <?php echo isset($clientData['state']) ? $clientData['state'] : ''; ?>"" selected>
+                              <?php echo isset($clientData['state_name']) ? $clientData['state_name'] : ''; ?>
+                            </option>
                           </select>
                         </div>
 
                         <div class="mb-3">
-                          <label class="form-label" for="basic-icon-default-tax-id">Tax Identification Number</label>
+                          <label class="form-label" for="basic-icon-default-tax-id">Tax
+                            Identification Number</label>
                           <div class="input-group input-group-merge">
                             <span class="input-group-text"><i class="bx bx-file"></i></span>
                             <input type="text" name="taxId" id="basic-icon-default-tax-id" class="form-control" placeholder="123456789" value="<?php echo empty($clientData) ? '' : $clientData['taxid']; ?>" />
@@ -318,23 +363,34 @@ require_once "../partials/asidetop.php";
                             <label for="timeZones" class="form-label">Timezone</label>
                             <select id="timeZones" name="timeZone" class="select2 form-select">
                               <option value="">Select Timezone</option>
-                              <option value="-12">(GMT-12:00) International Date Line West</option>
-                              <option value="-11">(GMT-11:00) Midway Island, Samoa</option>
+                              <option value="-12">(GMT-12:00) International Date Line West
+                              </option>
+                              <option value="-11">(GMT-11:00) Midway Island, Samoa
+                              </option>
                               <option value="-10">(GMT-10:00) Hawaii</option>
                               <option value="-9">(GMT-09:00) Alaska</option>
-                              <option value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
-                              <option value="-8">(GMT-08:00) Tijuana, Baja California</option>
+                              <option value="-8">(GMT-08:00) Pacific Time (US & Canada)
+                              </option>
+                              <option value="-8">(GMT-08:00) Tijuana, Baja California
+                              </option>
                               <option value="-7">(GMT-07:00) Arizona</option>
-                              <option value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
-                              <option value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
+                              <option value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan
+                              </option>
+                              <option value="-7">(GMT-07:00) Mountain Time (US & Canada)
+                              </option>
                               <option value="-6">(GMT-06:00) Central America</option>
-                              <option value="-6">(GMT-06:00) Central Time (US & Canada)</option>
-                              <option value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                              <option value="-6">(GMT-06:00) Central Time (US & Canada)
+                              </option>
+                              <option value="-6">(GMT-06:00) Guadalajara, Mexico City,
+                                Monterrey</option>
                               <option value="-6">(GMT-06:00) Saskatchewan</option>
-                              <option value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
-                              <option value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
+                              <option value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio
+                                Branco</option>
+                              <option value="-5">(GMT-05:00) Eastern Time (US & Canada)
+                              </option>
                               <option value="-5">(GMT-05:00) Indiana (East)</option>
-                              <option value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
+                              <option value="-4">(GMT-04:00) Atlantic Time (Canada)
+                              </option>
                               <option value="-4">(GMT-04:00) Caracas, La Paz</option>
                             </select>
                           </div>
@@ -353,6 +409,7 @@ require_once "../partials/asidetop.php";
                             <label class="form-label" for="phoneNumber">Phone Number</label>
                             <div class="input-group input-group-merge">
                               <!-- <span class="input-group-text">US (+1)</span> -->
+
                               <span class="input-group-text"></span>
                               <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="202 555 0111" value="<?php echo empty($clientData) ? '' : $clientData['phone']; ?>" />
                             </div>
@@ -365,8 +422,19 @@ require_once "../partials/asidetop.php";
 
                           <div class="mb-3">
                             <label class="form-label" for="basic-icon-default-occupation">Occupation</label>
+
+
+
+
+
+
+
+
                             <div class="input-group input-group-merge">
                               <span class="input-group-text"><i class="bx bx-briefcase"></i></span>
+
+
+
                               <input type="text" id="basic-icon-default-occupation" class="form-control" placeholder="Software Engineer" value="<?php echo empty($clientData) ? '' : $clientData['occupation']; ?>" />
                             </div>
                           </div>

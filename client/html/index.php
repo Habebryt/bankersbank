@@ -49,6 +49,79 @@ $generalTransactions = array_slice($myTransactions, 0, 5);
 
 // print_r($generalTransactions);
 
+// business trans
+$biz = $getBiz->getBiz($accountNumber);
+
+
+if (empty($biz['business_balance'])) {
+  $portBalance = 0;
+} else {
+  $portBalance = Utilities::convertToCurrency($biz['business_balance']);
+}
+
+if (empty($biz['business_credit'])) {
+  $portSavings = 0;
+} else {
+  $portSavings = Utilities::convertToCurrency($biz['business_credit']);
+}
+
+if (empty($biz['business_debit'])) {
+  $portLoss = 0;
+} else {
+  $portLoss = Utilities::convertToCurrency($biz['business_debit']);
+}
+
+if (empty($biz['pending'])) {
+  $portPending = 0;
+} else {
+  $portPending = Utilities::convertToCurrency($biz['pending']);
+}
+
+if (empty($biz['expense'])) {
+  $portExpense = 0;
+} else {
+  $portExpense = Utilities::convertToCurrency($biz['expense']);
+}
+
+$balance = $portBalance;
+$credit = $portSavings;
+$debit = $portLoss;
+$pending = $portPending;
+$bExpense = $portExpense;
+
+
+$inv = $getInv->getInv($accountNumber);
+
+if (empty($inv['portfolio_balance'])) {
+  $portBalance = 0;
+} else {
+  $portBalance = Utilities::convertToCurrency($inv['portfolio_balance']);
+}
+
+if (empty($inv['business_savings'])) {
+  $portSavings = 0;
+} else {
+  $portSavings = Utilities::convertToCurrency($inv['business_savings']);
+}
+
+if (empty($inv['investment_loss'])) {
+  $portLoss = 0;
+} else {
+  $portLoss = Utilities::convertToCurrency($inv['investment_loss']);
+}
+
+if (empty($inv['expense'])) {
+  $portExpense = 0;
+} else {
+  $portExpense = Utilities::convertToCurrency($inv['expense']);
+}
+
+$iBalance = $portBalance;
+$iExpense = $portExpense;
+
+
+
+
 
 ?>
 <?php
@@ -132,7 +205,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </div>
                   <span>Business Account</span>
-                  <h3 class="card-title text-nowrap mb-1">$4,679</h3>
+                  <h3 class="card-title text-nowrap mb-1">$<?php echo $balance ?></h3>
                 </div>
               </div>
             </div>
@@ -158,8 +231,8 @@ require_once "../partials/hstart.php";
                       </div>
                     </div>
                   </div>
-                  <span class="fw-medium d-block mb-1">Business Savings</span>
-                  <h3 class="card-title mb-2">$14,857</h3>
+                  <span class="fw-medium d-block mb-1">Investment Account</span>
+                  <h3 class="card-title mb-2">$<?php echo $iBalance ?></h3>
                 </div>
               </div>
             </div>
@@ -181,7 +254,7 @@ require_once "../partials/hstart.php";
                     </div>
                   </div>
                   <span class="d-block mb-1">Expense</span>
-                  <h3 class="card-title text-nowrap mb-2">$2,456</h3>
+                  <h3 class="card-title text-nowrap mb-2">$<?php echo $bExpense ?></h3>
                 </div>
               </div>
             </div>

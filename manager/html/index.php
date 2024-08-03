@@ -2,10 +2,45 @@
 ini_set("display_errors", "1");
 session_start();
 require_once "../guard.php";
-require_once "../partials/headertop.php";
+require_once "../classes/Utilities.php";
+require_once "../classes/Client.php";
+require_once "../classes/Account.php";
+require_once "../classes/Transaction.php";
+
 
 $manager = $_SESSION['useronline'];
 $fullname = $manager['firstName'] . ' ' . $manager['lastName'];
+
+
+$manager = $_SESSION['useronline'];
+$managerId = $manager['id'];
+
+$myClients = new Client;
+$myAccounts = new Account;
+$trs = new Transaction();
+
+$allClients = $myClients->getClients($managerId);
+$allAccounts = $myAccounts->getAccounts($managerId);
+$acctManager = $myAccounts->getManager($managerId);
+$cltTrs = $trs->transactionActivity($managerId);
+$acctId = $acctManager['id'];
+
+$aFunds=$myAccounts->getAccount($acctId);
+
+$tAccts=count($allAccounts);
+
+
+$generalTransactions = $cltTrs['general'];
+$businessTransactions = $cltTrs['business'];
+$investmentTransactions = $cltTrs['investment'];
+
+// print_r($investmentTransactions);
+
+$balance = $aFunds['acct_balance'];
+
+
+
+require_once "../partials/headertop.php";
 ?>
 <!-- Menu -->
 <!-- Aside Top -->
@@ -72,7 +107,7 @@ require_once "../partials/asidetop.php";
       <div class="mb-2">
         <button class="btn btn-success disabled">3 Months left</button>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClient">Add Client</button>
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTransfer">Credit Account</button>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalTransfer">Credit Client</button>
       </div>
       <div class="row">
         <div class="col-lg-12 col-md-12 order-1">
@@ -99,7 +134,7 @@ require_once "../partials/asidetop.php";
                     </div>
                   </div>
                   <span>Available Funds</span>
-                  <h3 class="card-title text-nowrap mb-1">$504,679</h3>
+                  <h3 class="card-title text-nowrap mb-1">$<?php echo Utilities::convertToCurrency($balance) ?></h3>
                 </div>
               </div>
             </div>
@@ -126,7 +161,7 @@ require_once "../partials/asidetop.php";
                     </div>
                   </div>
                   <span class="fw-medium d-block mb-1">Total Accounts</span>
-                  <h3 class="card-title mb-2">12</h3>
+                  <h3 class="card-title mb-2"><?php echo $tAccts ?></h3>
                 </div>
               </div>
             </div>
@@ -156,7 +191,8 @@ require_once "../partials/asidetop.php";
         </div>
         <!-- Transactions -->
         <div class="col-md-6 col-lg-6 order-2 mb-4">
-          <div class="card h-100">
+
+            <div class="card h-100">
             <div class="card-header d-flex align-items-center justify-content-between">
               <h5 class="card-title m-0 me-2">Recent Clients Activities</h5>
               <div class="dropdown">
@@ -170,11 +206,17 @@ require_once "../partials/asidetop.php";
                 </div>
               </div>
             </div>
+            <?php if(!empty($activities)) : ?>
             <div class="card-body">
-              <ul class="p-0 m-0 list-group">
+              <?php foreach($activities as $activity) :
+
+                // $type = $activity['transaction_type'];
+
+                ?>
+                <ul class="p-0 m-0 list-group">
                 <li class="d-flex mb-4 pb-1 list-group-item">
                   <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
+                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
                   </div>
                   <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                     <div class="me-2">
@@ -188,92 +230,17 @@ require_once "../partials/asidetop.php";
                     </div>
                   </div>
                 </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Wire Deposit</small>
-                      <h6 class="mb-0">Habeeb Bright</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-success">+14,857</span></h6>
-                      <span class="text-muted">USD</span>
-                      <button class="btn btn-primary">View</button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Transfer</small>
-                      <h6 class="mb-0">Refund</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-success">+637.91</span></h6>
-                      <span class="text-muted">USD</span>
-                      <button class="btn btn-primary">View</button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Credit Card</small>
-                      <h6 class="mb-0">Ordered Food</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-838.71</span></h6>
-                      <span class="text-muted">USD</span>
-                      <button class="btn btn-primary">View</button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex mb-4 pb-1 list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Wallet</small>
-                      <h6 class="mb-0">Starbucks</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-203.33</span></h6>
-                      <span class="text-muted">USD</span>
-                      <button class="btn btn-primary">View</button>
-                    </div>
-                  </div>
-                </li>
-                <li class="d-flex list-group-item">
-                  <div class="avatar flex-shrink-0 me-3">
-                    <img src="../assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                  </div>
-                  <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                    <div class="me-2">
-                      <small class="text-muted d-block mb-1">Mastercard</small>
-                      <h6 class="mb-0">Ordered Food</h6>
-                    </div>
-                    <div class="user-progress d-flex align-items-center gap-1">
-                      <h6 class="mb-0"><span class="text-danger">-92.45</span></h6>
-                      <span class="text-muted">USD</span>
-                      <button class="btn btn-primary">View</button>
-                    </div>
-                  </div>
-                </li>
+                <?php endforeach ?>
               </ul>
               <p class="text-muted text-center">
                 <a href="transactions.php" class="link-primary">View More</a>
               </p>
+              <?php else : ?>
+           <p class="text-center text-primary">No client Activities Yet!</p>
+          <?php endif ?>
             </div>
           </div>
+
         </div>
         <!--/ Transactions -->
       </div>

@@ -14,9 +14,10 @@ if (isset($_POST['addClient']) && $_POST['addClient'] === "addClient") {
   $lastname = Utilities::lastName($_POST['lastname']);
   $email = Utilities::email($_POST['useremail']);
   $password = $_POST['password'];
+  $hashedPassword = password_hash($password,  PASSWORD_DEFAULT);
   $access = 'client';
 
-  $client = $addClient->addClient($username, $password, $email, $firstname, $lastname, $access, $managerId);
+  $client = $addClient->addClient($username, $hashedPassword, $email, $firstname, $lastname, $access, $managerId);
 
   if ($client === true) {
     $_SESSION['feedback'] = 'User Added Successfully';

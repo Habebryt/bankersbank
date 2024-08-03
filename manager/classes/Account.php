@@ -14,11 +14,20 @@ class Account extends Db
     $this->dbconn = $this->connect();
   }
 
-  public function getAccount($userId, $accountNumber)
+  public function getAccount($managerId)
   {
-    $sql = "SELECT * FROM client_accounts WHERE account_number = ? OR user_id = ?";
+    $sql = "SELECT * FROM account_manager_finance WHERE acct_id = ?";
     $stmt = $this->dbconn->prepare($sql);
-    $stmt->execute([$userId, $accountNumber]);
+    $stmt->execute([$managerId]);
+    $account = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $account;
+  }
+
+  public function getManager($managerId)
+  {
+    $sql = "SELECT * FROM account_managers WHERE user_id = ?";
+    $stmt = $this->dbconn->prepare($sql);
+    $stmt->execute([$managerId]);
     $account = $stmt->fetch(PDO::FETCH_ASSOC);
     return $account;
   }

@@ -17,20 +17,46 @@ $allAccounts = $myAccounts->getAccounts($managerId);
 // print_r($allClients);
 // print_r($allAccounts);
 
+// die;
+
+// foreach ($allClients as $client) {
+//   $foundMatch = false; // Flag to check if a matching account was found
+
+//   foreach ($allAccounts as $account) {
+//     if ($client['id'] == $account['user_id']) {
+//       // Combine user and account information into a single array
+//       $mergedData[] = array_merge($client, $account);
+//       $foundMatch = true; // A match was found
+//     }
+//   }
+
+//   if (!$foundMatch) {
+//     // If no matching account was found, add client data alone
+//     $mergedData[] = $client + array_fill_keys(array_keys($allAccounts[0]), null);
+//   }
+// }
+
 foreach ($allClients as $client) {
   $foundMatch = false; // Flag to check if a matching account was found
 
-  foreach ($allAccounts as $account) {
-    if ($client['id'] == $account['user_id']) {
-      // Combine user and account information into a single array
-      $mergedData[] = array_merge($client, $account);
-      $foundMatch = true; // A match was found
+  if (!empty($allAccounts)) { // Check if $allAccounts is not empty
+    foreach ($allAccounts as $account) {
+      if ($client['id'] == $account['user_id']) {
+        // Combine user and account information into a single array
+        $mergedData[] = array_merge($client, $account);
+        $foundMatch = true; // A match was found
+        break; // Exit the inner loop once a match is found
+      }
     }
   }
 
   if (!$foundMatch) {
     // If no matching account was found, add client data alone
-    $mergedData[] = $client + array_fill_keys(array_keys($allAccounts[0]), null);
+    if (!empty($allAccounts)) {
+      $mergedData[] = $client + array_fill_keys(array_keys($allAccounts[0]), null);
+    } else {
+      $mergedData[] = $client; // If $allAccounts is empty, just add the client data
+    }
   }
 }
 
@@ -100,6 +126,16 @@ require_once "../partials/asidetop.php";
 
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="mb-3">
+        <div class="row alert">
+          <div class="col-md-12">
+            <?php if (isset($_SESSION['feedback'])) : ?>
+              <div class="alert alert-primary alert-dismissible text-center">
+                <?php echo $_SESSION['feedback'] ?></div>
+              <?php unset($_SESSION['feedback']); ?>
+            <?php endif; ?>
+          </div>
+        </div>
+
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClient">Add Client</button>
       </div>
       <div class="card">
@@ -119,45 +155,44 @@ require_once "../partials/asidetop.php";
               <tbody class="table-border-bottom-0">
                 <?php foreach ($mergedData as $data) :
                   // print_r($data);
-                  $code = $data['usercode'];
-                  $accountNumber = $data['account_number'];
-                  $fullname = $data['firstName'] . ' ' . $data['lastName'];
-                  $balance = $data['balance'];
-                  $status = $data['status'];
+                  $code = $data['usercode'] ?? '';
+                  $accountNumber = $data['account_number'] ?? null;
+                  $fullname = ($data['firstName'] ?? '') . ' ' . ($data['lastName'] ?? '');
+                  $balance = $data['balance'] ?? null;
+                  $status = $data['status'] ?? null;
                 ?>
                   <tr>
                     <td>
-
-                      <?php if (!isset($accountNumber)) { ?>
+                      <?php if ($accountNumber === null) : ?>
                         <span class="text-center badge bg-label-warning me-1">Inactive</span>
-                      <?php } elseif (isset($accountNumber)) { ?>
+                      <?php else : ?>
                         <i class="bx bx-hash bx-sm text-dark me-3"></i>
                         <span class="fw-medium">
-                          <span><?php echo $accountNumber; ?></span>
-                        <?php } ?>
+                          <?php echo htmlspecialchars($accountNumber); ?>
                         </span>
+                      <?php endif; ?>
                     </td>
-                    <td><?php echo $fullname; ?></td>
+                    <td><?php echo htmlspecialchars($fullname); ?></td>
                     <td>
-                      <?php if (!isset($accountNumber)) { ?>
+                      <?php if ($accountNumber === null) : ?>
                         <span class="badge bg-label-warning me-1">Inactive</span>
-                      <?php } elseif (isset($accountNumber)) { ?>
+                      <?php else : ?>
                         <i class="bx bx-dollar bx-sm text-dark me-1"></i>
-                        <span><?php echo Utilities::convertToCurrency($balance); ?></span>
-                      <?php } ?>
+                        <span><?php echo $balance !== null ? Utilities::convertToCurrency($balance) : 'N/A'; ?></span>
+                      <?php endif; ?>
                     </td>
                     <td>
-                      <?php if ($status === 'active') { ?>
-                        <span class="badge bg-label-primary me-1">Active</span>
-                      <?php } elseif ($status === 'inactive') { ?>
-                        <span class="badge bg-label-warning me-1">Inactive</span>
-                      <?php } elseif ($status === 'suspended') { ?>
-                        <span class="badge bg-label-info me-1">Suspended</span>
-                      <?php } elseif ($status === 'closed') { ?>
-                        <span class="badge bg-label-danger me-1">Closed</span>
-                      <?php } elseif (!isset($status)) { ?>
-                        <span class="badge bg-label-warning me-1">Inactive</span>
-                      <?php } ?>
+                      <?php
+                      $statusBadge = match ($status) {
+                        'active' => 'bg-label-primary',
+                        'inactive' => 'bg-label-warning',
+                        'suspended' => 'bg-label-info',
+                        'closed' => 'bg-label-danger',
+                        default => 'bg-label-warning'
+                      };
+                      $statusText = $status ?? 'Inactive';
+                      ?>
+                      <span class="badge <?php echo $statusBadge; ?> me-1"><?php echo htmlspecialchars(ucfirst($statusText)); ?></span>
                     </td>
                     <td>
                       <div class="dropdown">
@@ -165,15 +200,14 @@ require_once "../partials/asidetop.php";
                           <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="accountmanagement.php?accountowner=<?php echo $code; ?>&accountnumber=<?php echo $accountNumber; ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                          <a class="dropdown-item" href="accountmanagement.php?accountowner=<?php echo urlencode($code); ?>&accountnumber=<?php echo urlencode($accountNumber ?? ''); ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                           <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-envelope me-1"></i> Contact</a>
                           <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
                         </div>
                       </div>
                     </td>
                   </tr>
-                <?php endforeach ?>
-
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>
@@ -182,6 +216,13 @@ require_once "../partials/asidetop.php";
         <?php endif ?>
       </div>
     </div>
+
+
+
+
+
+
+
     <!-- / Content -->
 
     <!-- Footer -->
